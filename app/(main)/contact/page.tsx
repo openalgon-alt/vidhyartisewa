@@ -80,7 +80,7 @@ export default function ContactPage() {
               { 
                 icon: MapPin, 
                 title: "Visit Us", 
-                lines: ["2nd Floor, A S Complex", "Near Whitefield, Bangalore - 560066", "Karnataka, India"],
+                lines: ["1st Floor, A S Mansion", "BB Rd, Yelahanka, Bengaluru, Karnataka 560064"],
                 color: "blue"
               },
               { 
@@ -232,9 +232,9 @@ export default function ContactPage() {
                   <div className="text-center">
                     <MapPin className="w-12 h-12 text-slate-300 mx-auto mb-3" />
                     <p className="text-slate-400 font-medium">Bangalore, Karnataka</p>
-                    <p className="text-sm text-slate-400">2nd Floor, A S Complex, Whitefield</p>
+                    <p className="text-sm text-slate-400">1st Floor, A S Mansion, BB Rd, Yelahanka, Bengaluru, Karnataka 560064</p>
                     <a 
-                      href="https://maps.google.com/?q=Whitefield,Bangalore"
+                      href="https://maps.app.goo.gl/336bVd2Ss2WKfvWv9"
                       target="_blank"
                       rel="noopener noreferrer"
                       className="inline-flex items-center gap-2 mt-4 text-amber-600 font-medium text-sm hover:underline"
@@ -299,7 +299,7 @@ export default function ContactPage() {
               variant="glass"
               className="text-lg"
               onClick={() => {
-                window.open("https://maps.google.com/?q=Whitefield,Bangalore", "_blank");
+                window.open("https://maps.app.goo.gl/336bVd2Ss2WKfvWv9", "_blank");
               }}
             >
               <MapPin className="w-5 h-5 mr-2" />

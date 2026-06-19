@@ -103,6 +103,7 @@ export const PARTNER_COLLEGES: College[] = [
       placement_rate: '78%',
     },
     description: 'Premier engineering institute in Bangalore with state-of-the-art infrastructure and excellent placement record.',
+    website: 'https://www.btibangalore.org',
   },
   {
     id: '3',
@@ -122,6 +123,7 @@ export const PARTNER_COLLEGES: College[] = [
       placement_rate: '92%',
     },
     description: 'Top-rated medical college with attached hospital providing hands-on clinical training to students.',
+    website: 'https://www.aimsrc.com',
   },
   {
     id: '4',
@@ -141,6 +143,7 @@ export const PARTNER_COLLEGES: College[] = [
       placement_rate: '75%',
     },
     description: 'Comprehensive educational group offering diverse courses with focus on holistic student development.',
+    website: 'https://www.brindavancollege.com',
   },
   {
     id: '5',
@@ -160,6 +163,7 @@ export const PARTNER_COLLEGES: College[] = [
       placement_rate: '88%',
     },
     description: 'Renowned medical institution known for quality education and excellent clinical exposure.',
+    website: 'https://www.shridevimedical.org',
   },
   {
     id: '6',
@@ -179,6 +183,7 @@ export const PARTNER_COLLEGES: College[] = [
       placement_rate: '85%',
     },
     description: 'Hospital-affiliated college providing excellent practical training in medical and nursing fields.',
+    website: 'https://www.sparshhospital.com',
   },
   {
     id: '7',
@@ -198,6 +203,7 @@ export const PARTNER_COLLEGES: College[] = [
       placement_rate: '90%',
     },
     description: 'Specialized cancer care institution offering unique oncology education and research opportunities.',
+    website: 'https://www.srishankaracancerhospital.org',
   },
   {
     id: '8',
@@ -217,11 +223,11 @@ export const PARTNER_COLLEGES: College[] = [
       placement_rate: '82%',
     },
     description: 'Premier business school with industry-focused curriculum and strong corporate connections.',
+    website: 'https://primusbschool.com',
   },
 ];
 
 // COURSES - From PRD categories + real Vidhyarthi Sewa course info
-// PRD says: Engineering, Medical, Nursing, Allied Health Sciences, Pharmacy, Management, Commerce, Computer Applications
 export const COURSES: Course[] = [
   {
     id: '1',
@@ -379,7 +385,6 @@ export const COURSES: Course[] = [
     salary_insights: { entry: '5-8 LPA', mid: '10-20 LPA', senior: '25-50 LPA' },
     partner_colleges: ['Marwadi University', 'Bangalore Technological Institute'],
   },
-  // Additional courses from PRD
   {
     id: '13',
     name: 'B.Tech - Biotechnology',

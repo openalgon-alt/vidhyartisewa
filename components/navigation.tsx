@@ -51,20 +51,21 @@ export function Navigation() {
           <nav className="flex items-center justify-between h-16 lg:h-20">
             {/* Logo */}
             <Link href="/" className="flex items-center gap-2 group">
-              <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-amber-500 to-amber-600 flex items-center justify-center shadow-lg shadow-amber-500/20 group-hover:shadow-amber-500/40 transition-shadow overflow-hidden">
+              {/* UPDATED: Increased width/height and added padding for better framing */}
+              <div className="w-12 h-12 lg:w-16 lg:h-16 rounded-xl bg-gradient-to-br from-amber-500 to-amber-600 flex items-center justify-center shadow-lg shadow-amber-500/20 group-hover:shadow-amber-500/40 transition-shadow overflow-hidden p-0.5">
                 <img 
                   src="/images/logo/logo.png"
-
-                  className="w-full h-full object-cover"
+                  /* UPDATED: Changed object-cover to object-contain and added a white background inside the padding */
+                  className="w-full h-full object-contain bg-white rounded-lg"
                   onError={(e) => {
                     const target = e.target as HTMLImageElement;
                     target.style.display = 'none';
                     target.parentElement?.querySelector('.fallback-icon')?.classList.remove('hidden');
                   }}
+                  alt="Vidhyarthi Sewa Logo"
                 />
                 <GraduationCap className="w-6 h-6 text-white fallback-icon hidden" />
               </div>
-              
             </Link>
 
             {/* Desktop Navigation */}

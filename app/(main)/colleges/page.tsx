@@ -95,14 +95,27 @@ export default function CollegesPage() {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ duration: 0.5, delay: index * 0.1 }}
-                className="bg-white rounded-2xl border border-slate-100 overflow-hidden hover:shadow-xl hover:shadow-slate-200/50 transition-all duration-300 hover:-translate-y-1 group"
+                className="bg-white rounded-2xl border border-slate-100 overflow-hidden hover:shadow-xl hover:shadow-slate-200/50 transition-all duration-300 hover:-translate-y-1 group flex flex-col"
               >
                 {/* Header */}
-                <div className="p-6 pb-4">
+                <div className="p-6 pb-4 flex-1 flex flex-col">
                   <div className="flex items-start justify-between mb-4">
-                    <div className="w-14 h-14 rounded-xl bg-gradient-to-br from-slate-100 to-slate-200 flex items-center justify-center group-hover:from-amber-50 group-hover:to-amber-100 transition-all">
-                      <Building2 className="w-7 h-7 text-slate-400 group-hover:text-amber-500 transition-colors" />
+                    
+                    {/* UPDATED: Image container with fallback logic */}
+                    <div className="w-14 h-14 shrink-0 rounded-xl bg-gradient-to-br from-slate-100 to-slate-200 flex items-center justify-center group-hover:from-amber-50 group-hover:to-amber-100 transition-all overflow-hidden p-1">
+                      <img 
+                        src={`/images/colleges/${college.slug}.jpg`} 
+                        alt={college.name}
+                        className="w-full h-full object-contain mix-blend-multiply" 
+                        onError={(e) => { 
+                          const target = e.target as HTMLImageElement;
+                          target.style.display = 'none';
+                          target.parentElement?.querySelector('.fallback-icon')?.classList.remove('hidden');
+                        }}
+                      />
+                      <Building2 className="w-7 h-7 text-slate-400 group-hover:text-amber-500 transition-colors fallback-icon hidden" />
                     </div>
+
                     <div className="flex items-center gap-1 bg-amber-50 px-2 py-1 rounded-lg">
                       <Star className="w-4 h-4 text-amber-500 fill-amber-500" />
                       <span className="text-sm font-bold text-amber-700">{college.rating}</span>
@@ -127,7 +140,7 @@ export default function CollegesPage() {
                   </p>
 
                   {/* Courses */}
-                  <div className="flex flex-wrap gap-2 mb-4">
+                  <div className="flex flex-wrap gap-2 mb-4 mt-auto">
                     {college.courses.slice(0, 3).map(course => (
                       <span key={course} className="text-xs bg-slate-50 text-slate-600 px-2 py-1 rounded">
                         {course}
@@ -152,15 +165,19 @@ export default function CollegesPage() {
                     </div>
                   </div>
 
-                  {/* CTA */}
+                  {/* UPDATED: Working CTA Buttons */}
                   <div className="flex gap-2">
-                    <Button size="sm" className="flex-1" onClick={() => { const el = document.getElementById("counseling-form"); el?.scrollIntoView({ behavior: "smooth" }); }}>
-                      Apply Now
-                      <ArrowRight className="w-4 h-4 ml-1" />
-                    </Button>
-                    <Button size="sm" variant="outline" className="flex-1">
-                      View Details
-                    </Button>
+                    <Link href="/#counseling-form" className="flex-1">
+                      <Button size="sm" className="w-full">
+                        Apply Now
+                        <ArrowRight className="w-4 h-4 ml-1" />
+                      </Button>
+                    </Link>
+                    <Link href={`/colleges/${college.slug}`} className="flex-1">
+  <Button size="sm" variant="outline" className="w-full hover:bg-slate-50">
+    View Details
+  </Button>
+</Link>
                   </div>
                 </div>
               </motion.div>

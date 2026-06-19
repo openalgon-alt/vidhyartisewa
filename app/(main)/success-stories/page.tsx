@@ -1,9 +1,10 @@
 "use client";
 
 import { motion } from "framer-motion";
+import Link from "next/link";
 import { 
   Star, Quote, Trophy, GraduationCap, Building2, 
-  TrendingUp, Award, Users, ArrowRight
+  TrendingUp, Award, Users, ArrowRight, User
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -25,7 +26,14 @@ export default function SuccessStoriesPage() {
   return (
     <div className="pt-20">
       {/* Hero */}
-      <section className="relative py-20 lg:py-28 gradient-bg overflow-hidden">
+      <section className="relative py-20 lg:py-28 gradient-bg overflow-hidden bg-slate-900">
+        
+        {/* ADDED: Hero Background Image */}
+        <div 
+          className="absolute inset-0 bg-cover bg-center opacity-20 mix-blend-luminosity"
+          style={{ backgroundImage: "url('/images/hero/success-hero.jpg')" }}
+        />
+
         <div className="absolute inset-0 noise-overlay" />
         <div className="container-custom relative z-10">
           <motion.div
@@ -97,7 +105,7 @@ export default function SuccessStoriesPage() {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ delay: index * 0.1 }}
-                className="bg-white rounded-2xl p-8 border border-slate-100 hover:shadow-xl transition-all duration-300 hover:-translate-y-1"
+                className="bg-white rounded-2xl p-8 border border-slate-100 hover:shadow-xl transition-all duration-300 hover:-translate-y-1 flex flex-col"
               >
                 <Quote className="w-10 h-10 text-amber-100 mb-4" />
 
@@ -114,14 +122,27 @@ export default function SuccessStoriesPage() {
                   ))}
                 </div>
 
-                <p className="text-slate-600 leading-relaxed mb-6">
+                <p className="text-slate-600 leading-relaxed mb-6 flex-1">
                   "{testimonial.text}"
                 </p>
 
                 <div className="flex items-center gap-4 pt-6 border-t border-slate-100">
-                  <div className="w-12 h-12 rounded-full bg-gradient-to-br from-amber-100 to-amber-200 flex items-center justify-center text-amber-700 font-bold text-lg">
-                    {testimonial.name.charAt(0)}
+                  
+                  {/* ADDED: Student Image Profile Picture */}
+                  <div className="w-12 h-12 rounded-full bg-slate-100 overflow-hidden relative shrink-0">
+                    <img 
+                      src={`/images/testimonials/${testimonial.id}.jpg`} 
+                      alt={testimonial.name}
+                      className="w-full h-full object-cover relative z-10"
+                      onError={(e) => {
+                        const target = e.target as HTMLImageElement;
+                        target.style.display = 'none';
+                        target.parentElement?.querySelector('.fallback-icon')?.classList.remove('hidden');
+                      }}
+                    />
+                    <User className="w-6 h-6 text-slate-400 absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 fallback-icon hidden" />
                   </div>
+
                   <div>
                     <div className="font-semibold text-slate-900">{testimonial.name}</div>
                     <div className="text-sm text-slate-500">
@@ -132,7 +153,7 @@ export default function SuccessStoriesPage() {
 
                 {testimonial.placement && (
                   <div className="mt-4 flex items-center gap-2 px-3 py-2 rounded-lg bg-emerald-50">
-                    <Trophy className="w-4 h-4 text-emerald-500" />
+                    <Trophy className="w-4 h-4 text-emerald-500 shrink-0" />
                     <span className="text-sm text-emerald-700">
                       Placed at <strong>{testimonial.placement.company}</strong> — {testimonial.placement.package}
                     </span>
@@ -233,18 +254,16 @@ export default function SuccessStoriesPage() {
             <p className="text-white/70 max-w-xl mx-auto mb-8">
               Join thousands of students who achieved their dreams with Vidhyarthi Sewa guidance.
             </p>
-            <Button
-              size="lg"
-              className="pulse-glow text-lg"
-              onClick={() => {
-                const el = document.getElementById("counseling-form");
-                el?.scrollIntoView({ behavior: "smooth" });
-              }}
-            >
-              <GraduationCap className="w-5 h-5 mr-2" />
-              Start Your Journey
-              <ArrowRight className="w-5 h-5 ml-2" />
-            </Button>
+            
+            {/* ADDED: Working Link wrapper */}
+            <Link href="/#counseling-form">
+              <Button size="lg" className="pulse-glow text-lg">
+                <GraduationCap className="w-5 h-5 mr-2" />
+                Start Your Journey
+                <ArrowRight className="w-5 h-5 ml-2" />
+              </Button>
+            </Link>
+
           </motion.div>
         </div>
       </section>

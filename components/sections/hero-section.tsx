@@ -6,11 +6,27 @@ import { Button } from "@/components/ui/button";
 
 export function HeroSection() {
   return (
-    <section className="relative min-h-screen flex items-center justify-center overflow-hidden gradient-mesh">
+    <section className="relative min-h-screen flex items-center justify-center overflow-hidden gradient-mesh bg-slate-950">
+      
+      {/* 1. Main Background Image Overlay */}
+      <div 
+        className="absolute inset-0 bg-cover bg-center opacity-20 mix-blend-luminosity"
+        style={{ backgroundImage: "url('/images/hero/hero-bg.jpg')" }}
+      />
+
       {/* Noise overlay */}
       <div className="absolute inset-0 noise-overlay" />
 
-      {/* Floating shapes */}
+      {/* Grid pattern */}
+      <div 
+        className="absolute inset-0 opacity-[0.03]"
+        style={{
+          backgroundImage: `linear-gradient(rgba(255,255,255,0.1) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.1) 1px, transparent 1px)`,
+          backgroundSize: '60px 60px'
+        }}
+      />
+
+      {/* Floating abstract shapes */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
         <motion.div
           animate={{ y: [0, -30, 0], rotate: [0, 10, 0] }}
@@ -29,23 +45,43 @@ export function HeroSection() {
         />  
       </div>
 
-      {/* Grid pattern */}
-      <div 
-        className="absolute inset-0 opacity-[0.03]"
-        style={{
-          backgroundImage: `linear-gradient(rgba(255,255,255,0.1) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.1) 1px, transparent 1px)`,
-          backgroundSize: '60px 60px'
-        }}
-      ></div>
+      {/* 2. Floating Image: Students (Left Side) */}
+      <motion.div
+        animate={{ y: [0, -15, 0] }}
+        transition={{ duration: 6, repeat: Infinity, ease: "easeInOut" }}
+        className="hidden lg:block absolute left-[3%] top-[25%] w-64 h-80 rounded-2xl overflow-hidden shadow-2xl shadow-black/50 border border-white/10 rotate-[-6deg] z-10"
+      >
+        <div className="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent z-10" />
+        <img 
+          src="/images/hero/hero-students.jpg" 
+          alt="Students studying" 
+          className="w-full h-full object-cover" 
+        />
+      </motion.div>
 
-      <div className="container-custom relative z-10 pt-24 pb-16">
+      {/* 3. Floating Image: Campus (Right Side) */}
+      <motion.div
+        animate={{ y: [0, 20, 0] }}
+        transition={{ duration: 8, repeat: Infinity, ease: "easeInOut", delay: 1 }}
+        className="hidden lg:block absolute right-[3%] bottom-[20%] w-72 h-48 rounded-2xl overflow-hidden shadow-2xl shadow-black/50 border border-white/10 rotate-[4deg] z-10"
+      >
+        <div className="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent z-10" />
+        <img 
+          src="/images/hero/hero-campus.jpg" 
+          alt="College Campus" 
+          className="w-full h-full object-cover" 
+        />
+      </motion.div>
+
+      {/* Main Content */}
+      <div className="container-custom relative z-20 pt-24 pb-16">
         <div className="max-w-4xl mx-auto text-center">
           {/* Badge */}
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5 }}
-            className="inline-flex items-center gap-2 px-4 py-2 rounded-full glass mb-8"
+            className="inline-flex items-center gap-2 px-4 py-2 rounded-full glass mb-8 backdrop-blur-md bg-white/5 border border-white/10"
           >
             <Star className="w-4 h-4 text-amber-400 fill-amber-400" />
             <span className="text-sm font-medium text-white/90">
@@ -87,7 +123,7 @@ export function HeroSection() {
           >
             <Button
               size="xl"
-              className="pulse-glow text-lg"
+              className="pulse-glow text-lg bg-amber-500 hover:bg-amber-600 text-slate-900 border-none"
               onClick={() => {
                 const el = document.getElementById("counseling-form");
                 el?.scrollIntoView({ behavior: "smooth" });
@@ -98,8 +134,8 @@ export function HeroSection() {
             </Button>
             <Button
               size="xl"
-              variant="glass"
-              className="text-lg"
+              variant="outline"
+              className="text-lg bg-white/5 border-white/20 text-white hover:bg-white/10 hover:text-white backdrop-blur-sm"
               onClick={() => {
                 const el = document.getElementById("courses");
                 el?.scrollIntoView({ behavior: "smooth" });
@@ -123,7 +159,7 @@ export function HeroSection() {
               { icon: TrendingUp, label: "98% Success Rate" },
               { icon: Award, label: "15+ Years" },
             ].map((item, i) => (
-              <div key={i} className="flex items-center gap-2 text-white/60">
+              <div key={i} className="flex items-center gap-2 text-white/80">
                 <item.icon className="w-4 h-4 text-amber-400" />
                 <span className="text-sm font-medium">{item.label}</span>
               </div>
@@ -133,15 +169,7 @@ export function HeroSection() {
       </div>
 
       {/* Bottom gradient fade */}
-      <div className="absolute bottom-0 left-0 right-0 h-32 bg-gradient-to-t from-slate-50 to-transparent" />
-
-      {/* Optional: Background image overlay - uncomment when you add hero-bg.jpg */}
-      {/*
-      <div 
-        className="absolute inset-0 bg-cover bg-center opacity-20"
-        style={{ backgroundImage: "url('/images/hero/hero-bg.jpg')" }}
-      />
-      */}
+      <div className="absolute bottom-0 left-0 right-0 h-32 bg-gradient-to-t from-slate-50 to-transparent z-20" />
     </section>
   );
 }

@@ -36,15 +36,23 @@ export function PartnerMarquee() {
               key={`${college.id}-${index}`}
               className="inline-flex items-center gap-3 mx-6 px-6 py-4 bg-white rounded-xl border border-slate-100 shadow-sm hover:shadow-md hover:border-amber-200 transition-all duration-300 group"
             >
-              <div className="w-10 h-10 rounded-lg bg-gradient-to-br from-slate-100 to-slate-200 flex items-center justify-center group-hover:from-amber-50 group-hover:to-amber-100 transition-all overflow-hidden">
-                {/* Replace with real college logo when available */}
+              <div className="w-10 h-10 rounded-lg bg-gradient-to-br from-slate-100 to-slate-200 flex items-center justify-center group-hover:from-amber-50 group-hover:to-amber-100 transition-all overflow-hidden p-1">
+                
+                {/* Image loads the logo, fits it perfectly with object-contain */}
                 <img 
                   src={`/images/colleges/${college.slug}.jpg`} 
                   alt={college.name}
-                  className="w-full h-full object-cover hidden" 
-                  onError={(e) => { (e.target as HTMLImageElement).style.display = 'none'; }}
+                  className="w-full h-full object-contain mix-blend-multiply" 
+                  onError={(e) => { 
+                    const target = e.target as HTMLImageElement;
+                    target.style.display = 'none';
+                    target.parentElement?.querySelector('.fallback-icon')?.classList.remove('hidden');
+                  }}
                 />
-                <Building2 className="w-5 h-5 text-slate-400 group-hover:text-amber-500 transition-colors" />
+                
+                {/* Fallback icon only shows if image throws an error */}
+                <Building2 className="w-5 h-5 text-slate-400 group-hover:text-amber-500 transition-colors fallback-icon hidden" />
+                
               </div>
               <div>
                 <div className="font-semibold text-slate-800 text-sm whitespace-nowrap">

@@ -27,7 +27,14 @@ export default function BlogPage() {
   return (
     <div className="pt-20">
       {/* Hero */}
-      <section className="relative py-20 lg:py-28 gradient-bg overflow-hidden">
+      <section className="relative py-20 lg:py-28 gradient-bg overflow-hidden bg-slate-900">
+        
+        {/* Added: Background Image Overlay */}
+        <div 
+          className="absolute inset-0 bg-cover bg-center opacity-20 mix-blend-luminosity"
+          style={{ backgroundImage: "url('/images/blog/blog-hero.jpg')" }}
+        />
+
         <div className="absolute inset-0 noise-overlay" />
         <div className="container-custom relative z-10">
           <motion.div
@@ -67,7 +74,7 @@ export default function BlogPage() {
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
-              className="bg-gradient-to-br from-slate-50 to-white rounded-2xl border border-slate-100 overflow-hidden"
+              className="bg-gradient-to-br from-slate-50 to-white rounded-2xl border border-slate-100 overflow-hidden shadow-sm hover:shadow-md transition-shadow"
             >
               <div className="grid grid-cols-1 lg:grid-cols-2">
                 <div className="p-8 lg:p-12 flex flex-col justify-center">
@@ -92,17 +99,32 @@ export default function BlogPage() {
                       {featuredPost.read_time}
                     </span>
                   </div>
+                  
+                  {/* UPDATED: Fixed routing to use dynamic slug */}
                   <Link 
-                    href={`/blog/`}
-                    className="inline-flex items-center gap-2 text-amber-600 font-medium hover:gap-3 transition-all"
+                    href={`/blog/${featuredPost.slug}`}
+                    className="inline-flex items-center gap-2 text-amber-600 font-medium hover:gap-3 transition-all w-fit"
                   >
                     Read Full Article
                     <ArrowRight className="w-4 h-4" />
                   </Link>
                 </div>
-                <div className="bg-gradient-to-br from-amber-50 to-blue-50 flex items-center justify-center p-12">
-                  <FileText className="w-32 h-32 text-slate-200" />
+
+                {/* UPDATED: Added image container with fallback logic */}
+                <div className="relative bg-gradient-to-br from-slate-100 to-slate-200 flex items-center justify-center overflow-hidden min-h-[300px] lg:min-h-full">
+                  <img 
+                    src={`/images/blog/${featuredPost.slug}.jpg`}
+                    alt={featuredPost.title}
+                    className="absolute inset-0 w-full h-full object-cover"
+                    onError={(e) => {
+                      const target = e.target as HTMLImageElement;
+                      target.style.display = 'none';
+                      target.parentElement?.querySelector('.fallback-icon')?.classList.remove('hidden');
+                    }}
+                  />
+                  <FileText className="w-24 h-24 text-slate-300 fallback-icon hidden relative z-10" />
                 </div>
+                
               </div>
             </motion.div>
           </div>

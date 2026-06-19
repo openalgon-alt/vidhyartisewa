@@ -1,6 +1,7 @@
 "use client";
 
 import { motion } from "framer-motion";
+import Link from "next/link"; // ADDED: Link import
 import { Target, Eye, Heart, Lightbulb, Users, Shield, Award, Linkedin, Quote } from "lucide-react";
 import { TEAM_MEMBERS } from "@/lib/data";
 import { Button } from "@/components/ui/button";
@@ -26,7 +27,14 @@ export default function AboutPage() {
   return (
     <div className="pt-20">
       {/* Hero */}
-      <section className="relative py-24 lg:py-32 gradient-bg overflow-hidden">
+      <section className="relative py-24 lg:py-32 gradient-bg overflow-hidden bg-slate-900">
+        
+        {/* ADDED: Hero Background Image Overlay */}
+        <div 
+          className="absolute inset-0 bg-cover bg-center opacity-20 mix-blend-luminosity"
+          style={{ backgroundImage: "url('/images/hero/about-hero.jpg')" }}
+        />
+
         <div className="absolute inset-0 noise-overlay" />
         <div className="container-custom relative z-10">
           <motion.div
@@ -246,17 +254,17 @@ export default function AboutPage() {
                 transition={{ delay: index * 0.1 }}
                 className="bg-white rounded-2xl p-6 border border-slate-100 hover:shadow-lg transition-all text-center group"
               >
-                <div className="w-24 h-24 rounded-full bg-gradient-to-br from-amber-100 to-amber-200 flex items-center justify-center text-amber-700 font-bold text-3xl mx-auto mb-4 group-hover:from-amber-200 group-hover:to-amber-300 transition-all overflow-hidden">
+                <div className="w-24 h-24 rounded-full bg-gradient-to-br from-amber-100 to-amber-200 flex items-center justify-center text-amber-700 font-bold text-3xl mx-auto mb-4 group-hover:from-amber-200 group-hover:to-amber-300 transition-all overflow-hidden relative">
                   <img 
                     src={`/images/team/${member.id}.jpg`}
                     alt={member.name}
-                    className="w-full h-full object-cover"
+                    className="w-full h-full object-cover relative z-10"
                     onError={(e) => {
                       const target = e.target as HTMLImageElement;
                       target.style.display = 'none';
                     }}
                   />
-                  <span className="fallback-initial">{member.name.charAt(0)}</span>
+                  <span className="absolute inset-0 flex items-center justify-center">{member.name.charAt(0)}</span>
                 </div>
                 <h3 className="text-lg font-bold text-slate-900 mb-1">{member.name}</h3>
                 <p className="text-amber-600 font-medium text-sm mb-2">{member.role}</p>
@@ -285,16 +293,14 @@ export default function AboutPage() {
             <p className="text-slate-500 max-w-xl mx-auto mb-8">
               Let our experts guide you toward the right educational path. Book your free counseling session today.
             </p>
-            <Button
-              size="lg"
-              className="pulse-glow text-lg"
-              onClick={() => {
-                const el = document.getElementById("counseling-form");
-                el?.scrollIntoView({ behavior: "smooth" });
-              }}
-            >
-              Book Free Counseling
-            </Button>
+            
+            {/* UPDATED: Wrapped the Button in a Next.js Link */}
+            <Link href="/#counseling-form">
+              <Button size="lg" className="pulse-glow text-lg">
+                Book Free Counseling
+              </Button>
+            </Link>
+
           </motion.div>
         </div>
       </section>
