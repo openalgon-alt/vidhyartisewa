@@ -1,10 +1,11 @@
 "use client";
 
 import { motion } from "framer-motion";
-import Link from "next/link"; // ADDED: Link import
+import Link from "next/link";
 import { Target, Eye, Heart, Lightbulb, Users, Shield, Award, Linkedin, Quote } from "lucide-react";
 import { TEAM_MEMBERS } from "@/lib/data";
 import { Button } from "@/components/ui/button";
+import { SubPageHero } from "@/components/sections/subpage-hero";
 
 const milestones = [
   { year: "2009", title: "Founded", description: "Started as a small counseling desk in Bangalore with a mission to help students find their path." },
@@ -26,35 +27,16 @@ const values = [
 export default function AboutPage() {
   return (
     <div className="pt-20">
-      {/* Hero */}
-      <section className="relative py-24 lg:py-32 gradient-bg overflow-hidden bg-slate-900">
-        
-        {/* ADDED: Hero Background Image Overlay */}
-        <div 
-          className="absolute inset-0 bg-cover bg-center opacity-20 mix-blend-luminosity"
-          style={{ backgroundImage: "url('/images/hero/about-hero.jpg')" }}
-        />
+      
+      {/* 1. NEW UNIVERSAL SUB-PAGE HERO */}
+      <SubPageHero 
+        bgText="Our Story" 
+        title="Guiding Dreams Since 2009" 
+        description="We believe every student deserves the right guidance to unlock their true potential and secure a seat in their dream institution."
+        icon={Users}
+      />
 
-        <div className="absolute inset-0 noise-overlay" />
-        <div className="container-custom relative z-10">
-          <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6 }}
-            className="max-w-3xl"
-          >
-            <h1 className="text-4xl lg:text-5xl font-bold text-white mb-6">
-              Building Futures Since 2009
-            </h1>
-            <p className="text-xl text-white/70 leading-relaxed">
-              From a small counseling desk to Karnataka's most trusted educational consultancy, 
-              our journey has been about one thing — helping students achieve their dreams.
-            </p>
-          </motion.div>
-        </div>
-      </section>
-
-      {/* Company Story / Timeline */}
+      {/* 2. Company Story / Timeline */}
       <section className="py-20 lg:py-28 bg-white">
         <div className="container-custom">
           <motion.div
@@ -107,7 +89,7 @@ export default function AboutPage() {
         </div>
       </section>
 
-      {/* Mission, Vision, Values */}
+      {/* 3. Mission, Vision, Values */}
       <section className="py-20 lg:py-28 bg-slate-50">
         <div className="container-custom">
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 mb-20">
@@ -196,7 +178,7 @@ export default function AboutPage() {
         </div>
       </section>
 
-      {/* Founder Message */}
+      {/* 4. Founder Message */}
       <section className="py-20 lg:py-28 bg-white">
         <div className="container-custom">
           <div className="max-w-4xl mx-auto">
@@ -227,7 +209,7 @@ export default function AboutPage() {
         </div>
       </section>
 
-      {/* Team Section */}
+      {/* 5. Team Section */}
       <section className="py-20 lg:py-28 bg-slate-50">
         <div className="container-custom">
           <motion.div
@@ -279,7 +261,7 @@ export default function AboutPage() {
         </div>
       </section>
 
-      {/* CTA */}
+      {/* 6. CTA */}
       <section className="py-16 bg-white">
         <div className="container-custom text-center">
           <motion.div
@@ -294,7 +276,6 @@ export default function AboutPage() {
               Let our experts guide you toward the right educational path. Book your free counseling session today.
             </p>
             
-            {/* UPDATED: Wrapped the Button in a Next.js Link */}
             <Link href="/#counseling-form">
               <Button size="lg" className="pulse-glow text-lg">
                 Book Free Counseling

@@ -25,17 +25,18 @@ export function Footer() {
                   Book your free counseling session today and take the first step toward your dream career.
                 </p>
               </div>
-              <Button
-                size="lg"
-                variant="secondary"
-                className="bg-white text-amber-600 hover:bg-slate-100 whitespace-nowrap"
-                onClick={() => {
-                  const el = document.getElementById("counseling-form");
-                  el?.scrollIntoView({ behavior: "smooth" });
-                }}
-              >
-                Book Free Counseling
-              </Button>
+              
+              {/* FIXED BUTTON HERE */}
+              <Link href="/#counseling-form">
+                <Button
+                  size="lg"
+                  variant="secondary"
+                  className="bg-white text-amber-600 hover:bg-slate-100 whitespace-nowrap"
+                >
+                  Book Free Counseling
+                </Button>
+              </Link>
+              
             </div>
           </div>
         </div>
@@ -143,6 +144,7 @@ export function Footer() {
                 <MapPin className="w-5 h-5 text-amber-500 shrink-0 mt-0.5" />
                 <span className="text-slate-400 text-sm">
                                       <p className="text-sm text-slate-400">1st Floor, A S Mansion, BB Rd, Yelahanka, Bengaluru, Karnataka 560064</p> 
+                  1st Floor, A S Mansion,BB Rd, Yelahanka, Bengaluru, Karnataka 560064
                 </span>
               </li>
               <li className="flex items-center gap-3">

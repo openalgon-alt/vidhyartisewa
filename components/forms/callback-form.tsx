@@ -17,6 +17,10 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 
+// 1. Import your Supabase client and phone formatter
+import { createClient } from "@/lib/supabase-client";
+import { formatPhoneNumber } from "@/lib/utils";
+
 const callbackSchema = z.object({
   name: z.string().min(2, "Name is required"),
   phone: z.string().regex(/^[0-9]{10}$/, "Enter valid 10-digit phone"),
@@ -36,35 +40,33 @@ export function CallbackRequest() {
 
   const onSubmit = async (data: CallbackFormData) => {
     setIsSubmitting(true);
+    
+    // 2. Initialize Supabase
+    const supabase = createClient();
 
     try {
-      // Try API first
-      let apiSuccess = false;
-      try {
-        const response = await fetch('/api/callbacks/', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify(data),
-        });
-        if (response.ok) apiSuccess = true;
-      } catch (e) {
-        console.log('API unavailable, using localStorage');
-      }
+      // 3. Send data directly to Supabase
+      const { error } = await supabase.from('callbacks').insert([{
+        name: data.name,
+        phone: formatPhoneNumber(data.phone), // Ensure the number is formatted nicely
+        best_time: data.best_time,
+        created_at: new Date().toISOString()
+      }]);
 
-      // Fallback to localStorage
-      const callbacks = JSON.parse(localStorage.getItem('vidhyarthisewa_callbacks') || '[]');
-      callbacks.push({ ...data, id: Date.now(), created_at: new Date().toISOString(), source: apiSuccess ? 'api' : 'local' });
-      localStorage.setItem('vidhyarthisewa_callbacks', JSON.stringify(callbacks));
+      if (error) throw error;
 
-      await new Promise(resolve => setTimeout(resolve, 1000));
       setIsSubmitted(true);
+      
+      // Auto-close dialog after 2 seconds
       setTimeout(() => {
         setIsOpen(false);
         setIsSubmitted(false);
         reset();
       }, 2000);
+
     } catch (error) {
-      console.error("Error:", error);
+      console.error("Error requesting callback:", error);
+      alert("Failed to submit request. Please try again or contact us directly.");
     } finally {
       setIsSubmitting(false);
     }

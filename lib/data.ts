@@ -240,6 +240,66 @@ export const PARTNER_COLLEGES: College[] = [
   description: 'Premier PU college in Bangalore known for academic excellence and discipline.',
   website: 'https://mountcarmelcollegeblr.co.in',
 },
+{
+    id: '10',
+    name: 'IKON Group of Institutions',
+    slug: 'ikon',
+    location: 'Bangalore, Karnataka',
+    rating: 4.3,
+    established: 2004,
+    accreditation: 'INC & KNC Approved',
+    type: 'Private Institute',
+    courses: ['B.Sc Nursing', 'MBA', 'BCA', 'BBA', 'Paramedical'],
+    facilities: ['Library', 'Labs', 'Hostel', 'Transport', 'Clinical Facility'],
+    placement_stats: {
+      companies: ['Apollo', 'Fortis', 'Manipal', 'Infosys'],
+      average_package: '4.5 LPA',
+      highest_package: '8 LPA',
+      placement_rate: '85%',
+    },
+    description: 'IKON Group of Institutions offers premium education in Nursing, Management, and Paramedical sciences with state-of-the-art facilities and a sprawling campus.',
+    website: 'https://ikongroupofinstitutions.com',
+  },
+  {
+    id: '11',
+    name: 'Noor Group of Institutions',
+    slug: 'noor',
+    location: 'Bangalore, Karnataka',
+    rating: 4.2,
+    established: 2001,
+    accreditation: 'PCI & INC Approved',
+    type: 'Private Institute',
+    courses: ['B.Pharm', 'D.Pharm', 'B.Sc Nursing', 'GNM'],
+    facilities: ['Pharmacy Labs', 'Library', 'Hostel', 'Hospital Tie-ups'],
+    placement_stats: {
+      companies: ['Cipla', 'Sun Pharma', 'Apollo', 'Apollo Pharmacy'],
+      average_package: '4.0 LPA',
+      highest_package: '7 LPA',
+      placement_rate: '82%',
+    },
+    description: 'Dedicated to providing high-quality education in Pharmacy, Nursing, and Allied Health Sciences with excellent clinical exposure and modern laboratories.',
+    website: 'https://www.nooreducationaltrust.com/',
+  },
+  {
+    id: '12',
+    name: 'Global School & College of Nursing',
+    slug: 'global',
+    location: 'Bangalore, Karnataka',
+    rating: 4.5,
+    established: 2003,
+    accreditation: 'INC Approved',
+    type: 'Nursing College',
+    courses: ['B.Sc Nursing', 'M.Sc Nursing', 'Post Basic B.Sc Nursing', 'GNM'],
+    facilities: ['Clinical Labs', 'Library', 'Hostel', 'Auditorium'],
+    placement_stats: {
+      companies: ['Global Hospitals', 'Fortis', 'Narayana Health', 'Manipal'],
+      average_package: '3.8 LPA',
+      highest_package: '6.5 LPA',
+      placement_rate: '95%',
+    },
+    description: 'A premier nursing institution committed to training compassionate and highly skilled healthcare professionals through rigorous academic and clinical programs.',
+    website: 'https://gcn.org.in/',
+  }
 ];
 
 // COURSES - From PRD categories + real Vidhyarthi Sewa course info
@@ -582,78 +642,240 @@ export const TESTIMONIALS: Testimonial[] = [
   },
 ];
 
+// --- SMART INDIAN ACADEMIC YEAR LOGIC ---
+const today = new Date();
+const currentMonth = today.getMonth(); // 0 is Jan, 11 is Dec
+let baseYear = today.getFullYear();
+
+// In India, admission cycles typically close by October. 
+// If it is November (10) or December (11), automatically show next year's admission guides.
+const admissionYear = currentMonth >= 10 ? baseYear + 1 : baseYear;
+const academicSession = `${admissionYear}-${(admissionYear + 1).toString().slice(-2)}`;
+// ----------------------------------------
+
 export const BLOG_POSTS: BlogPost[] = [
   {
     id: '1',
-    title: 'KCET 2024: Complete Admission Guide for Karnataka Students',
-    slug: 'kcet-2024-complete-guide',
-    excerpt: 'Everything you need to know about KCET 2024 - eligibility, important dates, application process, and top colleges accepting KCET scores.',
-    content: 'Full content here...',
+    title: `KCET ${admissionYear}: Complete Admission Guide for Karnataka Students`,
+    slug: 'kcet-complete-admission-guide',
+    excerpt: `Everything you need to know about KCET ${admissionYear} - eligibility, important dates, application process, and top colleges.`,
     category: 'KCET Guidance',
     author: 'Dr. Rajesh Kumar',
-    published_at: '2024-06-15',
+    published_at: `${baseYear}-06-15`, 
     read_time: '8 min read',
     tags: ['KCET', 'Engineering', 'Karnataka', 'Admission'],
+    content: `
+      <p>The Karnataka Common Entrance Test (KCET) is the ultimate gateway for students domiciled in Karnataka looking to secure seats in professional courses like Engineering, Pharmacy, and Agriculture. Here is your comprehensive roadmap for the ${academicSession} academic session.</p>
+      
+      <h3 class="text-2xl font-bold text-slate-900 mt-10 mb-4">1. Eligibility Criteria</h3>
+      <p>Before applying, ensure you meet the strict criteria set by the Karnataka Examinations Authority (KEA):</p>
+      <ul class="list-disc pl-5 space-y-2 mt-4 mb-8">
+        <li><strong>Academic:</strong> Must have passed the 2nd PUC / 12th standard examination.</li>
+        <li><strong>Subjects:</strong> Physics and Mathematics are compulsory, along with Chemistry/Biology/Biotechnology as an optional subject.</li>
+        <li><strong>Marks:</strong> Minimum 45% aggregate (40% for SC/ST/OBC).</li>
+        <li><strong>Domicile:</strong> Must have studied and passed from a recognized institution in Karnataka for a minimum period of 7 years.</li>
+      </ul>
+
+      <h3 class="text-2xl font-bold text-slate-900 mt-10 mb-4">2. Important Dates (Tentative)</h3>
+      <p>Missing a deadline can cost you an entire academic year. Keep these timelines in mind for ${admissionYear}:</p>
+      <ul class="list-disc pl-5 space-y-2 mt-4 mb-8">
+        <li><strong>Application Opens:</strong> Second week of February ${admissionYear}</li>
+        <li><strong>Admit Card Release:</strong> First week of April ${admissionYear}</li>
+        <li><strong>Examination Dates:</strong> Third week of April ${admissionYear}</li>
+        <li><strong>Results Declaration:</strong> First week of June ${admissionYear}</li>
+      </ul>
+
+      <h3 class="text-2xl font-bold text-slate-900 mt-10 mb-4">3. Top Colleges Accepting KCET</h3>
+      <p>A good KCET rank opens doors to prestigious institutions. Historically, the top choices include RV College of Engineering, BMS College of Engineering, Ramaiah Institute of Technology (MSRIT), and PES University.</p>
+
+      <div class="bg-amber-50 rounded-2xl p-6 border border-amber-100 my-8">
+        <h4 class="flex items-center gap-2 font-bold text-amber-800 text-lg mb-2">💡 Pro Tip from our Counselors</h4>
+        <p class="text-amber-700 text-sm m-0">Do not wait for your 12th board results to start your KCET preparation. The syllabus heavily overlaps, but KCET requires high-speed problem-solving skills that take months to develop. Focus on taking timed mock tests starting in January!</p>
+      </div>
+    `,
   },
   {
     id: '2',
-    title: 'NEET 2024: Last Minute Preparation Tips & College Selection Strategy',
-    slug: 'neet-2024-preparation-tips',
-    excerpt: 'Expert tips for NEET 2024 preparation and how to strategically select medical colleges based on your expected rank.',
-    content: 'Full content here...',
+    title: `NEET ${admissionYear}: Last Minute Preparation Tips & College Selection Strategy`,
+    slug: 'neet-preparation-tips',
+    excerpt: `Expert tips for NEET ${admissionYear} preparation and how to strategically select medical colleges based on your expected rank.`,
     category: 'NEET Guidance',
     author: 'Dr. Priya Sharma',
-    published_at: '2024-06-10',
+    published_at: `${baseYear}-06-10`,
     read_time: '10 min read',
     tags: ['NEET', 'Medical', 'Preparation', 'Tips'],
+    content: `
+      <p>With over 20 lakh students competing for limited medical seats, NEET is arguably the most competitive exam in India. As we approach NEET ${admissionYear}, your strategy matters just as much as your knowledge.</p>
+      
+      <h3 class="text-2xl font-bold text-slate-900 mt-10 mb-4">Last-Minute Preparation Strategy</h3>
+      <ul class="list-disc pl-5 space-y-2 mt-4 mb-8">
+        <li><strong>NCERT is your Bible:</strong> In Biology, 90% of the questions are directly framed from NCERT lines. Read the summaries, diagrams, and "points to ponder" carefully.</li>
+        <li><strong>Formula Sheets:</strong> For Physics and Physical Chemistry, keep a consolidated 5-page formula sheet. Revise this every morning.</li>
+        <li><strong>Stop Learning New Concepts:</strong> In the final 30 days, absolutely do not pick up new, heavy topics. Consolidate what you already know to reduce negative marking.</li>
+      </ul>
+
+      <h3 class="text-2xl font-bold text-slate-900 mt-10 mb-4">College Selection Framework</h3>
+      <p>Scoring well is only half the battle; filling out your counseling preference list correctly is the other half.</p>
+      <ol class="list-decimal pl-5 space-y-2 mt-4 mb-8">
+        <li><strong>Analyze Previous Cutoffs:</strong> Look at the state quota vs. All India Quota (AIQ) cutoffs for the past 3 years.</li>
+        <li><strong>Factor in Bonds:</strong> State-run colleges often have rural service bonds (ranging from 1 to 5 years) and high penalty amounts. Weigh this before choosing a college in a different state.</li>
+        <li><strong>PG Quota Advantage:</strong> Colleges affiliated with large hospitals or central institutes often offer internal quotas for PG admissions—a massive advantage for your future.</li>
+      </ol>
+
+      <div class="bg-amber-50 rounded-2xl p-6 border border-amber-100 my-8">
+        <h4 class="flex items-center gap-2 font-bold text-amber-800 text-lg mb-2">💡 Pro Tip from our Counselors</h4>
+        <p class="text-amber-700 text-sm m-0">If your expected score is on the borderline for a Government Medical College, ensure you participate actively in the Mop-Up rounds and Stray Vacancy rounds. Many students abandon counseling early out of panic, leaving unexpected seats available for patient candidates.</p>
+      </div>
+    `,
   },
   {
     id: '3',
-    title: 'Top 10 Engineering Colleges in Bangalore Under 5 Lakhs Per Year',
+    title: `Top 10 Engineering Colleges in Bangalore for the ${academicSession} Session`,
     slug: 'top-engineering-colleges-bangalore',
-    excerpt: 'Discover affordable yet quality engineering colleges in Bangalore that offer excellent education and placement opportunities.',
-    content: 'Full content here...',
+    excerpt: `Discover affordable yet quality engineering colleges in Bangalore for the upcoming ${academicSession} academic year.`,
     category: 'College Comparisons',
     author: 'Amit Verma',
-    published_at: '2024-06-05',
+    published_at: `${baseYear}-06-05`,
     read_time: '7 min read',
     tags: ['Engineering', 'Bangalore', 'Affordable', 'Colleges'],
+    content: `
+      <p>Bangalore is the Silicon Valley of India, making it the premier destination for aspiring engineers. However, with hundreds of colleges, finding the right balance of affordable fees, strong academics, and high placement rates for the ${academicSession} session can be tricky.</p>
+      
+      <h3 class="text-2xl font-bold text-slate-900 mt-10 mb-4">What to Look For</h3>
+      <p>When evaluating an engineering college, look beyond the shiny brochures. The most critical metrics are:</p>
+      <ul class="list-disc pl-5 space-y-2 mt-4 mb-8">
+        <li><strong>Average Package:</strong> Do not fall for the "Highest Package" trap. A single 40 LPA package does not represent the batch. Look for the median/average package (usually around 4.5 to 7 LPA for mid-tier colleges).</li>
+        <li><strong>Industry Tie-ups:</strong> Colleges with Centers of Excellence (CoE) backed by companies like IBM, AWS, or Cisco provide better hands-on training.</li>
+        <li><strong>Location:</strong> Colleges closer to IT hubs (like Electronic City or Whitefield) often have better internship opportunities and guest lectures from industry professionals.</li>
+      </ul>
+
+      <h3 class="text-2xl font-bold text-slate-900 mt-10 mb-4">Top Budget-Friendly Picks</h3>
+      <p>While top-tier private universities can charge upwards of ₹4 Lakhs per year, several colleges provide excellent ROI (Return on Investment) through KCET/COMEDK quotas:</p>
+      <ul class="list-disc pl-5 space-y-2 mt-4 mb-8">
+        <li><strong>Bangalore Technological Institute (BTI):</strong> Known for its strong CSE department and consistent IT placements.</li>
+        <li><strong>Brindavan Group of Institutions:</strong> Offers great multi-disciplinary exposure and a highly active placement cell.</li>
+      </ul>
+
+      <div class="bg-amber-50 rounded-2xl p-6 border border-amber-100 my-8">
+        <h4 class="flex items-center gap-2 font-bold text-amber-800 text-lg mb-2">💡 Pro Tip from our Counselors</h4>
+        <p class="text-amber-700 text-sm m-0">If you are aiming for CS/IT but don't have the rank for top colleges, consider allied branches like AI/ML, Data Science, or Information Science. The syllabus is 85% identical to core Computer Science, and you will be eligible for the exact same IT placements!</p>
+      </div>
+    `,
   },
   {
     id: '4',
     title: 'How to Choose Between MBBS and BDS: A Comprehensive Comparison',
     slug: 'mbbs-vs-bds-comparison',
     excerpt: 'Confused between MBBS and BDS? This detailed comparison covers career scope, salary, work-life balance, and future opportunities.',
-    content: 'Full content here...',
     category: 'Career Tips',
     author: 'Dr. Neha Gupta',
-    published_at: '2024-05-28',
+    published_at: `${baseYear}-05-28`,
     read_time: '12 min read',
     tags: ['MBBS', 'BDS', 'Medical', 'Career'],
+    content: `
+      <p>Every year, thousands of medical aspirants find themselves at a crossroads: "If I don't get an MBBS seat, should I take BDS or take a drop year?" Let's break down the realities of both paths to help you make an informed decision.</p>
+      
+      <h3 class="text-2xl font-bold text-slate-900 mt-10 mb-4">Academic Journey & Rigor</h3>
+      <p><strong>MBBS (5.5 Years):</strong> Covers the entire human anatomy, pharmacology, and surgery. The syllabus is vast, exhausting, and requires rigorous hospital rotations. After MBBS, specialization (MD/MS) is almost mandatory today to build a lucrative career.</p>
+      <p><strong>BDS (5 Years):</strong> Highly focused on oral anatomy, maxillofacial surgery, and dental materials. BDS is incredibly skill-based; you will spend hours carving wax teeth and doing practical lab work. Specialization (MDS) is valuable but not strictly mandatory to start a private practice.</p>
+
+      <h3 class="text-2xl font-bold text-slate-900 mt-10 mb-4">Career Scope & Financials</h3>
+      <table class="min-w-full bg-white border border-slate-200 mt-4 mb-8 rounded-lg overflow-hidden">
+        <thead class="bg-slate-50">
+          <tr>
+            <th class="py-3 px-4 border-b text-left text-sm font-bold text-slate-700">Aspect</th>
+            <th class="py-3 px-4 border-b text-left text-sm font-bold text-slate-700">MBBS</th>
+            <th class="py-3 px-4 border-b text-left text-sm font-bold text-slate-700">BDS</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="py-3 px-4 border-b text-sm text-slate-600">Starting Salary (Fresher)</td>
+            <td class="py-3 px-4 border-b text-sm text-slate-600">₹60k - ₹90k / month</td>
+            <td class="py-3 px-4 border-b text-sm text-slate-600">₹20k - ₹40k / month</td>
+          </tr>
+          <tr>
+            <td class="py-3 px-4 border-b text-sm text-slate-600">Setup Cost for Private Clinic</td>
+            <td class="py-3 px-4 border-b text-sm text-slate-600">Low (Stethoscope & basic tools)</td>
+            <td class="py-3 px-4 border-b text-sm text-slate-600">Very High (Dental chair, X-ray, tools)</td>
+          </tr>
+          <tr>
+            <td class="py-3 px-4 border-b text-sm text-slate-600">Work-Life Balance</td>
+            <td class="py-3 px-4 border-b text-sm text-slate-600">Poor (Night shifts, emergencies)</td>
+            <td class="py-3 px-4 border-b text-sm text-slate-600">Excellent (Fixed clinic hours)</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <div class="bg-amber-50 rounded-2xl p-6 border border-amber-100 my-8">
+        <h4 class="flex items-center gap-2 font-bold text-amber-800 text-lg mb-2">💡 Pro Tip from our Counselors</h4>
+        <p class="text-amber-700 text-sm m-0">Do not take BDS just as a "backup plan" if you hate dental work. Dentistry requires steady hands, artistic skill, and business acumen to run a clinic. If your true passion is general medicine, taking a drop year for MBBS is a better long-term choice.</p>
+      </div>
+    `,
   },
   {
     id: '5',
-    title: 'Scholarship Opportunities for Engineering Students in Karnataka 2024',
+    title: `Scholarship Opportunities for Engineering Students in Karnataka ${admissionYear}`,
     slug: 'scholarships-engineering-karnataka',
-    excerpt: 'Complete list of scholarships available for engineering students in Karnataka including government and private scholarships.',
-    content: 'Full content here...',
+    excerpt: `Complete list of scholarships available for engineering students in Karnataka for ${admissionYear}, including government and private scholarships.`,
     category: 'Scholarship Information',
     author: 'Rahul Mehta',
-    published_at: '2024-05-20',
+    published_at: `${baseYear}-05-20`,
     read_time: '6 min read',
     tags: ['Scholarship', 'Engineering', 'Karnataka', 'Financial Aid'],
+    content: `
+      <p>Quality engineering education is expensive, but financial constraints should never stop a deserving student. For the ${academicSession} academic year, the Government of Karnataka, along with various private trusts, has opened multiple scholarship portals.</p>
+      
+      <h3 class="text-2xl font-bold text-slate-900 mt-10 mb-4">1. Government Scholarships (SSP Portal)</h3>
+      <p>The State Scholarship Portal (SSP) is a unified platform for all Karnataka government scholarships:</p>
+      <ul class="list-disc pl-5 space-y-2 mt-4 mb-8">
+        <li><strong>Vidyasiri Scholarship (ePass):</strong> Aimed at backward class (OBC) students. It provides a monthly stipend to students who do not secure government hostel accommodation.</li>
+        <li><strong>SC/ST Post-Matric Scholarship:</strong> Covers almost the entire tuition fee for SC/ST students whose family income is below ₹2.5 Lakhs per annum.</li>
+        <li><strong>Minority Welfare Scholarship:</strong> For students belonging to Muslim, Christian, Jain, Buddhist, Sikh, and Parsi communities.</li>
+      </ul>
+
+      <h3 class="text-2xl font-bold text-slate-900 mt-10 mb-4">2. Top Private Corporate Scholarships</h3>
+      <p>Many corporations fund engineering students through their CSR initiatives. Keep an eye out for these in August/September:</p>
+      <ul class="list-disc pl-5 space-y-2 mt-4 mb-8">
+        <li><strong>Reliance Foundation Scholarships:</strong> Offers up to ₹2 Lakhs over the degree duration for meritorious first-year students.</li>
+        <li><strong>Foundation for Excellence (FFE):</strong> Provides financial aid and intensive soft-skills training specifically to students entering B.E/B.Tech.</li>
+        <li><strong>Siemens Scholarship Program:</strong> Targets first-year students of government colleges, providing tuition fees and holistic development training.</li>
+      </ul>
+
+      <div class="bg-amber-50 rounded-2xl p-6 border border-amber-100 my-8">
+        <h4 class="flex items-center gap-2 font-bold text-amber-800 text-lg mb-2">💡 Pro Tip from our Counselors</h4>
+        <p class="text-amber-700 text-sm m-0">The biggest mistake students make is lacking proper documentation. Get your Income Certificate, Caste Certificate, and Aadhaar-Bank mapping (NPCI linking) sorted in May/June before you even apply to colleges. Missing a deadline due to a pending certificate is a common tragedy.</p>
+      </div>
+    `,
   },
   {
     id: '6',
     title: 'Nursing Career in India: Scope, Salary, and Growth Opportunities',
     slug: 'nursing-career-india',
     excerpt: 'Explore the growing field of nursing in India. Learn about career paths, salary expectations, and international opportunities.',
-    content: 'Full content here...',
     category: 'Career Tips',
     author: 'Sister Mary Thomas',
-    published_at: '2024-05-15',
+    published_at: `${baseYear}-05-15`,
     read_time: '9 min read',
     tags: ['Nursing', 'Career', 'Healthcare', 'India'],
+    content: `
+      <p>The global healthcare industry is facing a massive shortage of trained professionals. Today, a degree in Nursing (B.Sc Nursing or GNM) is one of the most secure and globally respected career paths available to science students.</p>
+      
+      <h3 class="text-2xl font-bold text-slate-900 mt-10 mb-4">Understanding the Degrees</h3>
+      <ul class="list-disc pl-5 space-y-2 mt-4 mb-8">
+        <li><strong>B.Sc Nursing (4 Years):</strong> A comprehensive degree program. Highly preferred by premium corporate hospitals and foreign healthcare recruiters. Eligibility generally requires 10+2 with Physics, Chemistry, and Biology.</li>
+        <li><strong>GNM (3 Years):</strong> General Nursing and Midwifery is a diploma course. It is faster to complete and gets you into the workforce quicker, but promotions to senior administrative roles are harder compared to a B.Sc graduate.</li>
+      </ul>
+
+      <h3 class="text-2xl font-bold text-slate-900 mt-10 mb-4">The Global Opportunity</h3>
+      <p>While starting salaries for nurses in Indian private hospitals range from ₹18,000 to ₹35,000 per month, the real financial growth lies abroad.</p>
+      <p>Countries like the UK, Canada, Australia, and the Middle East heavily recruit Indian nurses. After clearing exams like the NCLEX-RN or OET/IELTS, registered Indian nurses often secure starting packages ranging from ₹2.5 Lakhs to ₹4 Lakhs <em>per month</em> internationally, with excellent work-life balance and benefits.</p>
+
+      <div class="bg-amber-50 rounded-2xl p-6 border border-amber-100 my-8">
+        <h4 class="flex items-center gap-2 font-bold text-amber-800 text-lg mb-2">💡 Pro Tip from our Counselors</h4>
+        <p class="text-amber-700 text-sm m-0">If you are planning to eventually work abroad, always opt for B.Sc Nursing over GNM. Most Western countries require a formal 4-year degree for Visa processing and nursing board registrations. Also, ensure your college is strictly approved by the Indian Nursing Council (INC).</p>
+      </div>
+    `,
   },
 ];
 

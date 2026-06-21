@@ -6,15 +6,17 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
 import { 
-  User, Phone, Mail, MapPin, BookOpen, GraduationCap, 
-  Building2, DollarSign, CheckCircle, ChevronRight, ChevronLeft,
-  Send, Loader2, Gift
+  User, Phone, BookOpen, GraduationCap, Building2, 
+  CheckCircle, ChevronRight, ChevronLeft, Send, Loader2, Gift
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
-import { Badge } from "@/components/ui/badge";
+
+// 1. Import your new Supabase client and utility
+import { createClient } from "@/lib/supabase-client";
+import { formatPhoneNumber } from "@/lib/utils";
 import { PARTNER_COLLEGES, COURSE_CATEGORIES } from "@/lib/data";
 
 const stepSchemas = [
@@ -45,11 +47,23 @@ const stepSchemas = [
   }),
 ];
 
-type FormData = z.infer<typeof stepSchemas[0]> & 
-  z.infer<typeof stepSchemas[1]> & 
-  z.infer<typeof stepSchemas[2]> & 
-  z.infer<typeof stepSchemas[3]> & 
-  z.infer<typeof stepSchemas[4]>;
+export type FormData = {
+  name: string;
+  phone: string;
+  email: string;
+  city: string;
+  tenth_percentage?: string;
+  twelfth_percentage?: string;
+  board?: string;
+  stream?: string;
+  primary_interest: string;
+  secondary_interest?: string;
+  budget_range?: string;
+  preferred_colleges?: string[];
+  location_preference?: string;
+  hostel_required?: boolean;
+  message?: string;
+};
 
 const steps = [
   { title: "Personal Details", icon: User },
@@ -65,7 +79,7 @@ export function CounselingForm() {
   const [isSubmitted, setIsSubmitted] = useState(false);
   const [selectedColleges, setSelectedColleges] = useState<string[]>([]);
 
-  const { register, handleSubmit, formState: { errors }, watch, trigger } = useForm<FormData>({
+  const { register, handleSubmit, formState: { errors }, trigger } = useForm<FormData>({
     resolver: zodResolver(stepSchemas[currentStep]),
     mode: "onChange",
   });
@@ -79,6 +93,7 @@ export function CounselingForm() {
   };
 
   const onSubmit = async (data: FormData) => {
+    // If not on the last step, validate and move to the next
     if (currentStep < 4) {
       const isValid = await trigger();
       if (isValid) {
@@ -87,24 +102,46 @@ export function CounselingForm() {
       return;
     }
 
+    // Last step: Submit to Supabase
     setIsSubmitting(true);
+    const supabase = createClient();
 
     try {
-      const formData = {
-        ...data,
-        preferred_colleges: selectedColleges,
+      // Format the data into our clean JSON structure
+      const submissionData = {
+        name: data.name,
+        phone: formatPhoneNumber(data.phone), // Applies the +91 formatting
+        email: data.email,
+        city: data.city,
+        academic_info: {
+          tenth: data.tenth_percentage,
+          twelfth: data.twelfth_percentage,
+          board: data.board,
+          stream: data.stream,
+        },
+        interests: {
+          primary: data.primary_interest,
+          secondary: data.secondary_interest,
+          budget: data.budget_range,
+        },
+        preferences: {
+          colleges: selectedColleges,
+          location: data.location_preference,
+          hostel: data.hostel_required,
+        },
+        message: data.message,
+        created_at: new Date().toISOString(),
       };
 
-      // In static export, we'll store in localStorage and show success
-      const inquiries = JSON.parse(localStorage.getItem('vidhyarthisewa_inquiries') || '[]');
-      inquiries.push({ ...formData, id: Date.now(), created_at: new Date().toISOString() });
-      localStorage.setItem('vidhyarthisewa_inquiries', JSON.stringify(inquiries));
+      // Send to Supabase 'leads' table
+      const { error } = await supabase.from("leads").insert([submissionData]);
 
-      // Simulate API call
-      await new Promise(resolve => setTimeout(resolve, 1500));
+      if (error) throw error;
+
       setIsSubmitted(true);
     } catch (error) {
-      console.error("Error submitting form:", error);
+      console.error("Submission failed:", error);
+      alert("Failed to submit. Please try again or contact us on WhatsApp.");
     } finally {
       setIsSubmitting(false);
     }

@@ -48,27 +48,56 @@ export default function ContactPage() {
 
   return (
     <div className="pt-20">
-      {/* Hero */}
-      <section className="relative py-20 lg:py-28 gradient-bg overflow-hidden">
-        <div className="absolute inset-0 noise-overlay" />
+      
+      {/* --- NEW MODERN HERO SECTION --- */}
+      <section className="relative pt-20 lg:pt-32 pb-20 lg:pb-32 bg-[#FFFAF5] overflow-hidden">
         <div className="container-custom relative z-10">
-          <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6 }}
-            className="max-w-3xl mx-auto text-center"
-          >
-            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/10 text-amber-400 text-sm font-medium mb-6">
-              <MessageCircle className="w-4 h-4" />
-              Get in Touch
-            </div>
-            <h1 className="text-4xl lg:text-5xl font-bold text-white mb-6">
-              Contact Us
-            </h1>
-            <p className="text-xl text-white/70 leading-relaxed">
-              Have questions? We are here to help. Reach out to us through any of the channels below.
-            </p>
-          </motion.div>
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+            
+            <motion.div
+              initial={{ opacity: 0, x: -50 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ duration: 0.6 }}
+            >
+              <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-amber-100 text-amber-700 font-bold mb-6">
+                <MessageCircle className="w-4 h-4" />
+                We are 24/7 available
+              </div>
+              <h1 className="text-5xl lg:text-7xl font-black text-slate-900 mb-6 leading-[1.1]">
+                Let's plan your <br/>
+                <span className="text-amber-500">next big step.</span>
+              </h1>
+              <p className="text-xl text-slate-600 leading-relaxed mb-8 max-w-lg">
+                Whether you need urgent admission assistance or just want to chat about career options, our expert counselors are ready to help.
+              </p>
+            </motion.div>
+
+            {/* Modern Abstract Contact Visual */}
+            <motion.div
+              initial={{ opacity: 0, scale: 0.8 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{ duration: 0.8, type: "spring" }}
+              className="relative hidden lg:block"
+            >
+              <div className="w-[400px] h-[400px] bg-amber-400 rounded-full blur-3xl absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 opacity-20" />
+              
+              <div className="relative grid grid-cols-2 gap-4">
+                <motion.div animate={{ y: [0, -10, 0] }} transition={{ repeat: Infinity, duration: 4 }} className="bg-white p-8 rounded-3xl shadow-xl border border-slate-100 flex flex-col items-center justify-center text-center gap-4 translate-y-8">
+                  <div className="w-16 h-16 bg-blue-100 rounded-2xl flex items-center justify-center text-blue-600"><Phone className="w-8 h-8" /></div>
+                  <div className="font-bold text-slate-900">Instant Call</div>
+                </motion.div>
+                <motion.div animate={{ y: [0, 10, 0] }} transition={{ repeat: Infinity, duration: 5 }} className="bg-white p-8 rounded-3xl shadow-xl border border-slate-100 flex flex-col items-center justify-center text-center gap-4">
+                  <div className="w-16 h-16 bg-emerald-100 rounded-2xl flex items-center justify-center text-emerald-600"><MessageCircle className="w-8 h-8" /></div>
+                  <div className="font-bold text-slate-900">WhatsApp</div>
+                </motion.div>
+                <motion.div animate={{ y: [0, 10, 0] }} transition={{ repeat: Infinity, duration: 4.5 }} className="bg-white p-8 rounded-3xl shadow-xl border border-slate-100 flex flex-col items-center justify-center text-center gap-4 col-span-2 mx-12">
+                  <div className="w-16 h-16 bg-amber-100 rounded-2xl flex items-center justify-center text-amber-600"><MapPin className="w-8 h-8" /></div>
+                  <div className="font-bold text-slate-900">Bangalore HQ</div>
+                </motion.div>
+              </div>
+            </motion.div>
+
+          </div>
         </div>
       </section>
 
