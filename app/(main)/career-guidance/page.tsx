@@ -712,32 +712,7 @@ export default function CareerGuidancePage() {
       </section>
 
       {/* 7. FINAL CTA */}
-      <section className="py-20 bg-gradient-to-br from-slate-900 via-slate-800 to-blue-900">
-        <div className="container-custom text-center">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-          >
-            <h2 className="text-3xl font-bold text-white mb-4">
-              Stop Guessing. Start Planning.
-            </h2>
-            <p className="text-white/70 max-w-xl mx-auto mb-8">
-              You have seen the data and explored the paths. Now let our experts build a custom roadmap for you.
-            </p>
-            <Button
-              size="lg"
-              className="bg-[#FF6138] hover:bg-[#E5502B] text-white rounded-full px-8 h-14 text-lg pulse-glow"
-              onClick={() => {
-                const el = document.getElementById("counseling-form");
-                el?.scrollIntoView({ behavior: "smooth" });
-              }}
-            >
-              Book Free Counseling Session
-            </Button>
-          </motion.div>
-        </div>
-      </section>
+      
     </div>
   );
 }

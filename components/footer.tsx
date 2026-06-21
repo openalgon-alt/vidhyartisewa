@@ -143,7 +143,6 @@ export function Footer() {
               <li className="flex items-start gap-3">
                 <MapPin className="w-5 h-5 text-amber-500 shrink-0 mt-0.5" />
                 <span className="text-slate-400 text-sm">
-                                      <p className="text-sm text-slate-400">1st Floor, A S Mansion, BB Rd, Yelahanka, Bengaluru, Karnataka 560064</p> 
                   1st Floor, A S Mansion,BB Rd, Yelahanka, Bengaluru, Karnataka 560064
                 </span>
               </li>

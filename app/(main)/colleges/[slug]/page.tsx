@@ -1,148 +1,133 @@
 import { notFound } from "next/navigation";
 import Link from "next/link";
-import { ArrowLeft, Clock, Calendar, User, Facebook, Twitter, Linkedin } from "lucide-react";
-import { Badge } from "@/components/ui/badge";
+import { MapPin, Star, Building2, ArrowRight, Globe } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { BLOG_POSTS } from "@/lib/data";
+import { Badge } from "@/components/ui/badge";
+import { PARTNER_COLLEGES } from "@/lib/data";
 
-// Import the safe client-side image component that handles fallback states
-import { BlogFeaturedImage } from "@/components/ui/blog-image";
-
-// Generates all static paths at build time for static site generation (SSG)
 export function generateStaticParams() {
-  return BLOG_POSTS.map((post) => ({
-    slug: post.slug,
+  return PARTNER_COLLEGES.map((college) => ({
+    slug: college.slug,
   }));
 }
 
-export default function BlogPostPage({ params }: { params: { slug: string } }) {
-  // Find the current article matching the URL slug dynamically from the data sheet
-  const post = BLOG_POSTS.find((p) => p.slug === params.slug);
+export default function CollegeDetailPage({ params }: { params: { slug: string } }) {
+  const college = PARTNER_COLLEGES.find((c) => c.slug === params.slug);
 
-  // Trigger Next.js 404 page if a user hits an invalid slug route
-  if (!post) {
+  if (!college) {
     notFound();
   }
 
   return (
-    <div className="pt-20 pb-20 bg-slate-50 min-h-screen">
-      
-      {/* 1. Article Hero Header Section */}
-      <section className="relative pt-16 pb-32 bg-slate-900 overflow-hidden">
-        {/* Soft background ambient glow accents */}
-        <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-[#FF6138]/20 rounded-full blur-[100px] -translate-y-1/2 translate-x-1/3" />
-        <div className="absolute bottom-0 left-0 w-[500px] h-[500px] bg-amber-500/20 rounded-full blur-[100px] translate-y-1/2 -translate-x-1/3" />
+    <div className="pt-24 pb-20 container-custom min-h-screen">
+      {/* Back Button */}
+      <Link href="/colleges" className="inline-flex items-center text-sm text-slate-500 hover:text-amber-600 mb-8 transition-colors">
+        ← Back to all colleges
+      </Link>
+
+      {/* Main Header Section */}
+      <div className="bg-white rounded-3xl p-8 md:p-12 border border-slate-100 shadow-sm mb-8 flex flex-col md:flex-row gap-8 items-start">
         
-        <div className="container-custom relative z-10">
-          <div className="max-w-4xl mx-auto text-center">
-            
-            <Link 
-              href="/blog" 
-              className="inline-flex items-center gap-2 text-slate-300 hover:text-white transition-colors mb-8 text-sm font-medium"
-            >
-              <ArrowLeft className="w-4 h-4" /> Back to all articles
-            </Link>
+        {/* Logo (Cleaned up for Server Component compatibility) */}
+        <div className="w-32 h-32 shrink-0 rounded-2xl bg-white border border-slate-100 shadow-md flex items-center justify-center p-2 overflow-hidden">
+          <img 
+            src={`/images/colleges/${college.slug}.jpg`} 
+            alt={college.name}
+            className="w-full h-full object-contain"
+          />
+        </div>
 
-            <div className="mb-6">
-              <Badge className="bg-[#FF6138] text-white border-none px-3 py-1 text-sm shadow-lg shadow-[#FF6138]/30">
-                {post.category}
-              </Badge>
+        {/* Info */}
+        <div className="flex-1">
+          <div className="flex items-center gap-3 mb-3">
+            <Badge variant="secondary" className="bg-amber-50 text-amber-700 hover:bg-amber-100">
+              {college.type}
+            </Badge>
+            <div className="flex items-center gap-1 text-sm font-bold text-amber-600">
+              <Star className="w-4 h-4 fill-amber-500" />
+              {college.rating} Rating
             </div>
+          </div>
+          
+          <h1 className="text-3xl md:text-4xl font-bold text-slate-900 mb-4">
+            {college.name}
+          </h1>
+          
+          <div className="flex flex-wrap items-center gap-4 text-slate-500 mb-6">
+            <div className="flex items-center gap-1">
+              <MapPin className="w-4 h-4" />
+              {college.location}
+            </div>
+            <div className="flex items-center gap-1">
+              <Building2 className="w-4 h-4" />
+              Established {college.established}
+            </div>
+            
+            {/* Official Website Link */}
+            {college.website && (
+              <a 
+                href={college.website} 
+                target="_blank" 
+                rel="noopener noreferrer"
+                className="flex items-center gap-1 text-amber-600 hover:text-amber-700 font-medium transition-colors"
+              >
+                <Globe className="w-4 h-4" />
+                Official Website
+              </a>
+            )}
+          </div>
 
-            <h1 className="text-4xl lg:text-5xl xl:text-6xl font-black text-white mb-8 tracking-tight leading-[1.2]">
-              {post.title}
-            </h1>
+          <p className="text-slate-600 text-lg leading-relaxed max-w-3xl">
+            {college.description}
+          </p>
+        </div>
+      </div>
 
-            <div className="flex flex-wrap items-center justify-center gap-6 text-sm font-medium text-slate-300">
-              <span className="flex items-center gap-2">
-                <div className="w-8 h-8 rounded-full bg-slate-800 flex items-center justify-center">
-                  <User className="w-4 h-4 text-slate-400" />
+      {/* Grid Layout for details */}
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+        
+        {/* Left Column: Courses */}
+        <div className="md:col-span-2 space-y-8">
+          <div className="bg-white rounded-3xl p-8 border border-slate-100 shadow-sm">
+            <h2 className="text-2xl font-bold text-slate-900 mb-6">Programs Offered</h2>
+            <div className="grid sm:grid-cols-2 gap-4">
+              {college.courses.map((course) => (
+                <div key={course} className="p-4 rounded-xl bg-slate-50 border border-slate-100 font-medium text-slate-700">
+                  {course}
                 </div>
-                {post.author}
-              </span>
-              <span className="flex items-center gap-2">
-                <Calendar className="w-4 h-4" />
-                {post.published_at}
-              </span>
-              <span className="flex items-center gap-2 text-amber-400">
-                <Clock className="w-4 h-4" />
-                {post.read_time}
-              </span>
+              ))}
             </div>
           </div>
         </div>
-      </section>
 
-      {/* 2. Article Content Body Container */}
-      <section className="relative -mt-20 z-20">
-        <div className="container-custom">
-          <div className="max-w-4xl mx-auto bg-white rounded-3xl shadow-2xl shadow-slate-200/50 border border-slate-100 overflow-hidden p-6 sm:p-8 lg:p-14">
-            
-            {/* Featured Photo Section with Client Fallback Processing */}
-            <BlogFeaturedImage src={`/images/blog/${post.slug}.jpg`} alt={post.title} />
-
-            {/* Lead Excerpt Summary */}
-            <p className="text-xl lg:text-2xl text-slate-600 font-medium leading-relaxed mb-10 pb-10 border-b border-slate-100 italic">
-              "{post.excerpt}"
-            </p>
-
-            {/* Main Content (Safely parses structural headings, markdown styles, tables, and list templates) */}
-            <div 
-              className="prose prose-lg prose-slate max-w-none text-slate-700 leading-loose"
-              dangerouslySetInnerHTML={{ __html: post.content }}
-            />
-
-            {/* Post Tags & Social Sharing Control Bar */}
-            <div className="mt-16 pt-8 border-t border-slate-100 flex flex-col sm:flex-row items-center justify-between gap-6">
-              <div className="flex flex-wrap gap-2">
-                {post.tags.map((tag) => (
-                  <Badge key={tag} variant="secondary" className="bg-slate-100 text-slate-600">
-                    #{tag}
-                  </Badge>
-                ))}
+        {/* Right Column: Sidebar Stats & CTA */}
+        <div className="space-y-6">
+          <div className="bg-white rounded-3xl p-6 border border-slate-100 shadow-sm">
+            <h3 className="font-bold text-slate-900 mb-4">Placement Statistics</h3>
+            <div className="space-y-4">
+              <div className="p-4 rounded-xl bg-slate-50 border border-slate-100">
+                <div className="text-sm text-slate-500 mb-1">Placement Rate</div>
+                <div className="text-2xl font-bold text-emerald-600">{college.placement_stats.placement_rate}</div>
               </div>
-              
-              <div className="flex items-center gap-3">
-                <span className="text-sm font-bold text-slate-400 uppercase tracking-wider">Share:</span>
-                <Button size="icon" variant="outline" className="rounded-full w-10 h-10 text-blue-600 hover:bg-blue-50 hover:text-blue-700 border-slate-200">
-                  <Facebook className="w-4 h-4" />
-                </Button>
-                <Button size="icon" variant="outline" className="rounded-full w-10 h-10 text-sky-500 hover:bg-sky-50 hover:text-sky-600 border-slate-200">
-                  <Twitter className="w-4 h-4" />
-                </Button>
-                <Button size="icon" variant="outline" className="rounded-full w-10 h-10 text-blue-700 hover:bg-blue-50 hover:text-blue-800 border-slate-200">
-                  <Linkedin className="w-4 h-4" />
-                </Button>
+              <div className="p-4 rounded-xl bg-slate-50 border border-slate-100">
+                <div className="text-sm text-slate-500 mb-1">Average Package</div>
+                <div className="text-2xl font-bold text-slate-900">{college.placement_stats.average_package}</div>
               </div>
             </div>
+          </div>
 
+          <div className="bg-gradient-to-br from-slate-900 to-slate-800 rounded-3xl p-6 text-white text-center shadow-lg">
+            <h3 className="font-bold text-xl mb-2">Want to apply here?</h3>
+            <p className="text-white/70 text-sm mb-6">Get expert guidance on admission process and eligibility.</p>
+            <Link href="/#counseling-form" className="block w-full">
+              <Button className="w-full bg-amber-500 hover:bg-amber-600 text-slate-900 border-none">
+                Apply Now <ArrowRight className="w-4 h-4 ml-2" />
+              </Button>
+            </Link>
           </div>
         </div>
-      </section>
 
-      {/* 3. Global Action Banner (No External Noise Asset Required) */}
-      <section className="mt-20">
-        <div className="container-custom">
-          <div className="bg-gradient-to-r from-amber-500 to-[#FF6138] rounded-3xl p-8 lg:p-10 text-center relative overflow-hidden shadow-xl">
-            
-            {/* High performance CSS radial light overlay replacing noise.png */}
-            <div className="absolute inset-0 bg-radial-gradient from-white/20 to-transparent opacity-60 mix-blend-overlay pointer-events-none" />
-            
-            <div className="relative z-10 max-w-2xl mx-auto">
-              <h3 className="text-2xl lg:text-3xl font-black text-white mb-4">Need personalized guidance?</h3>
-              <p className="text-white/90 mb-8 text-lg">
-                Stop reading and start acting. Let our experts create a custom admission roadmap just for you.
-              </p>
-              <Link href="/#counseling-form">
-                <Button size="lg" className="bg-white text-[#FF6138] hover:bg-slate-50 font-bold px-8 rounded-full h-14 shadow-lg hover:scale-105 transition-transform">
-                  Book Your Free Strategy Call
-                </Button>
-              </Link>
-            </div>
-          </div>
-        </div>
-      </section>
-
+      </div>
     </div>
   );
 }

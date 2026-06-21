@@ -59,6 +59,9 @@ export interface College {
   };
   description: string;
   website?: string;
+  // ADD THESE TWO LINES:
+  content?: string;
+  tags?: string[];
 }
 
 export interface Course {
