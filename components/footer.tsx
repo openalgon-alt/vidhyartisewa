@@ -48,7 +48,7 @@ export function Footer() {
           {/* Brand Column */}
           <div className="lg:col-span-1">
             <Link href="/" className="flex items-center gap-2 mb-6 group">
-              <div className="w-10 h-10 flex items-center justify-center overflow-hidden transition-all duration-300">
+              <div className="w-16 h-16 flex items-center justify-center overflow-hidden transition-all duration-300">
                 <img 
                   src="/images/logo/logo-white.png"
                   alt="Vidhyarthi Sewa"

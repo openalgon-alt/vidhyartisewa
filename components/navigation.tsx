@@ -52,7 +52,7 @@ export function Navigation() {
           <nav className="flex items-center justify-between h-16 lg:h-20">
             {/* Logo */}
             <Link href="/" className="flex items-center gap-2 group">
-              <div className="w-12 h-12 lg:w-16 lg:h-16 flex items-center justify-center transition-all duration-300">
+              <div className="w-16 h-16 lg:w-20 lg:h-20 flex items-center justify-center transition-all duration-300">
                 <img 
                   src="/images/logo/logo.png"
                   className={cn(
