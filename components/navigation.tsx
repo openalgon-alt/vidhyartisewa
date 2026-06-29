@@ -31,8 +31,8 @@ export function Navigation() {
     setIsMobileMenuOpen(false);
   }, [pathname]);
 
-  // Determine if nav should be solid (always solid on non-home pages, or when scrolled on home)
-  const isSolid = !isHomePage || isScrolled;
+  // Determine if nav should be solid (always solid white background)
+  const isSolid = true;
 
   return (
     <>
