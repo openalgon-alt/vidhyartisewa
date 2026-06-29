@@ -6,6 +6,8 @@ import { Building2, BookOpen, GraduationCap, Users, TrendingUp } from "lucide-re
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { createClient } from "@/lib/supabase-client";
+import { Contact } from "lucide-react";
+import { BrainCircuit } from "lucide-react";
 
 export default function AdminDashboardHome() {
   const [counts, setCounts] = useState({

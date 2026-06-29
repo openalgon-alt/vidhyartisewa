@@ -1,8 +1,9 @@
 "use client";
 
+import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
-import { HelpCircle } from "lucide-react";
-import { FAQS } from "@/lib/data";
+import { HelpCircle, Loader2 } from "lucide-react";
+import { createClient } from "@/lib/supabase-client";
 import {
   Accordion,
   AccordionContent,
@@ -11,6 +12,28 @@ import {
 } from "@/components/ui/accordion";
 
 export function FAQSection() {
+  const [faqs, setFaqs] = useState<any[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    async function fetchFaqs() {
+      const supabase = createClient();
+      const { data, error } = await supabase
+        .from("faqs")
+        .select("*")
+        .order("id", { ascending: true }); // Keeps them in the order you added them
+
+      if (error) {
+        console.error("Error fetching FAQs:", error);
+      } else {
+        setFaqs(data || []);
+      }
+      setIsLoading(false);
+    }
+
+    fetchFaqs();
+  }, []);
+
   return (
     <section className="py-20 lg:py-28 bg-slate-50">
       <div className="container-custom">
@@ -33,29 +56,40 @@ export function FAQSection() {
         </motion.div>
 
         <div className="max-w-3xl mx-auto">
-          <Accordion type="single" collapsible className="space-y-4">
-            {FAQS.map((faq, index) => (
-              <motion.div
-                key={faq.id}
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.3, delay: index * 0.05 }}
-              >
-                <AccordionItem
-                  value={faq.id}
-                  className="bg-white rounded-xl border border-slate-100 px-6 data-[state=open]:shadow-md transition-shadow"
+          {isLoading ? (
+            <div className="flex flex-col items-center justify-center py-12">
+              <Loader2 className="w-10 h-10 text-amber-500 animate-spin mb-4" />
+              <p className="text-slate-500">Loading questions...</p>
+            </div>
+          ) : faqs.length > 0 ? (
+            <Accordion type="single" collapsible className="space-y-4">
+              {faqs.map((faq, index) => (
+                <motion.div
+                  key={faq.id}
+                  initial={{ opacity: 0, y: 20 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ duration: 0.3, delay: index * 0.05 }}
                 >
-                  <AccordionTrigger className="text-left font-semibold text-slate-900 hover:text-amber-600 py-5">
-                    {faq.question}
-                  </AccordionTrigger>
-                  <AccordionContent className="text-slate-600 leading-relaxed pb-5">
-                    {faq.answer}
-                  </AccordionContent>
-                </AccordionItem>
-              </motion.div>
-            ))}
-          </Accordion>
+                  <AccordionItem
+                    value={faq.id.toString()} // Shadcn requires this to be a string!
+                    className="bg-white rounded-xl border border-slate-100 px-6 data-[state=open]:shadow-md transition-shadow"
+                  >
+                    <AccordionTrigger className="text-left font-semibold text-slate-900 hover:text-amber-600 py-5">
+                      {faq.question}
+                    </AccordionTrigger>
+                    <AccordionContent className="text-slate-600 leading-relaxed pb-5 whitespace-pre-line">
+                      {faq.answer}
+                    </AccordionContent>
+                  </AccordionItem>
+                </motion.div>
+              ))}
+            </Accordion>
+          ) : (
+            <div className="text-center text-slate-500 py-8 bg-white rounded-xl border border-slate-100">
+              No FAQs available at the moment. Please check back later.
+            </div>
+          )}
         </div>
       </div>
     </section>

@@ -1,11 +1,41 @@
 "use client";
 
+import { useEffect, useState } from "react";
 import Link from "next/link";
 import { GraduationCap, MapPin, Phone, Mail, Clock, Facebook, Twitter, Instagram, Linkedin, Youtube } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import { createClient } from "@/lib/supabase-client";
 
 export function Footer() {
+  const [settings, setSettings] = useState<any>(null);
+  const [courses, setCourses] = useState<any[]>([]);
+
+  useEffect(() => {
+    async function fetchData() {
+      const supabase = createClient();
+      
+      // 1. Fetch Contact & Social Settings (Using 'site_setting' singular)
+      const { data: settingsData } = await supabase.from("site_setting").select("*").eq("id", 1).single();
+      if (settingsData) setSettings(settingsData);
+
+      // 2. Fetch Live Courses for the Footer Links (Limits to top 8)
+      const { data: coursesData } = await supabase.from("courses").select("*").limit(8);
+      if (coursesData) setCourses(coursesData);
+    }
+    
+    fetchData();
+  }, []);
+
+  // Filter out social links that don't have URLs in the database
+  const socialLinks = [
+    { Icon: Facebook, url: settings?.facebook_url },
+    { Icon: Twitter, url: settings?.twitter_url },
+    { Icon: Instagram, url: settings?.instagram_url },
+    { Icon: Linkedin, url: settings?.linkedin_url },
+    { Icon: Youtube, url: settings?.youtube_url },
+  ].filter(link => link.url); 
+
   return (
     <footer className="bg-slate-900 text-white print:hidden">
       {/* CTA Section */}
@@ -18,25 +48,14 @@ export function Footer() {
             </div>
             <div className="relative z-10 flex flex-col lg:flex-row items-center justify-between gap-6">
               <div>
-                <h3 className="text-2xl lg:text-3xl font-bold mb-2">
-                  Ready to Shape Your Future?
-                </h3>
-                <p className="text-amber-100 text-lg">
-                  Book your free counseling session today and take the first step toward your dream career.
-                </p>
+                <h3 className="text-2xl lg:text-3xl font-bold mb-2">Ready to Shape Your Future?</h3>
+                <p className="text-amber-100 text-lg">Book your free counseling session today.</p>
               </div>
-              
-              {/* FIXED BUTTON HERE */}
               <Link href="/#counseling-form">
-                <Button
-                  size="lg"
-                  variant="secondary"
-                  className="bg-white text-amber-600 hover:bg-slate-100 whitespace-nowrap"
-                >
+                <Button size="lg" variant="secondary" className="bg-white text-amber-600 hover:bg-slate-100 whitespace-nowrap">
                   Book Free Counseling
                 </Button>
               </Link>
-              
             </div>
           </div>
         </div>
@@ -45,39 +64,26 @@ export function Footer() {
       {/* Main Footer */}
       <div className="container-custom py-16">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-10">
+          
           {/* Brand Column */}
           <div className="lg:col-span-1">
             <Link href="/" className="flex items-center gap-2 mb-6">
               <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-amber-500 to-amber-600 flex items-center justify-center overflow-hidden">
-                <img 
-                  src="/images/logo/logo-white.png"
-                  alt="Vidhyarthi Sewa"
-                  className="w-full h-full object-cover"
-                  onError={(e) => {
-                    const target = e.target as HTMLImageElement;
-                    target.style.display = 'none';
-                    target.parentElement?.querySelector('.fallback-icon')?.classList.remove('hidden');
-                  }}
-                />
-                <GraduationCap className="w-6 h-6 text-white fallback-icon hidden" />
+                <img src="/images/logo/logo-white.png" alt="Vidhyarthi Sewa" className="w-full h-full object-cover" />
               </div>
               <div className="flex flex-col">
                 <span className="text-xl font-bold text-white">Vidhyarthi Sewa</span>
-                <span className="text-[10px] font-medium tracking-widest uppercase text-slate-400 -mt-1">
-                  Career & Admissions
-                </span>
+                <span className="text-[10px] font-medium tracking-widest uppercase text-slate-400 -mt-1">Career & Admissions</span>
               </div>
             </Link>
             <p className="text-slate-400 text-sm leading-relaxed mb-6">
               Vidhyarthi Sewa is Karnataka's most trusted educational consultancy, helping students discover careers, choose the right colleges, and secure admissions since 2009.
             </p>
+            
+            {/* Dynamic Social Links */}
             <div className="flex gap-3">
-              {[Facebook, Twitter, Instagram, Linkedin, Youtube].map((Icon, i) => (
-                <a
-                  key={i}
-                  href="#"
-                  className="w-9 h-9 rounded-lg bg-slate-800 flex items-center justify-center text-slate-400 hover:bg-amber-500 hover:text-white transition-all duration-200"
-                >
+              {socialLinks.map(({ Icon, url }, i) => (
+                <a key={i} href={url} target="_blank" rel="noopener noreferrer" className="w-9 h-9 rounded-lg bg-slate-800 flex items-center justify-center text-slate-400 hover:bg-amber-500 hover:text-white transition-all">
                   <Icon className="w-4 h-4" />
                 </a>
               ))}
@@ -89,124 +95,66 @@ export function Footer() {
             <h4 className="text-white font-semibold mb-6">Quick Links</h4>
             <ul className="space-y-3">
               {[
-                { href: "/", label: "Home" },
-                { href: "/about/", label: "About Us" },
-                { href: "/career-guidance/", label: "Career Guidance" },
-                { href: "/colleges/", label: "Partner Colleges" },
-                { href: "/courses/", label: "Courses" },
-                { href: "/success-stories/", label: "Success Stories" },
-                { href: "/blog/", label: "Blog & Resources" },
-                { href: "/contact/", label: "Contact Us" },
+                { href: "/", label: "Home" }, { href: "/about/", label: "About Us" },
+                { href: "/career-guidance/", label: "Career Guidance" }, { href: "/colleges/", label: "Partner Colleges" },
+                { href: "/courses/", label: "Courses" }, { href: "/success-stories/", label: "Success Stories" },
+                { href: "/blog/", label: "Blog & Resources" }, { href: "/contact/", label: "Contact Us" },
               ].map((link) => (
                 <li key={link.href}>
-                  <Link
-                    href={link.href}
-                    className="text-slate-400 hover:text-amber-400 transition-colors text-sm"
-                  >
-                    {link.label}
-                  </Link>
+                  <Link href={link.href} className="text-slate-400 hover:text-amber-400 transition-colors text-sm">{link.label}</Link>
                 </li>
               ))}
             </ul>
           </div>
 
-          {/* Courses */}
+          {/* DYNAMIC Courses (Fetched from Database) */}
           <div>
             <h4 className="text-white font-semibold mb-6">Popular Courses</h4>
             <ul className="space-y-3">
-              {[
-                "Engineering (B.Tech)",
-                "Medical (MBBS)",
-                "Nursing (B.Sc)",
-                "Management (BBA/MBA)",
-                "Commerce (B.Com)",
-                "Computer Applications (BCA/MCA)",
-                "Pharmacy (B.Pharm)",
-                "Allied Health Sciences",
-              ].map((course) => (
-                <li key={course}>
-                  <Link
-                    href="/courses/"
-                    className="text-slate-400 hover:text-amber-400 transition-colors text-sm"
-                  >
-                    {course}
-                  </Link>
-                </li>
-              ))}
+              {courses.length > 0 ? (
+                courses.map((course) => (
+                  <li key={course.id}>
+                    {/* Using course.slug or course.id to link dynamically */}
+                    <Link href={`/courses/${course.slug || course.id}`} className="text-slate-400 hover:text-amber-400 transition-colors text-sm">
+                      {course.name || course.title} 
+                    </Link>
+                  </li>
+                ))
+              ) : (
+                <span className="text-slate-500 text-sm italic">Loading courses...</span>
+              )}
             </ul>
           </div>
 
-          {/* Contact Info */}
+          {/* Contact Info (Fetched from Database) */}
           <div>
             <h4 className="text-white font-semibold mb-6">Contact Us</h4>
             <ul className="space-y-4">
-              <li className="flex items-start gap-3">
-                <MapPin className="w-5 h-5 text-amber-500 shrink-0 mt-0.5" />
-                <span className="text-slate-400 text-sm">
-                  1st Floor, A S Mansion,BB Rd, Yelahanka, Bengaluru, Karnataka 560064
-                </span>
-              </li>
-              <li className="flex items-center gap-3">
-                <Phone className="w-5 h-5 text-amber-500 shrink-0" />
-                <a href="tel:+919341993429" className="text-slate-400 hover:text-amber-400 transition-colors text-sm">
-                  +91 93419 93429
-                </a>
-              </li>
-              <li className="flex items-center gap-3">
-                <Phone className="w-5 h-5 text-amber-500 shrink-0" />
-                <a href="tel:+919620012369" className="text-slate-400 hover:text-amber-400 transition-colors text-sm">
-                  +91 96200 12369
-                </a>
-              </li>
-              <li className="flex items-center gap-3">
-                <Mail className="w-5 h-5 text-amber-500 shrink-0" />
-                <a href="mailto:info@vidhyarthisewa.org" className="text-slate-400 hover:text-amber-400 transition-colors text-sm">
-                  info@vidhyarthisewa.org
-                </a>
-              </li>
-              <li className="flex items-center gap-3">
-                <Clock className="w-5 h-5 text-amber-500 shrink-0" />
-                <span className="text-slate-400 text-sm">
-                  Mon - Sat: 9:00 AM - 7:00 PM
-                </span>
-              </li>
+              {settings?.address && (
+                <li className="flex items-start gap-3">
+                  <MapPin className="w-5 h-5 text-amber-500 shrink-0 mt-0.5" />
+                  <span className="text-slate-400 text-sm">{settings.address}</span>
+                </li>
+              )}
+              {settings?.phone && (
+                <li className="flex items-center gap-3">
+                  <Phone className="w-5 h-5 text-amber-500 shrink-0" />
+                  <a href={`tel:${settings.phone}`} className="text-slate-400 hover:text-amber-400 transition-colors text-sm">{settings.phone}</a>
+                </li>
+              )}
+              {settings?.contact_email && (
+                <li className="flex items-center gap-3">
+                  <Mail className="w-5 h-5 text-amber-500 shrink-0" />
+                  <a href={`mailto:${settings.contact_email}`} className="text-slate-400 hover:text-amber-400 transition-colors text-sm">{settings.contact_email}</a>
+                </li>
+              )}
+              {settings?.timing && (
+                <li className="flex items-center gap-3">
+                  <Clock className="w-5 h-5 text-amber-500 shrink-0" />
+                  <span className="text-slate-400 text-sm">{settings.timing}</span>
+                </li>
+              )}
             </ul>
-
-            {/* Newsletter */}
-            <div className="mt-6">
-              <h5 className="text-white font-medium text-sm mb-3">Subscribe to Updates</h5>
-              <div className="flex gap-2">
-                <Input
-                  placeholder="Your email"
-                  className="bg-slate-800 border-slate-700 text-white placeholder:text-slate-500"
-                />
-                <Button size="sm" className="shrink-0">
-                  Subscribe
-                </Button>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      {/* Bottom Bar */}
-      <div className="border-t border-slate-800">
-        <div className="container-custom py-6">
-          <div className="flex flex-col md:flex-row items-center justify-between gap-4">
-            <p className="text-slate-500 text-sm text-center md:text-left">
-              © {new Date().getFullYear()} Vidhyarthi Sewa Career & Admission Consultancy. All rights reserved.
-            </p>
-            <div className="flex gap-6">
-              <Link href="#" className="text-slate-500 hover:text-slate-300 text-sm transition-colors">
-                Privacy Policy
-              </Link>
-              <Link href="#" className="text-slate-500 hover:text-slate-300 text-sm transition-colors">
-                Terms of Service
-              </Link>
-              <Link href="#" className="text-slate-500 hover:text-slate-300 text-sm transition-colors">
-                Sitemap
-              </Link>
-            </div>
           </div>
         </div>
       </div>

@@ -23,7 +23,8 @@ export default function AdminSuccessStoriesPage() {
     text: "", // The actual story content
     placement_company: "", // Handled separately in UI, combined for DB
     placement_package: "", // Handled separately in UI, combined for DB
-    image_url: ""
+    image_url: "",
+    linkedin_url: ""
   });
   
   const supabase = createClient();
@@ -57,7 +58,7 @@ export default function AdminSuccessStoriesPage() {
     rating: data.rating,
     text: data.text,
     image_url: data.image_url,
-    // Turn the two separate inputs back into the JSON string your DB expects
+    linkedin_url: data.linkedin_url,
     placement: JSON.stringify({ company: data.placement_company, package: data.placement_package })
   });
   
@@ -95,16 +96,17 @@ export default function AdminSuccessStoriesPage() {
     }
 
     setFormData({
-      name: s.name || "",
-      college: s.college || "",
-      course: s.course || "",
-      year: s.year || "",
-      rating: s.rating || "5",
-      text: s.text || "",
-      image_url: s.image_url || "",
-      placement_company: company,
-      placement_package: pkg
-    });
+  name: s.name || "",
+  college: s.college || "",
+  course: s.course || "",
+  year: s.year || "",
+  rating: s.rating || "5",
+  text: s.text || "",
+  image_url: s.image_url || "",
+  placement_company: company,
+  placement_package: pkg,
+  linkedin_url: s.linkedin_url || "" // Add this
+});
     
     setEditingId(s.id);
     setIsFormOpen(true);
@@ -114,7 +116,7 @@ export default function AdminSuccessStoriesPage() {
   const handleAddNew = () => {
     setIsFormOpen(true);
     setEditingId(null);
-    setFormData({ name: "", college: "", course: "", year: "", rating: "5", text: "", placement_company: "", placement_package: "", image_url: "" });
+    setFormData({ name: "", college: "", course: "", year: "", rating: "5", text: "", placement_company: "", placement_package: "", image_url:"",linkedin_url:"" });
   };
 
   return (

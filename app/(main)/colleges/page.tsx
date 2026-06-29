@@ -8,9 +8,8 @@ import {
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { COLLEGE_CATEGORIES } from "@/lib/data"; // Only keeping categories from dummy data
 import { CollegesHero } from "@/components/sections/colleges-hero";
-import { createClient } from "@/lib/supabase-client"; // IMPORTANT: Added Supabase client
+import { createClient } from "@/lib/supabase-client"; 
 
 const SUPABASE_IMAGE_URL = "https://tauhscbkagspofmfbqlx.supabase.co/storage/v1/object/public/website-images";
 
@@ -18,11 +17,9 @@ export default function CollegesPage() {
   const [activeCategory, setActiveCategory] = useState("All");
   const [searchQuery, setSearchQuery] = useState("");
   
-  // NEW: State to hold live database colleges
   const [colleges, setColleges] = useState<any[]>([]);
   const [isLoading, setIsLoading] = useState(true);
 
-  // NEW: Fetch live data from Supabase when page loads
   useEffect(() => {
     async function fetchLiveColleges() {
       const supabase = createClient();
@@ -30,8 +27,15 @@ export default function CollegesPage() {
       
       if (error) {
         console.error("Error fetching colleges:", error);
-      } else {
-        setColleges(data || []);
+      } else if (data) {
+        // CRITICAL FIX: Parse the JSON fields safely before putting them in state!
+        const parsedData = data.map((college: any) => ({
+          ...college,
+          courses: typeof college.courses === 'string' ? JSON.parse(college.courses) : (college.courses || []),
+          placement_stats: typeof college.placement_stats === 'string' ? JSON.parse(college.placement_stats) : (college.placement_stats || {})
+        }));
+        
+        setColleges(parsedData);
       }
       setIsLoading(false);
     }
@@ -39,7 +43,10 @@ export default function CollegesPage() {
     fetchLiveColleges();
   }, []);
 
-  // UPDATED: Filter the live 'colleges' state instead of the static 'PARTNER_COLLEGES'
+  // NEW: Dynamically generate categories based on the 'type' field in your database
+  const dynamicCategories = ["All", ...Array.from(new Set(colleges.map(c => c.type).filter(Boolean)))];
+
+  // Filter the live 'colleges' state
   const filteredColleges = colleges.filter(college => {
     const matchesCategory = activeCategory === "All" || 
       (college.type && college.type.toLowerCase().includes(activeCategory.toLowerCase())) ||
@@ -65,7 +72,8 @@ export default function CollegesPage() {
           <div className="container-custom">
             <div className="flex justify-center overflow-x-auto w-full pb-2 lg:pb-0 hide-scrollbar">
               <div className="flex gap-2">
-                {COLLEGE_CATEGORIES.map(cat => (
+                {/* Use dynamically generated categories instead of static ones */}
+                {dynamicCategories.map((cat: any) => (
                   <button
                     key={cat}
                     onClick={() => {

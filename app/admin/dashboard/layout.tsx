@@ -14,12 +14,15 @@ import {
   X,
   Settings,
   Briefcase,
-  Users
+  Users,
+  Contact,
+  BrainCircuit,
+  HelpCircle
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
-// UNCOMMENT THIS WHEN READY FOR REAL LOGOUT:
-// import { supabase } from "@/lib/supabase/client";
+// 1. IMPORT YOUR SUPABASE CLIENT
+import { createClient } from "@/lib/supabase-client";
 
 const SIDEBAR_LINKS = [
   { name: "Overview", href: "/admin/dashboard", icon: LayoutDashboard },
@@ -29,6 +32,9 @@ const SIDEBAR_LINKS = [
   { name: "Success-stories", href: "/admin/dashboard/success-stories", icon: MessageSquare },
   { name: "Recruiting Companies", href: "/admin/dashboard/recruiters", icon: Briefcase },
   { name: "Team & CEO", href: "/admin/dashboard/team", icon: Users },
+  { name: "Inquiries & Leads", href: "/admin/dashboard/leads", icon: Contact },
+  { name: "Assessment Questions", href: "/admin/dashboard/questions", icon: BrainCircuit },
+  { name: "FAQs", href: "/admin/dashboard/faqs", icon: HelpCircle },
   { name: "Site Settings", href: "/admin/dashboard/settings", icon: Settings },
 ];
 
@@ -38,11 +44,13 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
   const router = useRouter();
 
   const handleLogout = async () => {
-    // REAL SUPABASE LOGOUT (Uncomment when ready)
-    // await supabase.auth.signOut();
+    // 2. INITIALIZE SUPABASE AND SIGN OUT
+    const supabase = createClient();
+    await supabase.auth.signOut();
     
-    // Redirect to login page
-    router.push("/admin/login");
+    // 3. REDIRECT AND REFRESH ROUTER
+    router.push("/admin/login"); // Redirects to login
+    router.refresh(); // Clears cached pages so you can't hit the back button
   };
 
   return (

@@ -10,6 +10,7 @@ import {
 import { Button } from "@/components/ui/button";
 import { SuccessHero } from "@/components/sections/success-hero";
 import { createClient } from "@/lib/supabase-client";
+import { getAcademicYear } from "@/lib/utils";
 
 const SUPABASE_IMAGE_URL = "https://tauhscbkagspofmfbqlx.supabase.co/storage/v1/object/public/website-images";
 
@@ -21,6 +22,7 @@ const successMetrics = [
 ];
 
 export default function SuccessStoriesPage() {
+  const resultYear = getAcademicYear('previous');
   const [stories, setStories] = useState<any[]>([]);
   const [companies, setCompanies] = useState<any[]>([]); // Added state for recruiters
   const [isLoading, setIsLoading] = useState(true);
@@ -207,11 +209,11 @@ export default function SuccessStoriesPage() {
             className="text-center mb-16"
           >
             <h2 className="text-3xl lg:text-4xl font-black text-slate-900 mb-4 tracking-tight">
-              Admission Results 2023-24
-            </h2>
-            <p className="text-slate-500 max-w-2xl mx-auto text-lg">
-              A snapshot of our students' admission achievements this year.
-            </p>
+      Admission Results {resultYear}
+    </h2>
+    <p className="text-slate-500 max-w-2xl mx-auto text-lg">
+      A snapshot of our students' admission achievements for the {resultYear} academic session.
+    </p>
           </motion.div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">

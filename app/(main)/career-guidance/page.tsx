@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { 
   Brain, TrendingUp, Map, IndianRupee, ChevronRight, ChevronLeft, 
@@ -11,12 +11,10 @@ import {
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { Input } from "@/components/ui/input";
-import { ASSESSMENT_QUESTIONS } from "@/lib/data";
 import { useRouter } from 'next/navigation';
+import { createClient } from "@/lib/supabase-client";
 
-// --- DUMMY DATA FOR NEW FEATURES ---
-
+// ... (KEEP your existing dayInTheLife, careerRoadmaps, and salaryData constants here) ...
 const dayInTheLife = [
   {
     id: "tech",
@@ -62,15 +60,6 @@ const dayInTheLife = [
   }
 ];
 
-const mockColleges = [
-  { id: 1, name: "RV College of Engineering", stream: "Engineering", budget: "10L - 15L", location: "Bangalore", rating: 4.8 },
-  { id: 2, name: "BMS College of Engineering", stream: "Engineering", budget: "5L - 10L", location: "Bangalore", rating: 4.7 },
-  { id: 3, name: "Kasturba Medical College", stream: "Medical", budget: "15L+", location: "Rest of Karnataka", rating: 4.9 },
-  { id: 4, name: "MS Ramaiah Medical College", stream: "Medical", budget: "15L+", location: "Bangalore", rating: 4.8 },
-  { id: 5, name: "Christ University", stream: "Management", budget: "5L - 10L", location: "Bangalore", rating: 4.6 },
-  { id: 6, name: "TAPMI Manipal", stream: "Management", budget: "15L+", location: "Rest of Karnataka", rating: 4.7 },
-];
-
 const careerRoadmaps = [
   {
     stream: "Engineering",
@@ -109,10 +98,17 @@ const salaryData = [
   { course: "MBA", entry: 6, mid: 15, senior: 35 },
 ];
 
-// --- MAIN COMPONENT ---
 
 export default function CareerGuidancePage() {
   const router = useRouter();
+  
+  // LIVE DATABASE STATES
+  const [questions, setQuestions] = useState<any[]>([]);
+  const [colleges, setColleges] = useState<any[]>([]);
+  const [availableStreams, setAvailableStreams] = useState<string[]>([]);
+  const [availableLocations, setAvailableLocations] = useState<string[]>([]);
+  const [isDataLoading, setIsDataLoading] = useState(true);
+
   // Assessment State
   const [assessmentStarted, setAssessmentStarted] = useState(false);
   const [currentQuestion, setCurrentQuestion] = useState(0);
@@ -121,24 +117,49 @@ export default function CareerGuidancePage() {
   const [result, setResult] = useState<any>(null);
   const [isCalculating, setIsCalculating] = useState(false);
 
-  // Day in the Life State
+  // Day in the Life & Matcher State
   const [activeDay, setActiveDay] = useState(dayInTheLife[0].id);
-
-  // Matcher State
   const [filterStream, setFilterStream] = useState("All");
   const [filterLocation, setFilterLocation] = useState("All");
   
   // ROI State
-  const [roiFee, setRoiFee] = useState(8); // Lakhs
-  const [roiSalary, setRoiSalary] = useState(6); // Lakhs
-  const paybackYears = (roiFee / (roiSalary * 0.4)).toFixed(1); // Assuming 40% of salary used for payback
+  const [roiFee, setRoiFee] = useState(8); 
+  const [roiSalary, setRoiSalary] = useState(6); 
+  const paybackYears = (roiFee / (roiSalary * 0.4)).toFixed(1);
+
+  // Fetch Database Data on Mount
+  useEffect(() => {
+    async function fetchLiveInformation() {
+      const supabase = createClient();
+      
+      // Fetch Questions
+      const { data: qData } = await supabase.from('assessment_questions').select('*').order('created_at', { ascending: true });
+      const formattedQuestions = (qData || []).map(q => ({
+        ...q,
+        options: typeof q.options === 'string' ? JSON.parse(q.options) : q.options
+      }));
+      setQuestions(formattedQuestions);
+
+      // Fetch Colleges
+      const { data: cData } = await supabase.from('colleges').select('*');
+      if (cData) {
+        setColleges(cData);
+        // Automatically extract unique streams and locations from the actual colleges!
+        setAvailableStreams(Array.from(new Set(cData.map(c => c.stream).filter(Boolean))));
+        setAvailableLocations(Array.from(new Set(cData.map(c => c.location).filter(Boolean))));
+      }
+
+      setIsDataLoading(false);
+    }
+    fetchLiveInformation();
+  }, []);
 
   const handleAnswer = (questionId: string, optionText: string) => {
     setAnswers(prev => ({ ...prev, [questionId]: optionText }));
   };
 
   const handleNext = () => {
-    if (currentQuestion < ASSESSMENT_QUESTIONS.length - 1) {
+    if (currentQuestion < questions.length - 1) {
       setCurrentQuestion(prev => prev + 1);
     } else {
       calculateResult();
@@ -152,12 +173,13 @@ export default function CareerGuidancePage() {
   const calculateResult = () => {
     setIsCalculating(true);
     const scores: Record<string, number> = {};
-    ASSESSMENT_QUESTIONS.forEach(q => {
+    
+    questions.forEach(q => {
       const answer = answers[q.id];
       if (answer) {
-        const option = q.options.find(o => o.text === answer);
+        const option = q.options.find((o: any) => o.text === answer);
         if (option) {
-          scores[option.stream] = (scores[option.stream] || 0) + option.score;
+          scores[option.stream] = (scores[option.stream] || 0) + Number(option.score);
         }
       }
     });
@@ -183,12 +205,12 @@ export default function CareerGuidancePage() {
     setAssessmentStarted(true);
   };
 
-  const currentQ = ASSESSMENT_QUESTIONS[currentQuestion];
-  const progress = ((currentQuestion + 1) / ASSESSMENT_QUESTIONS.length) * 100;
-
+  const currentQ = questions[currentQuestion];
+  const progress = questions.length > 0 ? ((currentQuestion + 1) / questions.length) * 100 : 0;
   const activeDayData = dayInTheLife.find(d => d.id === activeDay)!;
 
-  const filteredColleges = mockColleges.filter(c => {
+  // Filter live database colleges
+  const filteredColleges = colleges.filter(c => {
     if (filterStream !== "All" && c.stream !== filterStream) return false;
     if (filterLocation !== "All" && c.location !== filterLocation) return false;
     return true;
@@ -197,17 +219,11 @@ export default function CareerGuidancePage() {
   return (
     <div className="pt-20">
       
-      {/* 1. MODERN HERO SECTION - Updated to deep blue theme */}
+      {/* 1. MODERN HERO SECTION */}
       <section className="relative pt-32 pb-20 lg:pt-40 lg:pb-32 bg-[#3a506b] overflow-hidden">
-        
-        {/* Deep steel blue gradient overlay */}
         <div className="absolute inset-0 bg-gradient-to-b from-[#2c4159]/95 via-[#466282]/85 to-[#3a506b]/95 z-0 pointer-events-none" />
-
-        {/* Giant Background Text - Toned down for dark mode */}
         <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full text-center z-0 pointer-events-none select-none overflow-hidden">
-          <h1 className="text-[clamp(4rem,16vw,12rem)] font-black text-white/5 leading-none tracking-tighter whitespace-nowrap">
-            Unsure?
-          </h1>
+          <h1 className="text-[clamp(4rem,16vw,12rem)] font-black text-white/5 leading-none tracking-tighter whitespace-nowrap">Unsure?</h1>
         </div>
 
         <div className="container-custom relative z-10">
@@ -217,86 +233,71 @@ export default function CareerGuidancePage() {
             transition={{ duration: 0.6, ease: "easeOut" }}
             className="max-w-3xl mx-auto text-center"
           >
-            {/* Top Badge - Updated to transparent glass with gold text */}
             <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/10 backdrop-blur-md text-[#FDB813] font-bold mb-6 shadow-sm border border-white/20">
-              <Sparkles className="w-4 h-4" />
-              Smart Career Guidance
+              <Sparkles className="w-4 h-4" /> Smart Career Guidance
             </div>
-            
-            {/* Headings - Updated text colors */}
-            <h2 className="text-4xl lg:text-6xl font-black text-white mb-6 tracking-tight">
-              Find Your Perfect Path
-            </h2>
-            
+            <h2 className="text-4xl lg:text-6xl font-black text-white mb-6 tracking-tight">Find Your Perfect Path</h2>
             <p className="text-lg lg:text-xl text-slate-200 leading-relaxed max-w-2xl mx-auto mb-10 font-medium">
               Take our interactive assessment, explore 'day in the life' previews, and calculate your ROI to make a confident career choice.
             </p>
-
-            {/* Button - Updated to solid gold */}
             <Button 
               size="lg" 
               className="rounded-full bg-[#FDB813] hover:bg-[#E5A300] text-slate-900 px-8 h-14 text-lg font-bold shadow-[0_15px_30px_-10px_rgba(253,184,19,0.5)] transition-all hover:scale-105"
               onClick={() => {
                 setAssessmentStarted(true);
-                setTimeout(() => {
-                  document.getElementById("assessment-container")?.scrollIntoView({ behavior: "smooth" });
-                }, 100);
+                setTimeout(() => { document.getElementById("assessment-container")?.scrollIntoView({ behavior: "smooth" }); }, 100);
               }}
             >
-              <Brain className="w-5 h-5 mr-2" />
-              Start Free Assessment
+              <Brain className="w-5 h-5 mr-2" /> Start Free Assessment
             </Button>
           </motion.div>
         </div>
       </section>
 
-      {/* 2. THE ASSESSMENT TOOL */}
+      {/* 2. THE ASSESSMENT TOOL (LIVE FROM DATABASE) */}
       <div id="assessment-container">
         {assessmentStarted && (
           <section className="py-16 bg-white">
             <div className="container-custom">
               <div className="max-w-2xl mx-auto">
-                {!showResult ? (
+                {isDataLoading ? (
+                  <div className="flex flex-col items-center py-20">
+                    <Loader2 className="w-12 h-12 text-[#FDB813] animate-spin mb-4" />
+                    <p className="text-slate-500 font-medium">Loading Assessment...</p>
+                  </div>
+                ) : questions.length === 0 ? (
+                  <div className="text-center py-20 bg-slate-50 rounded-3xl border border-slate-100">
+                    <h3 className="text-xl font-bold text-slate-800">Assessment Unavailable</h3>
+                    <p className="text-slate-500 mt-2">Questions are currently being updated.</p>
+                  </div>
+                ) : !showResult ? (
                   <motion.div
                     initial={{ opacity: 0, y: 20 }}
                     animate={{ opacity: 1, y: 0 }}
                     className="bg-white rounded-3xl border border-slate-200 shadow-xl overflow-hidden"
                   >
-                    {/* Progress */}
                     <div className="px-6 py-4 bg-slate-50 border-b border-slate-100">
                       <div className="flex items-center justify-between mb-2">
-                        <span className="text-sm font-medium text-slate-600">
-                          Question {currentQuestion + 1} of {ASSESSMENT_QUESTIONS.length}
-                        </span>
-                        <span className="text-sm font-bold text-amber-600">
-                          {Math.round(progress)}%
-                        </span>
+                        <span className="text-sm font-medium text-slate-600">Question {currentQuestion + 1} of {questions.length}</span>
+                        <span className="text-sm font-bold text-amber-600">{Math.round(progress)}%</span>
                       </div>
                       <div className="w-full h-2 bg-slate-200 rounded-full overflow-hidden">
                         <motion.div
-                          className="h-full bg-gradient-to-r from-amber-400 to-amber-500"
-                          initial={{ width: 0 }}
-                          animate={{ width: `${progress}%` }}
-                          transition={{ duration: 0.3 }}
+                          className="h-full bg-gradient-to-r from-amber-400 to-[#FDB813]"
+                          initial={{ width: 0 }} animate={{ width: `${progress}%` }} transition={{ duration: 0.3 }}
                         />
                       </div>
                     </div>
 
-                    {/* Question */}
                     <div className="p-6 lg:p-10">
                       <AnimatePresence mode="wait">
                         <motion.div
                           key={currentQuestion}
-                          initial={{ opacity: 0, x: 20 }}
-                          animate={{ opacity: 1, x: 0 }}
-                          exit={{ opacity: 0, x: -20 }}
-                          transition={{ duration: 0.3 }}
+                          initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: -20 }} transition={{ duration: 0.3 }}
                         >
-                          <h3 className="text-xl font-bold text-slate-900 mb-6">
-                            {currentQ.question}
-                          </h3>
+                          <h3 className="text-xl font-bold text-slate-900 mb-6">{currentQ.question}</h3>
                           <div className="space-y-3">
-                            {currentQ.options.map((option, idx) => (
+                            {currentQ.options.map((option: any, idx: number) => (
                               <button
                                 key={idx}
                                 onClick={() => handleAnswer(currentQ.id, option.text)}
@@ -307,14 +308,8 @@ export default function CareerGuidancePage() {
                                 }`}
                               >
                                 <div className="flex items-center gap-3">
-                                  <div className={`w-6 h-6 rounded-full border-2 flex items-center justify-center shrink-0 ${
-                                    answers[currentQ.id] === option.text
-                                      ? "border-amber-500 bg-amber-500"
-                                      : "border-slate-300"
-                                  }`}>
-                                    {answers[currentQ.id] === option.text && (
-                                      <CheckCircle className="w-4 h-4 text-white" />
-                                    )}
+                                  <div className={`w-6 h-6 rounded-full border-2 flex items-center justify-center shrink-0 ${answers[currentQ.id] === option.text ? "border-amber-500 bg-amber-500" : "border-slate-300"}`}>
+                                    {answers[currentQ.id] === option.text && <CheckCircle className="w-4 h-4 text-white" />}
                                   </div>
                                   <span className="font-medium">{option.text}</span>
                                 </div>
@@ -324,7 +319,6 @@ export default function CareerGuidancePage() {
                         </motion.div>
                       </AnimatePresence>
 
-                      {/* Navigation - Button color updated to gold theme */}
                       <div className="flex items-center justify-between mt-8 pt-6 border-t border-slate-100">
                         <Button variant="outline" onClick={handlePrev} disabled={currentQuestion === 0}>
                           <ChevronLeft className="w-4 h-4 mr-2" /> Previous
@@ -336,7 +330,7 @@ export default function CareerGuidancePage() {
                         >
                           {isCalculating ? (
                             <><Loader2 className="w-4 h-4 mr-2 animate-spin" /> Analyzing...</>
-                          ) : currentQuestion === ASSESSMENT_QUESTIONS.length - 1 ? (
+                          ) : currentQuestion === questions.length - 1 ? (
                             <>Get Results <CheckCircle className="w-4 h-4 ml-2" /></>
                           ) : (
                             <>Next <ChevronRight className="w-4 h-4 ml-2" /></>
@@ -351,14 +345,11 @@ export default function CareerGuidancePage() {
                     animate={{ opacity: 1, scale: 1 }}
                     className="bg-white rounded-3xl border border-slate-200 shadow-xl p-8 lg:p-12 text-center relative overflow-hidden"
                   >
-                    {/* Gradient updated to match gold theme */}
                     <div className="absolute top-0 left-0 w-full h-2 bg-gradient-to-r from-amber-400 to-[#FDB813]" />
                     <div className="w-20 h-20 rounded-full bg-gradient-to-br from-amber-100 to-amber-200 flex items-center justify-center mx-auto mb-6">
                       <Lightbulb className="w-10 h-10 text-amber-600" />
                     </div>
-                    <h2 className="text-2xl lg:text-3xl font-bold text-slate-900 mb-3">
-                      Your Recommended Path
-                    </h2>
+                    <h2 className="text-2xl lg:text-3xl font-bold text-slate-900 mb-3">Your Recommended Path</h2>
                     <div className="inline-flex items-center gap-2 px-6 py-3 rounded-full bg-amber-50 text-amber-700 font-bold text-2xl mb-8 border border-amber-200">
                       {result?.stream}
                     </div>
@@ -367,31 +358,16 @@ export default function CareerGuidancePage() {
                       {Object.entries(result?.allScores || {}).map(([stream, score]) => (
                         <div key={stream} className="bg-slate-50 rounded-xl p-4 border border-slate-100">
                           <div className="text-sm text-slate-500 mb-1">{stream}</div>
-                          <div className="text-xl font-black text-slate-900">{score as number}% Match</div>
+                          <div className="text-xl font-black text-slate-900">{score as number} Pts</div>
                         </div>
                       ))}
                     </div>
 
-                    {/* Button colors updated to gold theme */}
                     <div className="flex flex-col sm:flex-row gap-3 justify-center">
-                      <Button 
-                        size="lg" 
-                        className="bg-[#FDB813] hover:bg-[#E5A300] text-slate-900 font-bold rounded-full" 
-                        onClick={() => {
-                          // Navigate to the home page and anchor to the form
-                          router.push("/#counseling-form"); 
-                        }}
-                      >
+                      <Button size="lg" className="bg-[#FDB813] hover:bg-[#E5A300] text-slate-900 font-bold rounded-full" onClick={() => router.push("/#counseling-form")}>
                         Book Free Strategy Call
                       </Button>
-                      <Button 
-                        variant="outline" 
-                        size="lg" 
-                        className="rounded-full" 
-                        onClick={resetAssessment}
-                      >
-                        Retake Assessment
-                      </Button>
+                      <Button variant="outline" size="lg" className="rounded-full" onClick={resetAssessment}>Retake Assessment</Button>
                     </div>
                   </motion.div>
                 )}
@@ -410,7 +386,6 @@ export default function CareerGuidancePage() {
           </div>
 
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 max-w-6xl mx-auto">
-            {/* Sidebar Navigation */}
             <div className="lg:col-span-4 flex flex-col gap-3">
               {dayInTheLife.map((career) => {
                 const Icon = career.icon;
@@ -419,10 +394,7 @@ export default function CareerGuidancePage() {
                   <button
                     key={career.id}
                     onClick={() => setActiveDay(career.id)}
-                    // Active border updated to gold
-                    className={`flex items-center gap-4 p-4 rounded-2xl transition-all duration-300 text-left ${
-                      isActive ? "bg-white shadow-lg border-l-4 border-[#FDB813]" : "hover:bg-slate-100 border-l-4 border-transparent"
-                    }`}
+                    className={`flex items-center gap-4 p-4 rounded-2xl transition-all duration-300 text-left ${isActive ? "bg-white shadow-lg border-l-4 border-[#FDB813]" : "hover:bg-slate-100 border-l-4 border-transparent"}`}
                   >
                     <div className={`w-12 h-12 rounded-xl flex items-center justify-center shrink-0 ${isActive ? `bg-${career.color}-100 text-${career.color}-600` : 'bg-slate-200 text-slate-500'}`}>
                       <Icon className="w-6 h-6" />
@@ -436,19 +408,14 @@ export default function CareerGuidancePage() {
               })}
             </div>
 
-            {/* Timeline View */}
             <div className="lg:col-span-8 bg-white rounded-3xl p-8 lg:p-10 shadow-sm border border-slate-100 relative overflow-hidden">
               <AnimatePresence mode="wait">
                 <motion.div
                   key={activeDayData.id}
-                  initial={{ opacity: 0, y: 10 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  exit={{ opacity: 0, y: -10 }}
-                  transition={{ duration: 0.3 }}
+                  initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -10 }} transition={{ duration: 0.3 }}
                 >
                   <h3 className="text-2xl font-bold text-slate-900 mb-6 flex items-center gap-3">
-                    <Clock className={`text-${activeDayData.color}-500 w-6 h-6`} /> 
-                    Typical Schedule
+                    <Clock className={`text-${activeDayData.color}-500 w-6 h-6`} /> Typical Schedule
                   </h3>
                   
                   <div className="space-y-6 relative before:absolute before:inset-0 before:ml-5 before:-translate-x-px md:before:mx-auto md:before:translate-x-0 before:h-full before:w-0.5 before:bg-gradient-to-b before:from-transparent before:via-slate-200 before:to-transparent mb-10">
@@ -473,12 +440,9 @@ export default function CareerGuidancePage() {
                   <div className="bg-slate-50 rounded-2xl p-6 border border-slate-100">
                     <h4 className="font-bold text-slate-900 mb-3 text-sm uppercase tracking-wider">Required Superpowers</h4>
                     <div className="flex flex-wrap gap-2">
-                      {activeDayData.superpowers.map(power => (
-                        <Badge key={power} variant="secondary" className="bg-white">{power}</Badge>
-                      ))}
+                      {activeDayData.superpowers.map(power => <Badge key={power} variant="secondary" className="bg-white">{power}</Badge>)}
                     </div>
                   </div>
-
                 </motion.div>
               </AnimatePresence>
             </div>
@@ -495,14 +459,12 @@ export default function CareerGuidancePage() {
           </div>
 
           <div className="space-y-12 max-w-6xl mx-auto">
-            {careerRoadmaps.map((roadmap, index) => {
+            {careerRoadmaps.map((roadmap) => {
               const Icon = roadmap.icon;
               return (
                 <motion.div
                   key={roadmap.stream}
-                  initial={{ opacity: 0, y: 30 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true }}
+                  initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }}
                   className="bg-slate-50 rounded-3xl p-6 lg:p-10 border border-slate-100"
                 >
                   <div className="flex items-center gap-4 mb-8">
@@ -539,8 +501,7 @@ export default function CareerGuidancePage() {
         </div>
       </section>
 
-      {/* 5. COURSE-TO-COLLEGE MATCHER */}
-      {/* Background color neutralized to fit new theme gracefully */}
+      {/* 5. COURSE-TO-COLLEGE MATCHER (LIVE FROM DATABASE) */}
       <section className="py-20 lg:py-28 bg-slate-50">
         <div className="container-custom">
           <div className="max-w-6xl mx-auto bg-white rounded-3xl p-8 lg:p-12 shadow-xl border border-white/60">
@@ -548,7 +509,6 @@ export default function CareerGuidancePage() {
             <div className="flex flex-col lg:flex-row justify-between items-start lg:items-center mb-10 gap-6 border-b border-slate-100 pb-8">
               <div>
                 <h2 className="text-3xl font-bold text-slate-900 mb-2 flex items-center gap-3">
-                  {/* Icon updated to gold */}
                   <Filter className="text-[#FDB813] w-8 h-8" /> Smart College Matcher
                 </h2>
                 <p className="text-slate-500">Filter through our partner colleges to find your perfect match.</p>
@@ -556,58 +516,59 @@ export default function CareerGuidancePage() {
               
               <div className="flex flex-wrap gap-4 w-full lg:w-auto">
                 <select 
-                  // Focus ring updated to gold
                   className="flex-1 lg:w-48 h-12 rounded-xl border border-slate-200 px-4 bg-slate-50 font-medium text-slate-700 outline-none focus:border-[#FDB813]"
                   value={filterStream}
                   onChange={(e) => setFilterStream(e.target.value)}
                 >
                   <option value="All">All Streams</option>
-                  <option value="Engineering">Engineering</option>
-                  <option value="Medical">Medical</option>
-                  <option value="Management">Management</option>
+                  {/* DYNAMIC STREAMS BASED ON DATABASE */}
+                  {availableStreams.map(stream => (
+                    <option key={stream} value={stream}>{stream}</option>
+                  ))}
                 </select>
                 
                 <select 
-                  // Focus ring updated to gold
                   className="flex-1 lg:w-48 h-12 rounded-xl border border-slate-200 px-4 bg-slate-50 font-medium text-slate-700 outline-none focus:border-[#FDB813]"
                   value={filterLocation}
                   onChange={(e) => setFilterLocation(e.target.value)}
                 >
                   <option value="All">All Locations</option>
-                  <option value="Bangalore">Bangalore</option>
-                  <option value="Rest of Karnataka">Rest of Karnataka</option>
+                  {/* DYNAMIC LOCATIONS BASED ON DATABASE */}
+                  {availableLocations.map(location => (
+                    <option key={location} value={location}>{location}</option>
+                  ))}
                 </select>
               </div>
             </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-              <AnimatePresence>
-                {filteredColleges.map((college) => (
-                  <motion.div 
-                    key={college.id}
-                    layout
-                    initial={{ opacity: 0, scale: 0.9 }}
-                    animate={{ opacity: 1, scale: 1 }}
-                    exit={{ opacity: 0, scale: 0.9 }}
-                    className="p-6 rounded-2xl border border-slate-100 bg-slate-50 hover:bg-white hover:shadow-lg transition-all group cursor-pointer"
-                  >
-                    <div className="flex justify-between items-start mb-4">
-                      <Badge className="bg-slate-200 text-slate-700 hover:bg-slate-300">{college.stream}</Badge>
-                      <div className="flex items-center gap-1 text-sm font-bold text-amber-500">
-                        ⭐ {college.rating}
+            {isDataLoading ? (
+               <div className="flex justify-center py-10"><Loader2 className="w-8 h-8 text-[#FDB813] animate-spin" /></div>
+            ) : (
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <AnimatePresence>
+                  {filteredColleges.map((college) => (
+                    <motion.div 
+                      key={college.id} layout initial={{ opacity: 0, scale: 0.9 }} animate={{ opacity: 1, scale: 1 }} exit={{ opacity: 0, scale: 0.9 }}
+                      className="p-6 rounded-2xl border border-slate-100 bg-slate-50 hover:bg-white hover:shadow-lg transition-all group cursor-pointer"
+                    >
+                      <div className="flex justify-between items-start mb-4">
+                        <Badge className="bg-slate-200 text-slate-700 hover:bg-slate-300">{college.stream}</Badge>
+                        <div className="flex items-center gap-1 text-sm font-bold text-amber-500">
+                          ⭐ {college.rating}
+                        </div>
                       </div>
-                    </div>
-                    <h4 className="font-bold text-lg text-slate-900 mb-2 leading-tight">{college.name}</h4>
-                    <div className="space-y-2 mt-4 text-sm text-slate-500">
-                      <div className="flex items-center gap-2"><MapPin className="w-4 h-4"/> {college.location}</div>
-                      <div className="flex items-center gap-2"><IndianRupee className="w-4 h-4"/> Budget: {college.budget}</div>
-                    </div>
-                  </motion.div>
-                ))}
-              </AnimatePresence>
-            </div>
+                      <h4 className="font-bold text-lg text-slate-900 mb-2 leading-tight">{college.name}</h4>
+                      <div className="space-y-2 mt-4 text-sm text-slate-500">
+                        <div className="flex items-center gap-2"><MapPin className="w-4 h-4"/> {college.location}</div>
+                        <div className="flex items-center gap-2"><IndianRupee className="w-4 h-4"/> Budget: {college.budget}</div>
+                      </div>
+                    </motion.div>
+                  ))}
+                </AnimatePresence>
+              </div>
+            )}
             
-            {filteredColleges.length === 0 && (
+            {filteredColleges.length === 0 && !isDataLoading && (
               <div className="text-center py-10 text-slate-500 flex flex-col items-center">
                 <Search className="w-12 h-12 mb-3 opacity-20" />
                 No colleges match your exact criteria. Contact us for private recommendations!
@@ -623,18 +584,12 @@ export default function CareerGuidancePage() {
         <div className="container-custom">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 max-w-6xl mx-auto">
             
-            {/* ROI Calculator */}
             <motion.div
-              initial={{ opacity: 0, x: -30 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              viewport={{ once: true }}
+              initial={{ opacity: 0, x: -30 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true }}
               className="bg-slate-900 rounded-3xl p-8 lg:p-10 text-white relative overflow-hidden"
             >
-              {/* Blur accent updated to gold */}
               <div className="absolute top-0 right-0 w-64 h-64 bg-[#FDB813]/20 rounded-full blur-3xl -translate-y-1/2 translate-x-1/2" />
-              
               <h3 className="text-2xl font-bold mb-2 flex items-center gap-3 relative z-10">
-                {/* Icon updated to gold */}
                 <Calculator className="text-[#FDB813]" /> Education ROI Calculator
               </h3>
               <p className="text-slate-400 mb-8 relative z-10 text-sm">See how long it takes to recover your investment based on entry-level salaries.</p>
@@ -645,12 +600,7 @@ export default function CareerGuidancePage() {
                     <label className="text-sm font-medium text-slate-300">Total Course Fees</label>
                     <span className="font-bold text-white">₹{roiFee} Lakhs</span>
                   </div>
-                  <input 
-                    type="range" min="2" max="50" step="1" 
-                    value={roiFee} onChange={(e) => setRoiFee(Number(e.target.value))}
-                    // Slider accent updated to gold
-                    className="w-full h-2 bg-slate-700 rounded-lg appearance-none cursor-pointer accent-[#FDB813]"
-                  />
+                  <input type="range" min="2" max="50" step="1" value={roiFee} onChange={(e) => setRoiFee(Number(e.target.value))} className="w-full h-2 bg-slate-700 rounded-lg appearance-none cursor-pointer accent-[#FDB813]" />
                 </div>
                 
                 <div>
@@ -658,28 +608,19 @@ export default function CareerGuidancePage() {
                     <label className="text-sm font-medium text-slate-300">Expected Starting Salary</label>
                     <span className="font-bold text-white">₹{roiSalary} LPA</span>
                   </div>
-                  <input 
-                    type="range" min="3" max="25" step="1" 
-                    value={roiSalary} onChange={(e) => setRoiSalary(Number(e.target.value))}
-                    // Slider accent updated to gold
-                    className="w-full h-2 bg-slate-700 rounded-lg appearance-none cursor-pointer accent-[#FDB813]"
-                  />
+                  <input type="range" min="3" max="25" step="1" value={roiSalary} onChange={(e) => setRoiSalary(Number(e.target.value))} className="w-full h-2 bg-slate-700 rounded-lg appearance-none cursor-pointer accent-[#FDB813]" />
                 </div>
 
                 <div className="mt-8 p-6 rounded-2xl bg-white/10 backdrop-blur-md border border-white/20 text-center">
                   <div className="text-sm text-slate-300 mb-1">Estimated Payback Period</div>
-                  {/* Results text updated to gold */}
                   <div className="text-4xl font-black text-[#FDB813]">{paybackYears} Years</div>
                   <div className="text-xs text-slate-400 mt-2">*Assuming 40% of salary is saved for repayment</div>
                 </div>
               </div>
             </motion.div>
 
-            {/* Salary Chart */}
             <motion.div
-              initial={{ opacity: 0, x: 30 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              viewport={{ once: true }}
+              initial={{ opacity: 0, x: 30 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true }}
               className="bg-white rounded-3xl p-8 lg:p-10 border border-slate-100 shadow-sm flex flex-col justify-center"
             >
               <h3 className="text-2xl font-bold text-slate-900 mb-6 flex items-center gap-3">
@@ -692,33 +633,9 @@ export default function CareerGuidancePage() {
                       <span className="text-sm font-bold text-slate-700">{item.course}</span>
                     </div>
                     <div className="flex gap-1 h-10">
-                      <motion.div
-                        initial={{ width: 0 }}
-                        whileInView={{ width: `${(item.entry / 10) * 100}%` }}
-                        viewport={{ once: true }}
-                        transition={{ duration: 0.8, delay: idx * 0.1 }}
-                        className="bg-blue-100 rounded-l-xl flex items-center justify-center text-xs font-bold text-blue-800"
-                      >
-                        {item.entry}L
-                      </motion.div>
-                      <motion.div
-                        initial={{ width: 0 }}
-                        whileInView={{ width: `${(item.mid / 20) * 100}%` }}
-                        viewport={{ once: true }}
-                        transition={{ duration: 0.8, delay: idx * 0.1 + 0.2 }}
-                        className="bg-amber-100 flex items-center justify-center text-xs font-bold text-amber-800"
-                      >
-                        {item.mid}L
-                      </motion.div>
-                      <motion.div
-                        initial={{ width: 0 }}
-                        whileInView={{ width: `${(item.senior / 50) * 100}%` }}
-                        viewport={{ once: true }}
-                        transition={{ duration: 0.8, delay: idx * 0.1 + 0.4 }}
-                        className="bg-emerald-100 rounded-r-xl flex items-center justify-center text-xs font-bold text-emerald-800"
-                      >
-                        {item.senior}L
-                      </motion.div>
+                      <motion.div initial={{ width: 0 }} whileInView={{ width: `${(item.entry / 10) * 100}%` }} viewport={{ once: true }} transition={{ duration: 0.8, delay: idx * 0.1 }} className="bg-blue-100 rounded-l-xl flex items-center justify-center text-xs font-bold text-blue-800">{item.entry}L</motion.div>
+                      <motion.div initial={{ width: 0 }} whileInView={{ width: `${(item.mid / 20) * 100}%` }} viewport={{ once: true }} transition={{ duration: 0.8, delay: idx * 0.1 + 0.2 }} className="bg-amber-100 flex items-center justify-center text-xs font-bold text-amber-800">{item.mid}L</motion.div>
+                      <motion.div initial={{ width: 0 }} whileInView={{ width: `${(item.senior / 50) * 100}%` }} viewport={{ once: true }} transition={{ duration: 0.8, delay: idx * 0.1 + 0.4 }} className="bg-emerald-100 rounded-r-xl flex items-center justify-center text-xs font-bold text-emerald-800">{item.senior}L</motion.div>
                     </div>
                   </div>
                 ))}
@@ -733,9 +650,6 @@ export default function CareerGuidancePage() {
           </div>
         </div>
       </section>
-
-      {/* 7. FINAL CTA */}
-      
     </div>
   );
 }

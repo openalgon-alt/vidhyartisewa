@@ -10,9 +10,15 @@ import { CounselingForm } from "@/components/forms/counseling-form";
 import { FeaturedCourses } from "@/components/sections/featured-courses";
 import { CtaBanner } from "@/components/sections/cta-banner";
 
+// 1. Import the scroll helper here
+import { HandleHashScroll } from "@/components/handle-hash-scroll";
+
 export default function HomePage() {
   return (
     <>
+      {/* 2. Add it right here at the top! It is invisible and won't affect the design. */}
+      <HandleHashScroll />
+      
       <HeroSection />
       <StatsSection />
       <PartnerMarquee />

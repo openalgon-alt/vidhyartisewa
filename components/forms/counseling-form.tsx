@@ -187,6 +187,8 @@ export function CounselingForm() {
 
   return (
     <section id="counseling-form" className="py-20 lg:py-28 bg-white">
+
+      <span id="counseling-form" className="absolute -top-24 lg:-top-32 block" aria-hidden="true"></span>
       <div className="container-custom">
         <div className="max-w-4xl mx-auto">
           <motion.div
@@ -203,7 +205,7 @@ export function CounselingForm() {
               Book Your Free Counseling Session
             </h2>
             <p className="text-slate-500 max-w-2xl mx-auto text-lg">
-              Fill in your details and get a free career assessment report worth ₹2,000.
+              Fill in your details.
             </p>
           </motion.div>
 

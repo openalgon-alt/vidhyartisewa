@@ -9,70 +9,82 @@ import {
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { BLOG_CATEGORIES } from "@/lib/data"; // Only keeping categories from dummy data
 import { BlogHero } from "@/components/sections/blog-hero";
 import { createClient } from "@/lib/supabase-client"; 
+import { getAcademicYear } from "@/lib/utils";
 
 const SUPABASE_IMAGE_URL = "https://tauhscbkagspofmfbqlx.supabase.co/storage/v1/object/public/website-images";
 
 export default function BlogPage() {
+  const academicYear = getAcademicYear(); 
+  
   const [activeCategory, setActiveCategory] = useState("All");
   const [searchQuery, setSearchQuery] = useState("");
-  
-  // State for live database blogs
   const [blogs, setBlogs] = useState<any[]>([]);
   const [isLoading, setIsLoading] = useState(true);
 
-  // Fetch live blogs from Supabase
   useEffect(() => {
     async function fetchLiveBlogs() {
       const supabase = createClient();
       const { data, error } = await supabase
         .from("blogs")
         .select("*")
-        .order("created_at", { ascending: false }); // Newest first
+        .order("created_at", { ascending: false }); 
       
-      if (error) {
-        console.error("Error fetching blogs:", error);
-      } else {
-        setBlogs(data || []);
-      }
+      if (error) console.error("Error fetching blogs:", error);
+      else setBlogs(data || []);
+      
       setIsLoading(false);
     }
-    
     fetchLiveBlogs();
   }, []);
 
-  // Filters the live 'blogs' array
+  // NEW: Helper function to replace {year} with the actual academic year
+  const replaceYear = (text: string) => {
+    if (!text) return "";
+    // Using a regular expression (/g) to replace ALL instances of {year} in a string
+    return text.replace(/{year}/g, academicYear);
+  };
+
+  const dynamicCategories = ["All", ...Array.from(new Set(blogs.map(post => post.category).filter(Boolean)))];
+
   const filteredPosts = blogs.filter(post => {
     const matchesCategory = activeCategory === "All" || post.category === activeCategory;
+    
+    // UPDATED: We apply replaceYear() here so the search actually works for the current year!
     const matchesSearch = 
-      (post.title && post.title.toLowerCase().includes(searchQuery.toLowerCase())) ||
-      (post.excerpt && post.excerpt.toLowerCase().includes(searchQuery.toLowerCase())) ||
+      (post.title && replaceYear(post.title).toLowerCase().includes(searchQuery.toLowerCase())) ||
+      (post.excerpt && replaceYear(post.excerpt).toLowerCase().includes(searchQuery.toLowerCase())) ||
       (post.category && post.category.toLowerCase().includes(searchQuery.toLowerCase()));
       
     return matchesCategory && matchesSearch;
   });
 
-  const featuredPost = filteredPosts[0]; // The newest post becomes the featured one
+  const featuredPost = filteredPosts[0]; 
   const isSearching = searchQuery.length > 0;
 
-  // Helper to format the Supabase timestamp into a readable date
   const formatDate = (dateString: string) => {
     if (!dateString) return "Recently";
     return new Date(dateString).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
   };
 
-  // Hybrid image source for the featured post
   const featuredImageSource = featuredPost ? (featuredPost.image_url || `${SUPABASE_IMAGE_URL}/blogs/${featuredPost.slug}.jpg`) : '';
 
   return (
     <div className="pt-20">
       
-      {/* 1. HERO COMPONENT */}
+      <div className="bg-slate-50 pt-12 pb-4 px-6 text-center">
+        <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-amber-100 text-amber-700 font-bold text-sm mb-4">
+          <Calendar className="w-4 h-4" />
+          Academic Session {academicYear}
+        </div>
+        <h1 className="text-4xl lg:text-5xl font-black text-slate-900 tracking-tight">
+          Latest <span className="text-[#FF6138]">Updates & News</span>
+        </h1>
+      </div>
+
       <BlogHero searchQuery={searchQuery} setSearchQuery={setSearchQuery} />
 
-      {/* LOADING STATE */}
       {isLoading ? (
         <div className="flex flex-col items-center justify-center py-32 min-h-[400px]">
           <Loader2 className="w-12 h-12 text-[#FF6138] animate-spin mb-4" />
@@ -80,7 +92,6 @@ export default function BlogPage() {
         </div>
       ) : (
         <>
-          {/* 2. Featured Post - HIDES WHEN SEARCHING */}
           {!isSearching && activeCategory === "All" && featuredPost && (
             <section className="py-16 bg-white">
               <div className="container-custom">
@@ -95,11 +106,15 @@ export default function BlogPage() {
                       <Badge className="w-fit mb-6 bg-amber-100 text-amber-700 hover:bg-amber-200 text-sm px-3 py-1">
                         {featuredPost.category}
                       </Badge>
+                      
+                      {/* UPDATED: replaceYear applied to title */}
                       <h2 className="text-3xl lg:text-4xl font-black text-slate-900 mb-4 leading-tight hover:text-[#FF6138] transition-colors">
-                        {featuredPost.title}
+                        {replaceYear(featuredPost.title)}
                       </h2>
+                      
+                      {/* UPDATED: replaceYear applied to excerpt */}
                       <p className="text-slate-600 mb-8 text-lg leading-relaxed line-clamp-3">
-                        {featuredPost.excerpt}
+                        {replaceYear(featuredPost.excerpt)}
                       </p>
                       
                       <div className="flex flex-wrap items-center gap-4 mb-8 text-sm font-medium text-slate-500">
@@ -115,7 +130,6 @@ export default function BlogPage() {
                         </span>
                         <span className="flex items-center gap-1.5 text-amber-600 bg-amber-50 px-2 py-1 rounded-md">
                           <Clock className="w-4 h-4" />
-                          {/* Pulls read_time from DB with a fallback */}
                           {featuredPost.read_time || "3 min read"}
                         </span>
                       </div>
@@ -132,7 +146,7 @@ export default function BlogPage() {
                     <div className="relative bg-slate-100 flex items-center justify-center overflow-hidden min-h-[300px] lg:min-h-full group">
                       <img 
                         src={featuredImageSource}
-                        alt={featuredPost.title}
+                        alt={replaceYear(featuredPost.title)}
                         className="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
                         onError={(e) => {
                           const target = e.target as HTMLImageElement;
@@ -148,13 +162,12 @@ export default function BlogPage() {
             </section>
           )}
 
-          {/* 3. Category Filter - HIDES WHEN SEARCHING */}
           {!isSearching && (
             <section className="py-4 bg-white border-b border-slate-100 sticky top-16 z-30 shadow-sm transition-all">
               <div className="container-custom">
                 <div className="flex justify-center overflow-x-auto w-full pb-2 lg:pb-0 hide-scrollbar">
                   <div className="flex gap-2">
-                    {BLOG_CATEGORIES.map(cat => (
+                    {dynamicCategories.map(cat => (
                       <button
                         key={cat}
                         onClick={() => {
@@ -180,7 +193,6 @@ export default function BlogPage() {
             </section>
           )}
 
-          {/* 4. Blog Grid */}
           <section id="blog-grid" className="py-16 bg-slate-50 min-h-[600px]">
             <div className="container-custom">
               
@@ -206,7 +218,7 @@ export default function BlogPage() {
                       <div className="h-56 bg-slate-100 relative overflow-hidden">
                         <img 
                           src={imageSource}
-                          alt={post.title}
+                          alt={replaceYear(post.title)}
                           className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
                           onError={(e) => {
                             const target = e.target as HTMLImageElement;
@@ -227,19 +239,20 @@ export default function BlogPage() {
                         <div className="flex items-center gap-3 mb-4 text-xs font-bold text-slate-400 uppercase tracking-wider">
                           <span className="flex items-center gap-1 text-[#FF6138]">
                             <Clock className="w-3.5 h-3.5" />
-                            {/* Pulls read_time from DB with a fallback */}
                             {post.read_time || "3 min read"}
                           </span>
                           <span>•</span>
                           <span>{formatDate(post.created_at)}</span>
                         </div>
                         
+                        {/* UPDATED: replaceYear applied to grid titles */}
                         <h3 className="text-xl font-black text-slate-900 mb-3 group-hover:text-[#FF6138] transition-colors line-clamp-2 leading-tight">
-                          {post.title}
+                          {replaceYear(post.title)}
                         </h3>
                         
+                        {/* UPDATED: replaceYear applied to grid excerpts */}
                         <p className="text-slate-600 text-sm mb-6 line-clamp-3 leading-relaxed">
-                          {post.excerpt}
+                          {replaceYear(post.excerpt)}
                         </p>
                         
                         <div className="mt-auto pt-6 border-t border-slate-100 flex items-center justify-between">
@@ -277,8 +290,6 @@ export default function BlogPage() {
           </section>
         </>
       )}
-
-      
     </div>
   );
 }

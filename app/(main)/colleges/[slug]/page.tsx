@@ -3,28 +3,50 @@ import Link from "next/link";
 import { MapPin, Star, Building2, ArrowRight, Globe } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { PARTNER_COLLEGES } from "@/lib/data";
+import { createClient } from "@/lib/supabase-client"; 
 
 const SUPABASE_IMAGE_URL = "https://tauhscbkagspofmfbqlx.supabase.co/storage/v1/object/public/website-images";
 
-export function generateStaticParams() {
-  return PARTNER_COLLEGES.map((college) => ({
+// 1. DYNAMICALLY GENERATE STATIC PARAMS FROM SUPABASE
+export async function generateStaticParams() {
+  const supabase = createClient();
+  const { data: colleges } = await supabase.from("colleges").select("slug");
+  
+  return (colleges || []).map((college) => ({
     slug: college.slug,
   }));
 }
 
-export default function CollegeDetailPage({ params }: { params: { slug: string } }) {
-  const college = PARTNER_COLLEGES.find((c) => c.slug === params.slug);
+// 2. ASYNC SERVER COMPONENT FOR DIRECT DATA FETCHING
+export default async function CollegeDetailPage({ params }: { params: { slug: string } }) {
+  const supabase = createClient();
+  
+  // Fetch the specific college matching the URL slug
+  const { data: college, error } = await supabase
+    .from("colleges")
+    .select("*")
+    .eq("slug", params.slug)
+    .single();
 
-  if (!college) {
+  // If no college matches the slug, trigger Next.js 404 page
+  if (error || !college) {
     notFound();
   }
 
-  // Uses database URL if it exists (for new admin uploads), or builds it dynamically for existing ones
-  const imageSource = (college as any).image_url || `${SUPABASE_IMAGE_URL}/colleges/${college.slug}.jpg`;
+  // 3. SAFELY PARSE JSON FIELDS (In case Supabase returns them as strings)
+  const courses = typeof college.courses === 'string' 
+    ? JSON.parse(college.courses) 
+    : (college.courses || []);
+    
+  const placementStats = typeof college.placement_stats === 'string' 
+    ? JSON.parse(college.placement_stats) 
+    : (college.placement_stats || { placement_rate: "N/A", average_package: "N/A" });
+
+  const imageSource = college.image_url || `${SUPABASE_IMAGE_URL}/colleges/${college.slug}.jpg`;
 
   return (
     <div className="pt-24 pb-20 container-custom min-h-screen">
+      
       {/* Back Button */}
       <Link href="/colleges" className="inline-flex items-center text-sm text-slate-500 hover:text-amber-600 mb-8 transition-colors">
         ← Back to all colleges
@@ -33,7 +55,7 @@ export default function CollegeDetailPage({ params }: { params: { slug: string }
       {/* Main Header Section */}
       <div className="bg-white rounded-3xl p-8 md:p-12 border border-slate-100 shadow-sm mb-8 flex flex-col md:flex-row gap-8 items-start">
         
-        {/* Logo (Now fetching from Supabase Storage) */}
+        {/* Logo */}
         <div className="w-32 h-32 shrink-0 rounded-2xl bg-white border border-slate-100 shadow-md flex items-center justify-center p-2 overflow-hidden">
           <img 
             src={imageSource} 
@@ -46,11 +68,11 @@ export default function CollegeDetailPage({ params }: { params: { slug: string }
         <div className="flex-1">
           <div className="flex items-center gap-3 mb-3">
             <Badge variant="secondary" className="bg-amber-50 text-amber-700 hover:bg-amber-100">
-              {college.type}
+              {college.type || "Institution"}
             </Badge>
             <div className="flex items-center gap-1 text-sm font-bold text-amber-600">
               <Star className="w-4 h-4 fill-amber-500" />
-              {college.rating} Rating
+              {college.rating || "N/A"} Rating
             </div>
           </div>
           
@@ -63,10 +85,12 @@ export default function CollegeDetailPage({ params }: { params: { slug: string }
               <MapPin className="w-4 h-4" />
               {college.location}
             </div>
-            <div className="flex items-center gap-1">
-              <Building2 className="w-4 h-4" />
-              Established {college.established}
-            </div>
+            {college.established && (
+              <div className="flex items-center gap-1">
+                <Building2 className="w-4 h-4" />
+                Established {college.established}
+              </div>
+            )}
             
             {/* Official Website Link */}
             {college.website && (
@@ -95,13 +119,17 @@ export default function CollegeDetailPage({ params }: { params: { slug: string }
         <div className="md:col-span-2 space-y-8">
           <div className="bg-white rounded-3xl p-8 border border-slate-100 shadow-sm">
             <h2 className="text-2xl font-bold text-slate-900 mb-6">Programs Offered</h2>
-            <div className="grid sm:grid-cols-2 gap-4">
-              {college.courses.map((course) => (
-                <div key={course} className="p-4 rounded-xl bg-slate-50 border border-slate-100 font-medium text-slate-700">
-                  {course}
-                </div>
-              ))}
-            </div>
+            {courses.length === 0 ? (
+              <p className="text-slate-500">No courses listed currently.</p>
+            ) : (
+              <div className="grid sm:grid-cols-2 gap-4">
+                {courses.map((course: string) => (
+                  <div key={course} className="p-4 rounded-xl bg-slate-50 border border-slate-100 font-medium text-slate-700">
+                    {course}
+                  </div>
+                ))}
+              </div>
+            )}
           </div>
         </div>
 
@@ -112,11 +140,11 @@ export default function CollegeDetailPage({ params }: { params: { slug: string }
             <div className="space-y-4">
               <div className="p-4 rounded-xl bg-slate-50 border border-slate-100">
                 <div className="text-sm text-slate-500 mb-1">Placement Rate</div>
-                <div className="text-2xl font-bold text-emerald-600">{college.placement_stats.placement_rate}</div>
+                <div className="text-2xl font-bold text-emerald-600">{placementStats.placement_rate || "N/A"}</div>
               </div>
               <div className="p-4 rounded-xl bg-slate-50 border border-slate-100">
                 <div className="text-sm text-slate-500 mb-1">Average Package</div>
-                <div className="text-2xl font-bold text-slate-900">{college.placement_stats.average_package}</div>
+                <div className="text-2xl font-bold text-slate-900">{placementStats.average_package || "N/A"}</div>
               </div>
             </div>
           </div>
