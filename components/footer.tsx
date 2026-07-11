@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import { GraduationCap, MapPin, Phone, Mail, Clock, Facebook, Twitter, Instagram, Linkedin, Youtube } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -10,6 +11,7 @@ import { createClient } from "@/lib/supabase-client";
 export function Footer() {
   const [settings, setSettings] = useState<any>(null);
   const [courses, setCourses] = useState<any[]>([]);
+  const pathname = usePathname();
 
   useEffect(() => {
     async function fetchData() {
@@ -36,6 +38,10 @@ export function Footer() {
     { Icon: Youtube, url: settings?.youtube_url },
   ].filter(link => link.url); 
 
+  // Hide the entire footer (including CTA banner and main footer) on the scholarships page
+  if (pathname === "/scholarships" || pathname === "/scholarships/") {
+    return null;
+  }
   return (
     <footer className="bg-slate-900 text-white print:hidden">
       {/* CTA Section */}

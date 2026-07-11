@@ -34,6 +34,11 @@ export function Navigation() {
   // Determine if nav should be solid (always solid white background)
   const isSolid = true;
 
+  // Hide the navigation header on the scholarships page
+  if (pathname === "/scholarships" || pathname === "/scholarships/") {
+    return null;
+  }
+
   return (
     <>
       <motion.header

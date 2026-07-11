@@ -6,6 +6,7 @@ export const NAV_LINKS = [
   { href: '/career-guidance/', label: 'Career Guidance' },
   { href: '/colleges/', label: 'Colleges' },
   { href: '/courses/', label: 'Courses' },
+  { href: '/scholarships/', label: 'Scholarships' },
   { href: '/success-stories/', label: 'Success Stories' },
   { href: '/blog/', label: 'Blog' },
   { href: '/contact/', label: 'Contact' },
