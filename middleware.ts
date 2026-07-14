@@ -43,7 +43,7 @@ export async function middleware(request: NextRequest) {
     // If the user is NOT logged in, redirect them to the login page
     if (!user) {
       const loginUrl = request.nextUrl.clone()
-      loginUrl.pathname = '/admin/login'
+      loginUrl.pathname = '/admin/login/'
       return NextResponse.redirect(loginUrl)
     }
   }
@@ -51,7 +51,7 @@ export async function middleware(request: NextRequest) {
   // If the user IS logged in and tries to go to the login page, redirect them to the dashboard
   if (user && isTargetingLoginRoute) {
     const dashboardUrl = request.nextUrl.clone()
-    dashboardUrl.pathname = '/admin/dashboard'
+    dashboardUrl.pathname = '/admin/dashboard/'
     return NextResponse.redirect(dashboardUrl)
   }
 

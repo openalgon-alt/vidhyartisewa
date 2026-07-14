@@ -17,7 +17,8 @@ import {
   Users,
   Contact,
   BrainCircuit,
-  HelpCircle
+  HelpCircle,
+  Award
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
@@ -33,6 +34,7 @@ const SIDEBAR_LINKS = [
   { name: "Recruiting Companies", href: "/admin/dashboard/recruiters", icon: Briefcase },
   { name: "Team & CEO", href: "/admin/dashboard/team", icon: Users },
   { name: "Inquiries & Leads", href: "/admin/dashboard/leads", icon: Contact },
+  { name: "Scholarship Apps", href: "/admin/dashboard/scholarships", icon: Award },
   { name: "Assessment Questions", href: "/admin/dashboard/questions", icon: BrainCircuit },
   { name: "FAQs", href: "/admin/dashboard/faqs", icon: HelpCircle },
   { name: "Site Settings", href: "/admin/dashboard/settings", icon: Settings },

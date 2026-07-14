@@ -99,7 +99,7 @@ export default function AdminLeadsPage() {
           
           return {
             "Status": (lead.status || "pending").toUpperCase(),
-            "Date": new Date(lead.created_at).toLocaleDateString(),
+            "Date": lead.created_at && !isNaN(new Date(lead.created_at).getTime()) ? new Date(lead.created_at).toLocaleDateString() : "N/A",
             "Name": lead.name,
             "Phone": lead.phone,
             "Email": lead.email,
@@ -126,7 +126,7 @@ export default function AdminLeadsPage() {
         .filter(c => selectedCallbacks.includes(c.id))
         .map(cb => ({
           "Status": (cb.status || "pending").toUpperCase(),
-          "Date": new Date(cb.created_at).toLocaleDateString(),
+          "Date": cb.created_at && !isNaN(new Date(cb.created_at).getTime()) ? new Date(cb.created_at).toLocaleDateString() : "N/A",
           "Name": cb.name,
           "Phone": cb.phone,
           "Best Time to Call": cb.best_time
@@ -140,7 +140,12 @@ export default function AdminLeadsPage() {
     }
   };
 
-  const formatDate = (dateString: string) => new Date(dateString).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
+  const formatDate = (dateString: string) => {
+    if (!dateString) return "N/A";
+    const date = new Date(dateString);
+    if (isNaN(date.getTime())) return "N/A";
+    return date.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
+  };
 
   const activeSelectionCount = activeTab === "leads" ? selectedLeads.length : selectedCallbacks.length;
 

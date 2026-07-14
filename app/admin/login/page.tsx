@@ -35,7 +35,7 @@ export default function AdminLoginPage() {
       if (error) throw error;
       
       // Redirect to dashboard on success
-      router.push("/admin/dashboard");
+      router.push("/admin/dashboard/");
       router.refresh(); // CRITICAL: Forces Next.js to update server state and recognize the login
 
     } catch (error: any) {

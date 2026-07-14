@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useMemo } from "react";
+import Link from "next/link";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
@@ -140,14 +141,16 @@ export default function ScholarshipsPage() {
       const { error } = await supabase.from("scholarship_applications").insert([submissionData]);
 
       if (error) {
-        // Log the error to console and throw to trigger fallback
+        alert("Supabase Error: " + error.message + " (Code: " + error.code + ")");
         console.warn("Supabase insertion failed. Performing offline local fallback...", error);
         throw error;
       }
 
       setIsSubmitSuccess(true);
+      setSelectedProgram(null);
       reset();
-    } catch (err) {
+    } catch (err: any) {
+      alert("Submission Exception: " + err.message);
       // Fallback: Save to localStorage as backup and still show success page
       try {
         const fallbackQueue = JSON.parse(localStorage.getItem("scholarship_submissions_backup") || "[]");
@@ -164,6 +167,7 @@ export default function ScholarshipsPage() {
 
       // Show success screen to client regardless of server connection to ensure smooth UX
       setIsSubmitSuccess(true);
+      setSelectedProgram(null);
       reset();
     } finally {
       setIsSubmitting(false);
@@ -198,6 +202,33 @@ export default function ScholarshipsPage() {
         <div className="absolute -right-32 bottom-0 w-96 h-96 bg-indigo-500/10 rounded-full blur-3xl pointer-events-none"></div>
 
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 text-center pt-8">
+          {/* Logo Brand Header */}
+          <div className="flex justify-center mb-6">
+            <Link href="/" className="inline-flex items-center gap-2.5 group bg-white/5 backdrop-blur-md px-4 py-2 rounded-2xl border border-white/10 hover:bg-white/10 hover:border-white/20 transition-all duration-300 shadow-lg shadow-black/5">
+              <div className="w-12 h-12 flex items-center justify-center shrink-0 bg-white rounded-xl p-1 shadow-md">
+                <img 
+                  src="/images/logo/logo.png"
+                  className="w-full h-full object-contain group-hover:scale-105 transition-transform duration-300"
+                  onError={(e) => {
+                    const target = e.target as HTMLImageElement;
+                    target.style.display = 'none';
+                    target.parentElement?.querySelector('.fallback-icon')?.classList.remove('hidden');
+                  }}
+                  alt="Vidhyarthi Sewa Logo"
+                />
+                <GraduationCap className="w-6 h-6 fallback-icon text-[#FF6138] hidden" />
+              </div>
+              <div className="flex flex-col items-center text-center leading-none">
+                <span className="text-sm font-extrabold tracking-wider text-white uppercase group-hover:text-amber-400 transition-colors">
+                  Vidhyarthi Sewa
+                </span>
+                <span className="text-[10px] font-bold tracking-[0.2em] text-blue-200 uppercase mt-1 group-hover:text-amber-300 transition-colors">
+                  Trust
+                </span>
+              </div>
+            </Link>
+          </div>
+
           <h1 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold tracking-tight mb-6 max-w-4xl mx-auto text-white leading-tight">
             PG Scholarship Program 2026
           </h1>
@@ -431,8 +462,10 @@ export default function ScholarshipsPage() {
                     <select 
                       id="state" 
                       className="w-full h-9 rounded-md border border-slate-200 bg-white px-3 py-1 text-sm mt-1 focus:ring-2 focus:ring-blue-600 focus:outline-none"
-                      onChange={handleStateChange}
                       defaultValue=""
+                      {...register("state", {
+                        onChange: handleStateChange
+                      })}
                     >
                       <option value="" disabled>Select State</option>
                       {Object.keys(STATES_AND_DISTRICTS).map(st => (

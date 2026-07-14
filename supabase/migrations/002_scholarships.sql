@@ -15,15 +15,26 @@ CREATE TABLE IF NOT EXISTS scholarship_applications (
   preferred_study_city TEXT NOT NULL,
   hostel_required BOOLEAN NOT NULL DEFAULT FALSE,
   declaration_accepted BOOLEAN NOT NULL DEFAULT TRUE,
+  status TEXT NOT NULL DEFAULT 'pending' CHECK (status IN ('pending', 'reviewed', 'contacted')),
   created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
 );
 
 -- Enable Row Level Security (RLS)
 alter table if exists scholarship_applications enable row level security;
 
--- Create policy to allow anonymous insertions
+-- Create policy to allow insertions for both anonymous and authenticated users
 CREATE POLICY "Allow anonymous inserts" ON scholarship_applications
-  FOR INSERT TO anon WITH CHECK (true);
+  FOR INSERT TO anon, authenticated WITH CHECK (true);
+
+-- Create policies for authenticated users (admin dashboard)
+CREATE POLICY "Allow authenticated select" ON scholarship_applications
+  FOR SELECT TO authenticated USING (true);
+
+CREATE POLICY "Allow authenticated update" ON scholarship_applications
+  FOR UPDATE TO authenticated USING (true);
+
+CREATE POLICY "Allow authenticated delete" ON scholarship_applications
+  FOR DELETE TO authenticated USING (true);
 
 -- Create index for performance
 CREATE INDEX IF NOT EXISTS idx_scholarship_applications_created_at ON scholarship_applications(created_at);
