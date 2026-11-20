@@ -303,7 +303,7 @@ export function NepalNursingScholarshipsView({
   });
 
   return (
-    <div className="bg-[#FFFFFF] text-slate-800 font-sans selection:bg-teal-500/20 selection:text-teal-900 min-h-screen pb-16 sm:pb-0">
+    <div className="bg-[#FFFFFF] text-slate-800 font-sans selection:bg-teal-500/20 selection:text-teal-900 min-h-screen">
       
       {/* ========================================================================= */}
       {/* 1. HERO SECTION (MINIMALISTIC WHITE WITH 3D MEDICAL ELEMENTS & ANIMATION) */}
@@ -311,7 +311,7 @@ export function NepalNursingScholarshipsView({
       <section className="relative min-h-[100dvh] sm:min-h-0 flex flex-col justify-center pt-8 pb-10 sm:pt-20 sm:pb-24 md:pt-28 md:pb-28 bg-gradient-to-b from-white via-[#F8FAFC] to-white text-slate-800 overflow-hidden border-b border-slate-200/80">
         
         {/* Ambient Medical Background Photography Layer (Soft Desaturated Watermark) */}
-        <div className="absolute inset-0 z-0 pointer-events-none overflow-hidden opacity-[0.06] select-none">
+        <div className="absolute inset-0 z-0 pointer-events-none overflow-hidden opacity-[0.08] select-none">
           <img 
             src="/images/blog/nursing-career-india.jpg" 
             alt="Nursing Education" 
@@ -326,7 +326,7 @@ export function NepalNursingScholarshipsView({
         <div className="absolute inset-0 bg-[radial-gradient(#0f172a08_1px,transparent_1px)] [background-size:24px_24px] pointer-events-none opacity-80 z-0" />
 
         {/* Animated Medical ECG / Heartbeat Pulse Waveform Background Line */}
-        <div className="absolute top-1/2 left-0 right-0 -translate-y-1/2 z-0 pointer-events-none opacity-[0.12] overflow-hidden flex items-center justify-center select-none">
+        <div className="absolute top-1/2 left-0 right-0 -translate-y-1/2 z-0 pointer-events-none opacity-[0.14] overflow-hidden flex items-center justify-center select-none">
           <svg className="w-full max-w-7xl h-24 stroke-teal-600 fill-none" viewBox="0 0 1200 120">
             <path 
               d="M 0 60 L 250 60 L 270 30 L 290 90 L 310 10 L 330 110 L 350 40 L 370 75 L 390 60 L 750 60 L 770 30 L 790 90 L 810 10 L 830 110 L 850 40 L 870 75 L 890 60 L 1200 60" 
@@ -360,48 +360,48 @@ export function NepalNursingScholarshipsView({
           +
         </motion.div>
 
-        {/* Pure 3D Medical Visual Elements - Left & Right (No Text, No Chips) */}
+        {/* Pure 3D Medical Visual Elements - Visible on Mobile & Desktop (No Text, No Chips) */}
         {/* 1. Left Stethoscope 3D Glass Sphere */}
         <motion.div
-          animate={{ y: [0, -14, 0], rotate: [0, 4, 0] }}
+          animate={{ y: [0, -12, 0], rotate: [0, 5, 0] }}
           transition={{ duration: 7, repeat: Infinity, ease: "easeInOut" }}
-          className="hidden lg:flex items-center justify-center w-18 h-18 xl:w-20 xl:h-20 rounded-3xl bg-gradient-to-br from-teal-500/20 via-emerald-500/10 to-white/95 backdrop-blur-2xl border-2 border-teal-200/80 shadow-[0_20px_45px_rgba(13,148,136,0.16)] absolute left-8 xl:left-20 top-1/4 pointer-events-none z-10 transform-gpu"
+          className="flex items-center justify-center w-11 h-11 sm:w-16 sm:h-16 lg:w-20 lg:h-20 rounded-2xl sm:rounded-3xl bg-gradient-to-br from-teal-500/20 via-emerald-500/10 to-white/95 backdrop-blur-2xl border-2 border-teal-200/80 shadow-[0_12px_28px_rgba(13,148,136,0.18)] absolute left-2 sm:left-8 xl:left-20 top-16 sm:top-1/4 pointer-events-none z-10 transform-gpu"
         >
-          <div className="w-12 h-12 xl:w-14 xl:h-14 rounded-2xl bg-teal-50/90 border border-teal-200/70 flex items-center justify-center text-teal-600 shadow-inner">
-            <Stethoscope className="w-6 h-6 xl:w-7 xl:h-7 drop-shadow-sm" />
+          <div className="w-7 h-7 sm:w-12 sm:h-12 lg:w-14 lg:h-14 rounded-xl sm:rounded-2xl bg-teal-50/90 border border-teal-200/70 flex items-center justify-center text-teal-600 shadow-inner">
+            <Stethoscope className="w-4 h-4 sm:w-6 sm:h-6 lg:w-7 lg:h-7 drop-shadow-sm" />
           </div>
         </motion.div>
 
         {/* 2. Right HeartPulse 3D Glass Sphere */}
         <motion.div
-          animate={{ y: [0, 14, 0], rotate: [0, -5, 0] }}
+          animate={{ y: [0, 12, 0], rotate: [0, -5, 0] }}
           transition={{ duration: 8, repeat: Infinity, ease: "easeInOut", delay: 0.8 }}
-          className="hidden lg:flex items-center justify-center w-18 h-18 xl:w-20 xl:h-20 rounded-3xl bg-gradient-to-br from-emerald-500/20 via-teal-500/10 to-white/95 backdrop-blur-2xl border-2 border-emerald-200/80 shadow-[0_20px_45px_rgba(16,185,129,0.16)] absolute right-8 xl:right-20 top-1/3 pointer-events-none z-10 transform-gpu"
+          className="flex items-center justify-center w-11 h-11 sm:w-16 sm:h-16 lg:w-20 lg:h-20 rounded-2xl sm:rounded-3xl bg-gradient-to-br from-emerald-500/20 via-teal-500/10 to-white/95 backdrop-blur-2xl border-2 border-emerald-200/80 shadow-[0_12px_28px_rgba(16,185,129,0.18)] absolute right-2 sm:right-8 xl:right-20 top-20 sm:top-1/3 pointer-events-none z-10 transform-gpu"
         >
-          <div className="w-12 h-12 xl:w-14 xl:h-14 rounded-2xl bg-emerald-50/90 border border-emerald-200/70 flex items-center justify-center text-emerald-600 shadow-inner">
-            <HeartPulse className="w-6 h-6 xl:w-7 xl:h-7 drop-shadow-sm" />
+          <div className="w-7 h-7 sm:w-12 sm:h-12 lg:w-14 lg:h-14 rounded-xl sm:rounded-2xl bg-emerald-50/90 border border-emerald-200/70 flex items-center justify-center text-emerald-600 shadow-inner">
+            <HeartPulse className="w-4 h-4 sm:w-6 sm:h-6 lg:w-7 lg:h-7 drop-shadow-sm" />
           </div>
         </motion.div>
 
         {/* 3. Top-Right Medical Cross & Award Glass Element */}
         <motion.div
-          animate={{ y: [0, -10, 0], rotate: [0, 6, 0] }}
+          animate={{ y: [0, -8, 0], rotate: [0, 6, 0] }}
           transition={{ duration: 6.5, repeat: Infinity, ease: "easeInOut", delay: 1.5 }}
-          className="hidden md:flex items-center justify-center w-13 h-13 rounded-2xl bg-gradient-to-br from-amber-400/20 via-yellow-400/10 to-white/90 backdrop-blur-xl border border-amber-200/70 shadow-[0_15px_30px_rgba(245,158,11,0.14)] absolute right-1/4 top-10 pointer-events-none z-10 transform-gpu"
+          className="flex items-center justify-center w-8 h-8 sm:w-12 sm:h-12 lg:w-13 lg:h-13 rounded-xl sm:rounded-2xl bg-gradient-to-br from-amber-400/20 via-yellow-400/10 to-white/90 backdrop-blur-xl border border-amber-200/70 shadow-[0_10px_25px_rgba(245,158,11,0.14)] absolute right-4 sm:right-1/4 top-5 sm:top-10 pointer-events-none z-10 transform-gpu"
         >
-          <div className="w-9 h-9 rounded-xl bg-amber-50 border border-amber-200/60 flex items-center justify-center text-amber-600 shadow-inner">
-            <Award className="w-5 h-5 drop-shadow-sm" />
+          <div className="w-5 h-5 sm:w-8 sm:h-8 lg:w-9 lg:h-9 rounded-lg sm:rounded-xl bg-amber-50 border border-amber-200/60 flex items-center justify-center text-amber-600 shadow-inner">
+            <Award className="w-3 h-3 sm:w-5 sm:h-5 drop-shadow-sm" />
           </div>
         </motion.div>
 
         {/* 4. Bottom-Left Clinical Shield Glass Element */}
         <motion.div
-          animate={{ y: [0, 10, 0], rotate: [0, -6, 0] }}
+          animate={{ y: [0, 8, 0], rotate: [0, -6, 0] }}
           transition={{ duration: 7.5, repeat: Infinity, ease: "easeInOut", delay: 2 }}
-          className="hidden md:flex items-center justify-center w-13 h-13 rounded-2xl bg-gradient-to-br from-blue-500/20 via-indigo-500/10 to-white/90 backdrop-blur-xl border border-blue-200/70 shadow-[0_15px_30px_rgba(59,130,246,0.14)] absolute left-1/4 bottom-12 pointer-events-none z-10 transform-gpu"
+          className="flex items-center justify-center w-8 h-8 sm:w-12 sm:h-12 lg:w-13 lg:h-13 rounded-xl sm:rounded-2xl bg-gradient-to-br from-blue-500/20 via-indigo-500/10 to-white/90 backdrop-blur-xl border border-blue-200/70 shadow-[0_10px_25px_rgba(59,130,246,0.14)] absolute left-4 sm:left-1/4 bottom-14 sm:bottom-12 pointer-events-none z-10 transform-gpu"
         >
-          <div className="w-9 h-9 rounded-xl bg-blue-50 border border-blue-200/60 flex items-center justify-center text-blue-600 shadow-inner">
-            <ShieldCheck className="w-5 h-5 drop-shadow-sm" />
+          <div className="w-5 h-5 sm:w-8 sm:h-8 lg:w-9 lg:h-9 rounded-lg sm:rounded-xl bg-blue-50 border border-blue-200/60 flex items-center justify-center text-blue-600 shadow-inner">
+            <ShieldCheck className="w-3 h-3 sm:w-5 sm:h-5 drop-shadow-sm" />
           </div>
         </motion.div>
         
@@ -453,6 +453,33 @@ export function NepalNursingScholarshipsView({
               >
                 Explore Courses
               </a>
+            </div>
+
+            {/* Value & Key Stats 3D Micro-Grid for Mobile & Desktop (Fills screen with clean trust & visual depth) */}
+            <div className="grid grid-cols-3 gap-2 sm:gap-3.5 pt-3 sm:pt-4 max-w-lg sm:max-w-xl mx-auto w-full">
+              <div className="p-2.5 sm:p-3 rounded-2xl bg-white/90 backdrop-blur-md border border-slate-200/80 shadow-sm hover:shadow-md transition-all text-center">
+                <div className="w-7 h-7 sm:w-8 sm:h-8 mx-auto rounded-xl bg-teal-50 border border-teal-200/60 flex items-center justify-center text-teal-600 mb-1.5 shadow-inner">
+                  <GraduationCap className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
+                </div>
+                <div className="text-xs sm:text-sm font-black text-slate-800">35+ Colleges</div>
+                <div className="text-[10px] sm:text-xs text-slate-500 font-medium">INC / RGUHS</div>
+              </div>
+
+              <div className="p-2.5 sm:p-3 rounded-2xl bg-white/90 backdrop-blur-md border border-slate-200/80 shadow-sm hover:shadow-md transition-all text-center">
+                <div className="w-7 h-7 sm:w-8 sm:h-8 mx-auto rounded-xl bg-emerald-50 border border-emerald-200/60 flex items-center justify-center text-emerald-600 mb-1.5 shadow-inner">
+                  <Award className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
+                </div>
+                <div className="text-xs sm:text-sm font-black text-slate-800">Up to 80%</div>
+                <div className="text-[10px] sm:text-xs text-slate-500 font-medium">Merit Grants</div>
+              </div>
+
+              <div className="p-2.5 sm:p-3 rounded-2xl bg-white/90 backdrop-blur-md border border-slate-200/80 shadow-sm hover:shadow-md transition-all text-center">
+                <div className="w-7 h-7 sm:w-8 sm:h-8 mx-auto rounded-xl bg-blue-50 border border-blue-200/60 flex items-center justify-center text-blue-600 mb-1.5 shadow-inner">
+                  <Stethoscope className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
+                </div>
+                <div className="text-xs sm:text-sm font-black text-slate-800">100% Free</div>
+                <div className="text-[10px] sm:text-xs text-slate-500 font-medium">Desk Guidance</div>
+              </div>
             </div>
 
             {/* Disclaimer Footnote */}
@@ -1429,26 +1456,6 @@ export function NepalNursingScholarshipsView({
 
         </div>
       </section>
-
-      {/* ========================================================================= */}
-      {/* 10. STICKY MOBILE BOTTOM CONVERSION BAR                                   */}
-      {/* ========================================================================= */}
-      <div className="fixed bottom-0 left-0 right-0 z-40 bg-[#0B192C]/95 backdrop-blur-md border-t border-slate-800 p-2.5 sm:p-3 flex sm:hidden items-center justify-between gap-2 shadow-2xl">
-        <div className="text-left pl-1">
-          <span className="text-[9px] font-bold text-teal-400 block uppercase tracking-wider">Nepal Quota</span>
-          <span className="text-xs font-black text-white">Up to 80% Scholarship*</span>
-        </div>
-
-        <div className="flex items-center">
-          <button
-            type="button"
-            onClick={() => scrollToForm()}
-            className="px-4 py-2 rounded-xl bg-gradient-to-r from-teal-500 to-emerald-500 active:scale-95 text-slate-950 font-black text-xs shadow-md transition-all cursor-pointer"
-          >
-            Check Scholarship
-          </button>
-        </div>
-      </div>
 
       {/* ========================================================================= */}
       {/* 11. 4-SECOND DELAYED SCHOLARSHIP ESTIMATOR POPUP                          */}
