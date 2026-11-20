@@ -40,8 +40,12 @@ export function CallbackRequest() {
     resolver: zodResolver(callbackSchema),
   });
 
-  // Hide on scholarships page
-  if (pathname === "/scholarships" || pathname === "/scholarships/") {
+  // Hide on scholarships & nepal nursing landing pages
+  if (
+    pathname === "/scholarships" ||
+    pathname === "/scholarships/" ||
+    pathname?.startsWith("/nepal/nursing-scholarships-india")
+  ) {
     return null;
   }
 
