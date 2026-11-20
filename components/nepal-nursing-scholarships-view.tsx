@@ -316,244 +316,98 @@ export function NepalNursingScholarshipsView({
         
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
           
-          <div className="grid lg:grid-cols-12 gap-10 lg:gap-12 items-center">
+          <div className="max-w-4xl mx-auto space-y-6 text-center">
             
-            {/* Left Hero Column: Copy & Value Proposition */}
-            <div className="lg:col-span-7 space-y-6 text-left">
-              
-              {/* Prominent Nepal Admission Quota Pill */}
-              <div className="inline-flex flex-wrap items-center gap-2 px-3.5 py-1.5 rounded-full bg-gradient-to-r from-amber-500/20 via-teal-500/15 to-amber-500/20 border border-amber-400/40 text-xs sm:text-sm font-bold tracking-wide shadow-lg shadow-amber-500/10 backdrop-blur-md">
-                <span className="flex h-2.5 w-2.5 rounded-full bg-amber-400 animate-ping shrink-0" />
-                <span className="text-white font-extrabold">🇳🇵 NEPAL SPECIAL ADMISSION QUOTA 2025–26</span>
-                <span className="text-amber-400 hidden sm:inline">•</span>
-                <span className="text-amber-300 font-bold hidden sm:inline">MERIT SCHOLARSHIP SCHEME</span>
-              </div>
+            {/* Prominent Nepal Admission Quota Pill */}
+            <div className="inline-flex flex-wrap items-center justify-center gap-2 px-3.5 py-1.5 rounded-full bg-gradient-to-r from-amber-500/20 via-teal-500/15 to-amber-500/20 border border-amber-400/40 text-xs sm:text-sm font-bold tracking-wide shadow-lg shadow-amber-500/10 backdrop-blur-md">
+              <span className="flex h-2.5 w-2.5 rounded-full bg-amber-400 animate-ping shrink-0" />
+              <span className="text-white font-extrabold">🇳🇵 NEPAL SPECIAL ADMISSION QUOTA 2025–26</span>
+              <span className="text-amber-400 hidden sm:inline">•</span>
+              <span className="text-amber-300 font-bold hidden sm:inline">MERIT SCHOLARSHIP SCHEME</span>
+            </div>
 
-              {/* Main H1 - Exact Target SEO Keyword with Bold Highlight for 80% Scholarship */}
-              <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-[48px] font-black text-white tracking-tight leading-[1.15]">
-                Study Nursing in India with{" "}
-                <span className="block mt-2">
-                  <span className="inline-flex items-center gap-2.5 bg-gradient-to-r from-amber-400 via-amber-300 to-yellow-400 text-slate-950 font-black px-4 py-1.5 sm:px-5 sm:py-2 rounded-2xl shadow-2xl shadow-amber-500/35 border-2 border-amber-300 tracking-tight transform -rotate-1 hover:rotate-0 transition-transform">
-                    <Sparkles className="w-5 h-5 sm:w-6 sm:h-6 text-slate-950 fill-slate-950 shrink-0" />
-                    UP TO 80% SCHOLARSHIP*
-                  </span>
+            {/* Main H1 - Exact Target SEO Keyword with Bold Highlight for 80% Scholarship */}
+            <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-[52px] font-black text-white tracking-tight leading-[1.15]">
+              Study Nursing in India with{" "}
+              <span className="block mt-2">
+                <span className="inline-flex items-center gap-2.5 bg-gradient-to-r from-amber-400 via-amber-300 to-yellow-400 text-slate-950 font-black px-4 py-1.5 sm:px-6 sm:py-2 rounded-2xl shadow-2xl shadow-amber-500/35 border-2 border-amber-300 tracking-tight transform -rotate-1 hover:rotate-0 transition-transform">
+                  <Sparkles className="w-5 h-5 sm:w-6 sm:h-6 text-slate-950 fill-slate-950 shrink-0" />
+                  UP TO 80% SCHOLARSHIP*
                 </span>
-              </h1>
+              </span>
+            </h1>
 
-              {/* Supporting Headline */}
-              <p className="text-base sm:text-lg md:text-xl font-bold text-slate-100 leading-snug">
-                Direct tuition fee grants for eligible Nepalese 10+2 Science students at top INC & RGUHS affiliated colleges in Bangalore, India.
-              </p>
+            {/* Supporting Headline */}
+            <p className="text-base sm:text-lg md:text-xl font-bold text-slate-100 leading-snug max-w-2xl mx-auto">
+              Direct tuition fee grants for eligible Nepalese 10+2 Science students at top INC & RGUHS affiliated colleges in Bangalore, India.
+            </p>
 
-              {/* Supporting Descriptive Text */}
-              <p className="text-xs sm:text-sm md:text-base text-slate-300 leading-relaxed max-w-2xl">
-                Discover nursing and allied healthcare courses, compare colleges, understand eligibility and receive personalised admission guidance from experienced educational counselors.
-              </p>
+            {/* Supporting Descriptive Text */}
+            <p className="text-xs sm:text-sm md:text-base text-slate-300 leading-relaxed max-w-2xl mx-auto">
+              Discover nursing and allied healthcare courses, compare colleges, understand eligibility and receive personalised admission guidance from experienced educational counselors.
+            </p>
 
-              {/* Key Highlights Quick Bullets */}
-              <div className="grid grid-cols-1 sm:grid-cols-3 gap-2.5 pt-1 text-xs text-slate-200 font-medium">
-                <div className="flex items-center gap-2 p-2.5 rounded-xl bg-white/5 border border-white/10 backdrop-blur-sm">
-                  <ShieldCheck className="w-4 h-4 text-emerald-400 shrink-0" />
-                  <span>INC & RGUHS Approved</span>
-                </div>
-                <div className="flex items-center gap-2 p-2.5 rounded-xl bg-white/5 border border-white/10 backdrop-blur-sm">
-                  <Building2 className="w-4 h-4 text-teal-400 shrink-0" />
-                  <span>1,000+ Bed Hospital Exposure</span>
-                </div>
-                <div className="flex items-center gap-2 p-2.5 rounded-xl bg-white/5 border border-white/10 backdrop-blur-sm">
-                  <Globe2 className="w-4 h-4 text-amber-400 shrink-0" />
-                  <span>Direct Nepal Student Desk</span>
-                </div>
+            {/* Key Highlights Quick Bullets */}
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 pt-1 text-xs text-slate-200 font-medium max-w-2xl mx-auto">
+              <div className="flex items-center justify-center gap-2 p-3 rounded-xl bg-white/5 border border-white/10 backdrop-blur-sm">
+                <ShieldCheck className="w-4 h-4 text-emerald-400 shrink-0" />
+                <span>INC & RGUHS Approved</span>
               </div>
-
-              {/* Social Proof Row */}
-              <div className="flex flex-wrap items-center gap-3 pt-1">
-                <div className="flex -space-x-2 overflow-hidden">
-                  <div className="inline-block h-8 w-8 rounded-full ring-2 ring-[#061426] bg-teal-500 text-slate-950 font-bold text-xs flex items-center justify-center">
-                    🇳🇵
-                  </div>
-                  <div className="inline-block h-8 w-8 rounded-full ring-2 ring-[#061426] bg-blue-600 text-white font-bold text-xs flex items-center justify-center">
-                    AS
-                  </div>
-                  <div className="inline-block h-8 w-8 rounded-full ring-2 ring-[#061426] bg-amber-500 text-slate-950 font-bold text-xs flex items-center justify-center">
-                    PK
-                  </div>
-                  <div className="inline-block h-8 w-8 rounded-full ring-2 ring-[#061426] bg-emerald-600 text-white font-bold text-xs flex items-center justify-center">
-                    RS
-                  </div>
-                </div>
-                <div className="text-xs text-slate-300">
-                  <span className="font-bold text-white">650+ Nepalese Students</span> Guided to Bangalore Colleges •{" "}
-                  <span className="text-amber-400 font-bold">★ 4.9/5 Rating</span>
-                </div>
+              <div className="flex items-center justify-center gap-2 p-3 rounded-xl bg-white/5 border border-white/10 backdrop-blur-sm">
+                <Building2 className="w-4 h-4 text-teal-400 shrink-0" />
+                <span>1,000+ Bed Hospital Exposure</span>
               </div>
-
-              {/* Hero CTA Buttons */}
-              <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3.5 pt-2">
-                <button
-                  type="button"
-                  onClick={() => scrollToForm()}
-                  className="px-7 py-3.5 rounded-xl bg-gradient-to-r from-teal-400 to-emerald-400 hover:from-teal-300 hover:to-emerald-300 active:scale-95 text-slate-950 font-black text-sm shadow-xl shadow-teal-500/25 transition-all text-center flex items-center justify-center gap-2 group"
-                >
-                  <span>Check Scholarship Eligibility</span>
-                  <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
-                </button>
-
-                <a
-                  href="#courses-section"
-                  className="px-6 py-3.5 rounded-xl bg-white/10 hover:bg-white/15 border border-white/20 text-white font-bold text-sm transition-all text-center"
-                >
-                  Explore Courses
-                </a>
-              </div>
-
-              {/* Disclaimer Footnote */}
-              <p className="text-[11px] text-slate-400 italic">
-                *Scholarships are subject to academic eligibility (10+2 PCB marks/GPA), verified college seat approval, and applicable institutional terms.
-              </p>
-
-            </div>
-
-            {/* Right Hero Column: Real Photography + Interactive Scholarship Calculator */}
-            <div className="lg:col-span-5">
-              <div className="relative rounded-3xl overflow-hidden bg-slate-900/80 border border-white/15 backdrop-blur-xl shadow-2xl shadow-black/40">
-                
-                {/* Real Hospital / Nursing Photography Header */}
-                <div className="relative h-44 sm:h-48 w-full overflow-hidden">
-                  <Image
-                    src="/images/blog/nursing-career-india.jpg"
-                    alt="Nepalese Nursing Students Clinical Training in Bangalore Hospital"
-                    fill
-                    className="object-cover object-center"
-                    priority
-                  />
-                  <div className="absolute inset-0 bg-gradient-to-t from-slate-950 via-slate-950/40 to-transparent" />
-                  
-                  {/* Floating Trust Pills on Image */}
-                  <div className="absolute top-3 left-3 flex flex-wrap gap-2">
-                    <span className="px-2.5 py-1 rounded-full bg-slate-950/80 border border-white/20 text-[11px] font-bold text-white backdrop-blur-md flex items-center gap-1.5 shadow-md">
-                      <Building2 className="w-3.5 h-3.5 text-teal-400" />
-                      1,000+ Bed Hospital
-                    </span>
-                    <span className="px-2.5 py-1 rounded-full bg-slate-950/80 border border-white/20 text-[11px] font-bold text-amber-300 backdrop-blur-md flex items-center gap-1.5 shadow-md">
-                      🇳🇵 Nepal Desk
-                    </span>
-                  </div>
-
-                  <div className="absolute bottom-3 left-3 right-3 flex items-center justify-between text-xs text-white font-bold">
-                    <span className="text-slate-200">Bangalore Nursing Hub</span>
-                    <span className="text-teal-300 flex items-center gap-1">
-                      <CheckCircle2 className="w-3.5 h-3.5 text-teal-400" /> INC Verified
-                    </span>
-                  </div>
-                </div>
-
-                {/* Interactive Instant Scholarship Calculator */}
-                <div className="p-5 sm:p-6 space-y-4 text-left">
-                  <div className="flex items-center justify-between pb-2 border-b border-white/10">
-                    <div>
-                      <h3 className="text-base font-extrabold text-white flex items-center gap-2">
-                        <Sparkles className="w-4 h-4 text-amber-400" />
-                        Instant Scholarship Estimator
-                      </h3>
-                      <p className="text-xs text-slate-400 mt-0.5">
-                        Select course and 10+2 PCB score to see your grant:
-                      </p>
-                    </div>
-                  </div>
-
-                  {/* Course Selector Buttons */}
-                  <div>
-                    <label className="text-[11px] font-bold uppercase tracking-wider text-slate-400 block mb-2">
-                      1. Select Preferred Course
-                    </label>
-                    <div className="grid grid-cols-2 gap-2">
-                      {[
-                        { name: "B.Sc. Nursing", tag: "Up to 80%*" },
-                        { name: "GNM", tag: "Low Fees" },
-                        { name: "B.Sc. AT & OT", tag: "Up to 70%*" },
-                        { name: "Cardiac Care", tag: "Merit Grant" }
-                      ].map((item) => (
-                        <button
-                          key={item.name}
-                          type="button"
-                          onClick={() => setHeroCourse(item.name)}
-                          className={`p-2 rounded-xl text-left transition-all border ${
-                            heroCourse === item.name
-                              ? "bg-teal-500/20 border-teal-400 text-white shadow-sm"
-                              : "bg-white/5 border-white/10 text-slate-300 hover:bg-white/10"
-                          }`}
-                        >
-                          <div className="text-xs font-bold truncate">{item.name}</div>
-                          <div className="text-[10px] text-teal-300 font-semibold">{item.tag}</div>
-                        </button>
-                      ))}
-                    </div>
-                  </div>
-
-                  {/* PCB Range Selector Buttons */}
-                  <div>
-                    <label className="text-[11px] font-bold uppercase tracking-wider text-slate-400 block mb-2">
-                      2. Your Expected PCB Score
-                    </label>
-                    <div className="grid grid-cols-3 gap-2">
-                      {[
-                        { range: "75%+ PCB", label: "Top Merit" },
-                        { range: "60%–75% PCB", label: "Standard" },
-                        { range: "50%–60% PCB", label: "Eligible" }
-                      ].map((score) => (
-                        <button
-                          key={score.range}
-                          type="button"
-                          onClick={() => setHeroPcb(score.range)}
-                          className={`p-2 rounded-xl text-center transition-all border ${
-                            heroPcb === score.range
-                              ? "bg-amber-500/25 border-amber-400 text-amber-200 shadow-sm"
-                              : "bg-white/5 border-white/10 text-slate-300 hover:bg-white/10"
-                          }`}
-                        >
-                          <div className="text-xs font-black">{score.range.replace(" PCB", "")}</div>
-                          <div className="text-[10px] text-slate-400">{score.label}</div>
-                        </button>
-                      ))}
-                    </div>
-                  </div>
-
-                  {/* Dynamic Grant Output Box */}
-                  <div className="p-3.5 rounded-2xl bg-gradient-to-r from-amber-500/15 via-teal-500/10 to-amber-500/15 border border-amber-400/30 flex items-center justify-between">
-                    <div>
-                      <span className="text-[11px] text-slate-300 block">
-                        Estimated Grant for <strong className="text-white">{heroCourse}</strong>:
-                      </span>
-                      <span className="text-sm sm:text-base font-black text-amber-300">
-                        {heroPcb.includes("75%") ? "UP TO 80% TUITION SCHOLARSHIP*" : heroPcb.includes("60%") ? "UP TO 50% MERIT CONCESSION*" : "MERIT COLLEGE GRANT*"}
-                      </span>
-                    </div>
-                    <div className="text-right">
-                      <span className="text-[10px] font-bold text-teal-300 bg-teal-950/70 px-2 py-0.5 rounded border border-teal-500/30 block">
-                        Direct Seat
-                      </span>
-                    </div>
-                  </div>
-
-                  {/* Action Button */}
-                  <button
-                    type="button"
-                    onClick={() => scrollToForm(heroCourse, undefined, heroPcb)}
-                    className="w-full py-3.5 rounded-xl bg-gradient-to-r from-teal-400 to-emerald-400 hover:from-teal-300 hover:to-emerald-300 text-slate-950 font-black text-xs sm:text-sm tracking-wide shadow-lg shadow-teal-500/20 active:scale-95 transition-all flex items-center justify-center gap-2"
-                  >
-                    <span>Claim This Scholarship Bracket</span>
-                    <ArrowRight className="w-4 h-4" />
-                  </button>
-
-                  <p className="text-[10px] text-slate-400 text-center">
-                    Instant 1-on-1 WhatsApp guidance from Bangalore admission counselors.
-                  </p>
-
-                </div>
-
+              <div className="flex items-center justify-center gap-2 p-3 rounded-xl bg-white/5 border border-white/10 backdrop-blur-sm">
+                <Globe2 className="w-4 h-4 text-amber-400 shrink-0" />
+                <span>Direct Nepal Student Desk</span>
               </div>
             </div>
+
+            {/* Social Proof Row */}
+            <div className="flex flex-wrap items-center justify-center gap-3 pt-1">
+              <div className="flex -space-x-2 overflow-hidden">
+                <div className="inline-block h-8 w-8 rounded-full ring-2 ring-[#061426] bg-teal-500 text-slate-950 font-bold text-xs flex items-center justify-center">
+                  🇳🇵
+                </div>
+                <div className="inline-block h-8 w-8 rounded-full ring-2 ring-[#061426] bg-blue-600 text-white font-bold text-xs flex items-center justify-center">
+                  AS
+                </div>
+                <div className="inline-block h-8 w-8 rounded-full ring-2 ring-[#061426] bg-amber-500 text-slate-950 font-bold text-xs flex items-center justify-center">
+                  PK
+                </div>
+                <div className="inline-block h-8 w-8 rounded-full ring-2 ring-[#061426] bg-emerald-600 text-white font-bold text-xs flex items-center justify-center">
+                  RS
+                </div>
+              </div>
+              <div className="text-xs text-slate-300">
+                <span className="font-bold text-white">650+ Nepalese Students</span> Guided to Bangalore Colleges •{" "}
+                <span className="text-amber-400 font-bold">★ 4.9/5 Rating</span>
+              </div>
+            </div>
+
+            {/* Hero CTA Buttons */}
+            <div className="flex flex-col sm:flex-row items-stretch sm:items-center justify-center gap-3.5 pt-3">
+              <button
+                type="button"
+                onClick={() => scrollToForm()}
+                className="px-8 py-4 rounded-xl bg-gradient-to-r from-teal-400 to-emerald-400 hover:from-teal-300 hover:to-emerald-300 active:scale-95 text-slate-950 font-black text-sm sm:text-base shadow-xl shadow-teal-500/25 transition-all text-center flex items-center justify-center gap-2 group"
+              >
+                <span>Check Scholarship Eligibility</span>
+                <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+              </button>
+
+              <a
+                href="#courses-section"
+                className="px-7 py-4 rounded-xl bg-white/10 hover:bg-white/15 border border-white/20 text-white font-bold text-sm sm:text-base transition-all text-center"
+              >
+                Explore Courses
+              </a>
+            </div>
+
+            {/* Disclaimer Footnote */}
+            <p className="text-[11px] text-slate-400 italic max-w-xl mx-auto">
+              *Scholarships are subject to academic eligibility (10+2 PCB marks/GPA), verified college seat approval, and applicable institutional terms.
+            </p>
 
           </div>
 
