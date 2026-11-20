@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import Link from "next/link";
 import { 
-  Building2, Star, MapPin, ArrowRight, Search, CheckCircle, TrendingUp, Users, GraduationCap, Loader2
+  Building2, MapPin, ArrowRight, Search, CheckCircle, TrendingUp, Users, GraduationCap, Loader2
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -127,7 +127,6 @@ export default function CollegesPage() {
                       <div className="p-6 pb-4 flex-1 flex flex-col">
                         <div className="flex items-start justify-between mb-4">
                           <div className="w-16 h-16 shrink-0 rounded-2xl bg-slate-50 flex items-center justify-center group-hover:bg-amber-50 transition-all overflow-hidden p-2 border border-slate-100">
-                            
                             <img 
                               src={imageSource} 
                               alt={college.name}
@@ -139,11 +138,6 @@ export default function CollegesPage() {
                               }}
                             />
                             <Building2 className="w-8 h-8 text-slate-300 group-hover:text-amber-500 transition-colors fallback-icon hidden" />
-                          </div>
-
-                          <div className="flex items-center gap-1 bg-amber-50 px-3 py-1.5 rounded-full border border-amber-100">
-                            <Star className="w-4 h-4 text-amber-500 fill-amber-500" />
-                            <span className="text-sm font-black text-amber-700">{college.rating}</span>
                           </div>
                         </div>
 
@@ -175,20 +169,7 @@ export default function CollegesPage() {
                           )}
                         </div>
 
-                        <div className="bg-slate-50/50 rounded-2xl p-4 mb-6 border border-slate-100">
-                          <div className="flex items-center justify-between text-sm">
-                            <div>
-                              <span className="text-slate-500 text-xs font-bold uppercase tracking-wider">Avg Package</span>
-                              <div className="font-black text-slate-900 text-base">{college.placement_stats?.average_package || "TBA"}</div>
-                            </div>
-                            <div className="text-right">
-                              <span className="text-slate-500 text-xs font-bold uppercase tracking-wider">Placement</span>
-                              <div className="font-black text-emerald-600 text-base">{college.placement_stats?.placement_rate || "TBA"}</div>
-                            </div>
-                          </div>
-                        </div>
-
-                        <div className="flex gap-3">
+                        <div className="flex gap-3 pt-2">
                           <Link href="/#counseling-form" className="flex-1">
                             <Button size="default" className="w-full bg-[#FF6138] hover:bg-[#E5502B] text-white rounded-xl shadow-md">
                               Apply
