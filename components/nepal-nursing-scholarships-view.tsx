@@ -9,7 +9,7 @@ import {
   MapPin, CheckCircle2, ArrowRight, Phone, Clock, IndianRupee, 
   Search, ChevronDown, Percent, Sparkles, Building2, AlertCircle, 
   Loader2, FileText, Send, Check, HelpCircle, Activity, Globe2, BookOpen,
-  Star, Users, CheckCheck, Flame, X
+  Star, Users, CheckCheck, Flame, X, User, Lock
 } from "lucide-react";
 import { createClient } from "@/lib/supabase-client";
 import { formatPhoneNumber } from "@/lib/utils";
@@ -495,23 +495,29 @@ export function NepalNursingScholarshipsView({
       {/* ========================================================================= */}
       {/* 2. LEAD CAPTURE FORM SECTION                                              */}
       {/* ========================================================================= */}
-      <section ref={formRef} id="scholarship-form" className="py-10 sm:py-16 md:py-24 bg-gradient-to-b from-[#F8FAFC] via-white to-[#F8FAFC] border-b border-slate-200 relative overflow-hidden">
+      <section ref={formRef} id="scholarship-form" className="py-10 sm:py-16 md:py-20 bg-gradient-to-b from-[#F8FAFC] via-white to-[#F8FAFC] border-b border-slate-200/80 relative overflow-hidden">
         
         {/* Subtle decorative background circles */}
-        <div className="absolute top-1/2 left-0 w-72 h-72 bg-teal-100/40 rounded-full blur-3xl -ml-28 pointer-events-none" />
-        <div className="absolute bottom-0 right-0 w-80 h-80 bg-amber-100/30 rounded-full blur-3xl -mr-32 pointer-events-none" />
+        <div className="absolute top-1/2 left-0 w-80 h-80 bg-teal-100/30 rounded-full blur-3xl -ml-28 pointer-events-none" />
+        <div className="absolute bottom-0 right-0 w-80 h-80 bg-emerald-100/25 rounded-full blur-3xl -mr-32 pointer-events-none" />
 
-        <div className="max-w-4xl mx-auto px-3.5 sm:px-6 lg:px-8 relative z-10">
+        <div className="max-w-3xl mx-auto px-3.5 sm:px-6 relative z-10">
           
-          <div className="bg-white/95 backdrop-blur-xl rounded-2xl sm:rounded-3xl p-4 sm:p-8 md:p-12 border border-slate-200/90 shadow-[0_20px_60px_-15px_rgba(15,23,42,0.08)] hover:shadow-[0_25px_70px_-15px_rgba(15,23,42,0.12)] transition-shadow duration-300 relative overflow-hidden">
+          <div className="bg-white rounded-3xl p-5 sm:p-8 md:p-10 border border-slate-200/80 shadow-[0_20px_50px_-12px_rgba(13,148,136,0.12),0_8px_24px_-4px_rgba(15,23,42,0.06)] relative overflow-hidden">
+            {/* Top decorative gradient accent line */}
+            <div className="absolute top-0 left-0 right-0 h-1.5 bg-gradient-to-r from-teal-500 via-emerald-400 to-teal-600" />
             
             {/* Header */}
-            <div className="text-center max-w-2xl mx-auto mb-5 sm:mb-8 md:mb-10">
-              <h2 className="text-xl sm:text-2xl md:text-4xl font-black text-[#0A1D37] tracking-tight">
+            <div className="text-center max-w-xl mx-auto mb-6 sm:mb-8">
+              <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-teal-50 border border-teal-200/70 text-teal-800 text-[11px] font-bold mb-3 shadow-xs">
+                <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
+                <span>Nepal Special Admission Quota 2025–26</span>
+              </div>
+              <h2 className="text-2xl sm:text-3xl md:text-4xl font-black text-[#0A1D37] tracking-tight">
                 Check Your <span className="font-serif italic font-normal text-teal-600">Scholarship Eligibility</span>
               </h2>
-              <p className="mt-1 sm:mt-2 text-slate-600 text-xs sm:text-sm md:text-base font-medium">
-                Fill in your details and our admission team will contact you with available scholarship opportunities.
+              <p className="mt-1.5 text-slate-500 text-xs sm:text-sm font-medium leading-relaxed">
+                Fill in your details below to instantly verify your tuition fee grant & get verified college options.
               </p>
             </div>
 
@@ -553,7 +559,7 @@ export function NepalNursingScholarshipsView({
                       setMobileNumber("");
                       setPcbScore("");
                     }}
-                    className="w-full sm:w-auto px-5 py-2.5 sm:py-3 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold text-xs sm:text-sm"
+                    className="w-full sm:w-auto px-5 py-2.5 sm:py-3 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold text-xs sm:text-sm cursor-pointer"
                   >
                     Submit Another Enquiry
                   </button>
@@ -561,141 +567,186 @@ export function NepalNursingScholarshipsView({
               </div>
             ) : (
               /* Active Form */
-              <form onSubmit={handleFormSubmit} className="space-y-3.5 sm:space-y-5">
+              <form onSubmit={handleFormSubmit} className="space-y-4 sm:space-y-5">
                 
-                <div className="grid sm:grid-cols-2 gap-3.5 sm:gap-5">
+                <div className="grid sm:grid-cols-2 gap-3.5 sm:gap-4">
                   
                   {/* Full Name */}
-                  <div className="space-y-1 text-left">
+                  <div className="space-y-1.5 text-left">
                     <label className="text-xs font-bold text-slate-700 block">
                       Full Name <span className="text-red-500">*</span>
                     </label>
-                    <input
-                      type="text"
-                      required
-                      placeholder="e.g. Aarav Sharma"
-                      value={fullName}
-                      onChange={(e) => setFullName(e.target.value)}
-                      className="w-full h-10 sm:h-12 px-3 sm:px-3.5 rounded-xl border border-slate-200 text-xs sm:text-sm text-slate-800 bg-white focus:outline-none focus:ring-2 focus:ring-teal-500/20 focus:border-teal-500 transition-all shadow-sm"
-                    />
+                    <div className="relative flex items-center">
+                      <User className="w-4 h-4 text-slate-400 absolute left-3.5 pointer-events-none" />
+                      <input
+                        type="text"
+                        required
+                        placeholder="e.g. Aarav Sharma"
+                        value={fullName}
+                        onChange={(e) => setFullName(e.target.value)}
+                        className="w-full h-11 sm:h-12 pl-10 pr-3.5 rounded-xl border border-slate-200/90 text-xs sm:text-sm text-slate-800 bg-slate-50/60 hover:bg-slate-50 focus:bg-white focus:outline-none focus:border-teal-500 focus:ring-4 focus:ring-teal-500/10 transition-all font-medium placeholder:text-slate-400"
+                      />
+                    </div>
                   </div>
 
                   {/* Mobile Number with Country Code */}
-                  <div className="space-y-1 text-left">
-                    <label className="text-xs font-bold text-slate-700 block">
-                      Mobile Number (WhatsApp) <span className="text-red-500">*</span>
+                  <div className="space-y-1.5 text-left">
+                    <label className="text-xs font-bold text-slate-700 flex items-center justify-between">
+                      <span>Mobile Number (WhatsApp) <span className="text-red-500">*</span></span>
+                      <span className="text-[10px] text-emerald-600 font-semibold flex items-center gap-1">
+                        <span className="w-1.5 h-1.5 rounded-full bg-emerald-500" />
+                        WhatsApp report
+                      </span>
                     </label>
                     <div className="flex gap-2">
                       <select
                         value={countryCode}
                         onChange={(e) => setCountryCode(e.target.value)}
-                        className="h-10 sm:h-12 px-2 sm:px-2.5 rounded-xl border border-slate-200 text-xs font-bold text-slate-700 bg-slate-50 focus:outline-none focus:ring-2 focus:ring-teal-500 shadow-sm"
+                        className="h-11 sm:h-12 px-2.5 rounded-xl border border-slate-200/90 text-xs font-bold text-slate-700 bg-slate-50 hover:bg-slate-100 focus:outline-none focus:border-teal-500 focus:ring-4 focus:ring-teal-500/10 transition-all shrink-0 cursor-pointer"
                       >
                         <option value="+977">🇳🇵 +977</option>
                         <option value="+91">🇮🇳 +91</option>
                       </select>
-                      <input
-                        type="tel"
-                        required
-                        placeholder="98XXXXXXXX"
-                        value={mobileNumber}
-                        onChange={(e) => setMobileNumber(e.target.value)}
-                        className="flex-1 h-10 sm:h-12 px-3 sm:px-3.5 rounded-xl border border-slate-200 text-xs sm:text-sm text-slate-800 bg-white focus:outline-none focus:ring-2 focus:ring-teal-500/20 focus:border-teal-500 transition-all shadow-sm"
-                      />
+                      <div className="relative flex-1 flex items-center">
+                        <Phone className="w-4 h-4 text-slate-400 absolute left-3.5 pointer-events-none" />
+                        <input
+                          type="tel"
+                          required
+                          placeholder="98XXXXXXXX"
+                          value={mobileNumber}
+                          onChange={(e) => setMobileNumber(e.target.value)}
+                          className="w-full h-11 sm:h-12 pl-10 pr-3.5 rounded-xl border border-slate-200/90 text-xs sm:text-sm text-slate-800 bg-slate-50/60 hover:bg-slate-50 focus:bg-white focus:outline-none focus:border-teal-500 focus:ring-4 focus:ring-teal-500/10 transition-all font-medium placeholder:text-slate-400"
+                        />
+                      </div>
                     </div>
                   </div>
 
                 </div>
 
-                <div className="grid sm:grid-cols-2 gap-3.5 sm:gap-5">
+                <div className="grid sm:grid-cols-2 gap-3.5 sm:gap-4">
                   
                   {/* Interested Course Dropdown */}
-                  <div className="space-y-1 text-left">
+                  <div className="space-y-1.5 text-left">
                     <label className="text-xs font-bold text-slate-700 block">
                       Interested Course <span className="text-red-500">*</span>
                     </label>
-                    <select
-                      value={interestedCourse}
-                      onChange={(e) => setInterestedCourse(e.target.value)}
-                      className="w-full h-10 sm:h-12 px-3 sm:px-3.5 rounded-xl border border-slate-200 text-xs sm:text-sm font-semibold text-slate-800 bg-white focus:outline-none focus:ring-2 focus:ring-teal-500/20 focus:border-teal-500 transition-all shadow-sm"
-                    >
-                      <option value="B.Sc. Nursing">B.Sc. Nursing (4 Years)</option>
-                      <option value="GNM">GNM (General Nursing and Midwifery - 3 Years)</option>
-                      <option value="B.Sc. AT & OT">B.Sc. AT & OT (Anaesthesia & Operation Theatre)</option>
-                      <option value="B.Sc. Cardiac Care Technology">B.Sc. Cardiac Care Technology</option>
-                      <option value="B.Sc. EMT/EMP">B.Sc. EMT/EMP (Emergency Medical Technology)</option>
-                      <option value="Other Medical Courses">Other Medical / Allied Health Courses</option>
-                      <option value="Not Sure Yet">Not Sure Yet (Need Career Counseling)</option>
-                    </select>
+                    <div className="relative flex items-center">
+                      <GraduationCap className="w-4 h-4 text-slate-400 absolute left-3.5 pointer-events-none" />
+                      <select
+                        value={interestedCourse}
+                        onChange={(e) => setInterestedCourse(e.target.value)}
+                        className="w-full h-11 sm:h-12 pl-10 pr-9 rounded-xl border border-slate-200/90 text-xs sm:text-sm font-semibold text-slate-800 bg-slate-50/60 hover:bg-slate-50 focus:bg-white focus:outline-none focus:border-teal-500 focus:ring-4 focus:ring-teal-500/10 transition-all appearance-none cursor-pointer"
+                      >
+                        <option value="B.Sc. Nursing">B.Sc. Nursing (4 Years)</option>
+                        <option value="GNM">GNM (General Nursing & Midwifery - 3 Years)</option>
+                        <option value="B.Sc. AT & OT">B.Sc. AT & OT (Anaesthesia & OT)</option>
+                        <option value="B.Sc. Cardiac Care Technology">B.Sc. Cardiac Care Technology</option>
+                        <option value="B.Sc. EMT/EMP">B.Sc. Emergency Medical Technology</option>
+                        <option value="Other Medical Courses">Other Medical / Allied Courses</option>
+                        <option value="Not Sure Yet">Not Sure Yet (Need Guidance)</option>
+                      </select>
+                      <ChevronDown className="w-4 h-4 text-slate-400 absolute right-3.5 pointer-events-none" />
+                    </div>
                   </div>
 
-                  {/* PCB Score / Percentage */}
-                  <div className="space-y-1 text-left">
-                    <label className="text-xs font-bold text-slate-700 block">
-                      Your PCB Score (Physics, Chemistry & Biology) <span className="text-red-500">*</span>
+                  {/* PCB Score / Percentage with Quick Select Chips */}
+                  <div className="space-y-1.5 text-left">
+                    <label className="text-xs font-bold text-slate-700 flex items-center justify-between">
+                      <span>Your PCB Score (Physics, Chemistry & Biology) <span className="text-red-500">*</span></span>
                     </label>
-                    <input
-                      type="text"
-                      required
-                      placeholder="e.g. 68% or GPA 2.8 / 185 marks"
-                      value={pcbScore}
-                      onChange={(e) => setPcbScore(e.target.value)}
-                      className="w-full h-10 sm:h-12 px-3 sm:px-3.5 rounded-xl border border-slate-200 text-xs sm:text-sm font-semibold text-slate-800 bg-white focus:outline-none focus:ring-2 focus:ring-teal-500/20 focus:border-teal-500 transition-all shadow-sm"
-                    />
-                    <span className="text-[10px] text-slate-400 block">
-                      Enter percentage, GPA, or marks in Physics, Chemistry, Biology.
-                    </span>
+                    <div className="relative flex items-center">
+                      <Percent className="w-4 h-4 text-slate-400 absolute left-3.5 pointer-events-none" />
+                      <input
+                        type="text"
+                        required
+                        placeholder="e.g. 68% or GPA 2.8 / 185 marks"
+                        value={pcbScore}
+                        onChange={(e) => setPcbScore(e.target.value)}
+                        className="w-full h-11 sm:h-12 pl-10 pr-3.5 rounded-xl border border-slate-200/90 text-xs sm:text-sm font-semibold text-slate-800 bg-slate-50/60 hover:bg-slate-50 focus:bg-white focus:outline-none focus:border-teal-500 focus:ring-4 focus:ring-teal-500/10 transition-all placeholder:text-slate-400 placeholder:font-normal"
+                      />
+                    </div>
+                    {/* One-tap quick selection to remove typing friction */}
+                    <div className="flex items-center gap-1.5 pt-0.5">
+                      <span className="text-[10px] text-slate-400 font-medium">Quick select:</span>
+                      {["75%+ Top Merit", "60%–75%", "50%–60%"].map((tier) => (
+                        <button
+                          key={tier}
+                          type="button"
+                          onClick={() => setPcbScore(tier)}
+                          className={`px-2 py-0.5 rounded-md text-[10px] font-bold transition-all cursor-pointer border ${
+                            pcbScore === tier
+                              ? "bg-teal-600 text-white border-teal-600 shadow-xs"
+                              : "bg-slate-100 hover:bg-teal-50 text-slate-600 hover:text-teal-700 border-slate-200/80"
+                          }`}
+                        >
+                          {tier}
+                        </button>
+                      ))}
+                    </div>
                   </div>
 
                 </div>
 
-                {/* Preferred College (Optional / Prefilled) */}
-                <div className="space-y-1 text-left">
-                  <label className="text-xs font-bold text-slate-700 block">
-                    Preferred College in Bangalore (Optional)
+                {/* Preferred College (Optional) */}
+                <div className="space-y-1.5 text-left">
+                  <label className="text-xs font-bold text-slate-700 flex items-center justify-between">
+                    <span>Preferred College in Bangalore <span className="text-slate-400 font-normal">(Optional)</span></span>
                   </label>
-                  <input
-                    type="text"
-                    placeholder="e.g. SPARSH College of Nursing / Any Top Bangalore College"
-                    value={preferredCollege}
-                    onChange={(e) => setPreferredCollege(e.target.value)}
-                    className="w-full h-10 sm:h-12 px-3 sm:px-3.5 rounded-xl border border-slate-200 text-xs sm:text-sm font-semibold text-slate-800 bg-white focus:outline-none focus:ring-2 focus:ring-teal-500/20 focus:border-teal-500 transition-all shadow-sm"
-                  />
+                  <div className="relative flex items-center">
+                    <Building2 className="w-4 h-4 text-slate-400 absolute left-3.5 pointer-events-none" />
+                    <input
+                      type="text"
+                      placeholder="e.g. Any Top Bangalore College or SPARSH / East Point"
+                      value={preferredCollege}
+                      onChange={(e) => setPreferredCollege(e.target.value)}
+                      className="w-full h-11 sm:h-12 pl-10 pr-3.5 rounded-xl border border-slate-200/90 text-xs sm:text-sm font-medium text-slate-800 bg-slate-50/60 hover:bg-slate-50 focus:bg-white focus:outline-none focus:border-teal-500 focus:ring-4 focus:ring-teal-500/10 transition-all placeholder:text-slate-400"
+                    />
+                  </div>
                 </div>
 
                 {/* Consent Checkbox */}
-                <div className="pt-0.5 flex items-start gap-2 text-left">
+                <div className="pt-1 flex items-start gap-2.5 text-left">
                   <input
                     type="checkbox"
                     id="scholarshipConsent"
                     checked={consent}
                     onChange={(e) => setConsent(e.target.checked)}
-                    className="mt-0.5 h-3.5 w-3.5 sm:h-4 sm:w-4 rounded border-slate-300 text-teal-600 focus:ring-teal-500 shrink-0"
+                    className="mt-0.5 h-4 w-4 rounded border-slate-300 text-teal-600 focus:ring-teal-500 shrink-0 cursor-pointer"
                   />
-                  <label htmlFor="scholarshipConsent" className="text-[11px] sm:text-xs text-slate-600 leading-snug cursor-pointer">
-                    By submitting this form, I agree to be contacted regarding admission and scholarship opportunities by Vidhyarthi Sewa counselors.
+                  <label htmlFor="scholarshipConsent" className="text-[11px] sm:text-xs text-slate-600 leading-snug cursor-pointer select-none">
+                    By submitting, I agree to be contacted via WhatsApp/Call for free admission & scholarship verification by Vidhyarthi Sewa counselors.
                   </label>
                 </div>
 
-                {/* Submit Button */}
-                <div className="pt-1.5 sm:pt-2">
+                {/* Submit Button & Trust Proof */}
+                <div className="pt-2 sm:pt-3 space-y-2.5">
                   <button
                     type="submit"
                     disabled={isSubmitting}
-                    className="w-full h-11 sm:h-13 rounded-xl sm:rounded-2xl bg-gradient-to-r from-teal-600 via-teal-500 to-emerald-600 hover:from-teal-500 hover:to-emerald-500 active:scale-[0.99] text-white font-black text-xs sm:text-base tracking-wide shadow-lg shadow-teal-600/25 hover:shadow-xl hover:shadow-teal-600/35 transition-all duration-300 flex items-center justify-center gap-2 cursor-pointer disabled:opacity-70"
+                    className="w-full h-11 sm:h-12 rounded-xl sm:rounded-2xl bg-gradient-to-r from-teal-600 via-teal-500 to-emerald-600 hover:from-teal-500 hover:to-emerald-500 active:scale-[0.99] text-white font-black text-xs sm:text-sm tracking-wide shadow-lg shadow-teal-600/25 hover:shadow-xl hover:shadow-teal-600/35 transition-all duration-300 flex items-center justify-center gap-2 cursor-pointer disabled:opacity-70"
                   >
                     {isSubmitting ? (
                       <>
-                        <Loader2 className="w-3.5 h-3.5 sm:w-4 sm:h-4 animate-spin text-white" />
+                        <Loader2 className="w-4 h-4 animate-spin text-white" />
                         <span>Verifying Eligibility with Database...</span>
                       </>
                     ) : (
                       <>
-                        <Send className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-teal-200" />
                         <span>Check My Scholarship Eligibility</span>
+                        <ArrowRight className="w-4 h-4 text-teal-100" />
                       </>
                     )}
                   </button>
+
+                  <div className="flex flex-wrap items-center justify-center gap-2 sm:gap-3 text-[10px] sm:text-[11px] text-slate-400 pt-0.5">
+                    <span className="flex items-center gap-1 font-medium">
+                      <Lock className="w-3 h-3 text-teal-600" /> 100% Confidential
+                    </span>
+                    <span>•</span>
+                    <span className="font-medium">No Hidden Charges</span>
+                    <span>•</span>
+                    <span className="font-medium">INC & RGUHS Verified</span>
+                  </div>
                 </div>
 
               </form>
