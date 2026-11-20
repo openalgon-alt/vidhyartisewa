@@ -314,36 +314,6 @@ export function NepalNursingScholarshipsView({
         <div className="absolute top-0 right-1/4 w-[500px] h-[500px] bg-teal-400/10 rounded-full blur-[140px] pointer-events-none" />
         <div className="absolute bottom-0 left-1/4 w-[500px] h-[500px] bg-amber-400/10 rounded-full blur-[130px] pointer-events-none" />
         <div className="absolute inset-0 bg-[radial-gradient(#0f172a08_1px,transparent_1px)] [background-size:24px_24px] pointer-events-none opacity-80" />
-
-        {/* Left Floating 3D Badge Card (Desktop) */}
-        <motion.div
-          animate={{ y: [0, -12, 0], rotate: [-1, 1, -1] }}
-          transition={{ duration: 6, repeat: Infinity, ease: "easeInOut" }}
-          className="hidden xl:flex items-center gap-3 px-4 py-3 rounded-2xl bg-white/95 backdrop-blur-xl border border-slate-200/90 shadow-[0_20px_40px_rgba(15,23,42,0.08)] absolute left-8 top-1/3 transform-gpu pointer-events-none z-10"
-        >
-          <div className="w-10 h-10 rounded-xl bg-teal-50 border border-teal-200/60 flex items-center justify-center text-teal-600 shadow-inner">
-            <ShieldCheck className="w-5 h-5" />
-          </div>
-          <div className="text-left">
-            <span className="text-[11px] font-black uppercase tracking-wider text-teal-800 block">INC & RGUHS</span>
-            <span className="text-xs font-bold text-slate-600">100% Verified Quota</span>
-          </div>
-        </motion.div>
-
-        {/* Right Floating 3D Badge Card (Desktop) */}
-        <motion.div
-          animate={{ y: [0, 12, 0], rotate: [1, -1, 1] }}
-          transition={{ duration: 7, repeat: Infinity, ease: "easeInOut", delay: 0.5 }}
-          className="hidden xl:flex items-center gap-3 px-4 py-3 rounded-2xl bg-white/95 backdrop-blur-xl border border-slate-200/90 shadow-[0_20px_40px_rgba(15,23,42,0.08)] absolute right-8 top-1/4 transform-gpu pointer-events-none z-10"
-        >
-          <div className="w-10 h-10 rounded-xl bg-amber-50 border border-amber-200/60 flex items-center justify-center text-amber-600 shadow-inner">
-            <GraduationCap className="w-5 h-5" />
-          </div>
-          <div className="text-left">
-            <span className="text-[11px] font-black uppercase tracking-wider text-amber-800 block">Merit Grant</span>
-            <span className="text-xs font-bold text-slate-600">Up to 80% Tuition Waiver</span>
-          </div>
-        </motion.div>
         
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
           
@@ -364,11 +334,6 @@ export function NepalNursingScholarshipsView({
               Direct tuition fee grants for eligible Nepalese 10+2 Science students at top INC & RGUHS affiliated colleges in Bangalore, India.
             </p>
 
-            {/* Supporting Descriptive Text */}
-            <p className="text-xs sm:text-sm md:text-base text-slate-500 leading-relaxed max-w-2xl mx-auto hidden sm:block font-medium">
-              Discover verified nursing and allied healthcare courses, compare colleges, understand eligibility, and receive personalized admission guidance from experienced educational counselors.
-            </p>
-
             {/* Key Highlights Sleek Compact Chips for Mobile & Desktop */}
             <div className="flex flex-wrap items-center justify-center gap-2 sm:gap-3 pt-1 text-[11px] sm:text-xs text-slate-700 font-bold max-w-2xl mx-auto">
               <div className="flex items-center gap-1.5 px-3.5 py-1.5 sm:px-4 sm:py-2 rounded-full bg-white border border-slate-200/90 shadow-sm hover:shadow-md hover:border-teal-400/50 hover:-translate-y-0.5 transition-all duration-200">
@@ -378,10 +343,6 @@ export function NepalNursingScholarshipsView({
               <div className="flex items-center gap-1.5 px-3.5 py-1.5 sm:px-4 sm:py-2 rounded-full bg-white border border-slate-200/90 shadow-sm hover:shadow-md hover:border-teal-400/50 hover:-translate-y-0.5 transition-all duration-200">
                 <Building2 className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-blue-600 shrink-0" />
                 <span>1,000+ Bed Hospital Exposure</span>
-              </div>
-              <div className="flex items-center gap-1.5 px-3.5 py-1.5 sm:px-4 sm:py-2 rounded-full bg-white border border-slate-200/90 shadow-sm hover:shadow-md hover:border-teal-400/50 hover:-translate-y-0.5 transition-all duration-200">
-                <Globe2 className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-amber-600 shrink-0" />
-                <span>Direct Nepal Student Desk</span>
               </div>
             </div>
 
