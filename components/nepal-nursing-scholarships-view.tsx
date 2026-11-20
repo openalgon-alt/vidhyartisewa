@@ -1545,15 +1545,9 @@ export function NepalNursingScholarshipsView({
 
               {/* Header */}
               <div className="pr-8 pt-1">
-                <h3 className="text-lg sm:text-xl font-black text-[#0B192C] flex items-center gap-2">
-                  <Sparkles className="w-5 h-5 text-amber-500 fill-amber-400 shrink-0" />
-                  <span className="inline-block px-3 py-1 rounded-xl bg-gradient-to-r from-amber-400 via-amber-300 to-yellow-400 text-slate-950 font-black shadow-md border border-amber-300 tracking-tight">
-                    Instant Scholarship Estimator
-                  </span>
+                <h3 className="text-base sm:text-lg font-black text-[#0B192C] leading-snug tracking-tight">
+                  Select your course and 10+2 PCB score to check your scholarship eligibility
                 </h3>
-                <p className="text-xs text-slate-500 mt-2 leading-relaxed">
-                  Select your course and 10+2 PCB score to check your scholarship eligibility:
-                </p>
               </div>
 
               {/* Course Selector Buttons */}
