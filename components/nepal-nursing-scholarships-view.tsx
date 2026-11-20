@@ -278,15 +278,6 @@ export function NepalNursingScholarshipsView({
         
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
           
-          {/* Breadcrumb Navigation for SEO */}
-          <nav aria-label="Breadcrumb" className="mb-6 flex items-center gap-2 text-xs text-slate-400">
-            <Link href="/" className="hover:text-teal-300 transition-colors">Home</Link>
-            <span>/</span>
-            <span className="text-slate-400">Nepal Admissions</span>
-            <span>/</span>
-            <span className="text-teal-300 font-medium">Nursing Scholarships</span>
-          </nav>
-
           <div className="grid lg:grid-cols-12 gap-10 lg:gap-12 items-center">
             
             {/* Left Hero Column: Copy & Value Proposition */}
