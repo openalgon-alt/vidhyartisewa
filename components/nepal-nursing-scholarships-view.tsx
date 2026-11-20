@@ -394,9 +394,6 @@ export function NepalNursingScholarshipsView({
             
             {/* Header */}
             <div className="text-center max-w-2xl mx-auto mb-8 sm:mb-10">
-              <span className="inline-block px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider text-teal-700 bg-teal-50 border border-teal-200 mb-2.5">
-                Official Nepal Application Portal
-              </span>
               <h2 className="text-2xl sm:text-3xl md:text-4xl font-extrabold text-[#0B192C] tracking-tight">
                 Check Your Scholarship Eligibility
               </h2>
