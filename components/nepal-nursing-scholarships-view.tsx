@@ -306,115 +306,176 @@ export function NepalNursingScholarshipsView({
     <div className="bg-[#FFFFFF] text-slate-800 font-sans selection:bg-teal-500/20 selection:text-teal-900 min-h-screen pb-16 sm:pb-0">
       
       {/* ========================================================================= */}
-      {/* 1. HERO SECTION (MINIMALISTIC WHITE WITH 3D ELEMENTS & ANIMATION)         */}
+      {/* 1. HERO SECTION (SPLIT MEDICAL & NURSING SHOWCASE)                        */}
       {/* ========================================================================= */}
-      <section className="relative pt-10 pb-12 sm:pt-16 sm:pb-20 md:pt-24 md:pb-24 bg-gradient-to-b from-white via-[#F8FAFC] to-white text-slate-800 overflow-hidden border-b border-slate-200/80">
+      <section className="relative pt-8 pb-12 sm:pt-14 sm:pb-16 md:pt-20 md:pb-20 bg-gradient-to-b from-white via-[#F8FAFC] to-white text-slate-800 overflow-hidden border-b border-slate-200/80">
         
         {/* Aesthetic 3D Ambient Background Glows & Subtle Grid */}
         <div className="absolute top-0 right-1/4 w-[500px] h-[500px] bg-teal-400/10 rounded-full blur-[140px] pointer-events-none" />
         <div className="absolute bottom-0 left-1/4 w-[500px] h-[500px] bg-amber-400/10 rounded-full blur-[130px] pointer-events-none" />
         <div className="absolute inset-0 bg-[radial-gradient(#0f172a08_1px,transparent_1px)] [background-size:24px_24px] pointer-events-none opacity-80" />
 
-        {/* Left Floating 3D Badge Card (Desktop) */}
-        <motion.div
-          animate={{ y: [0, -12, 0], rotate: [-1, 1, -1] }}
-          transition={{ duration: 6, repeat: Infinity, ease: "easeInOut" }}
-          className="hidden xl:flex items-center gap-3 px-4 py-3 rounded-2xl bg-white/95 backdrop-blur-xl border border-slate-200/90 shadow-[0_20px_40px_rgba(15,23,42,0.08)] absolute left-8 top-1/3 transform-gpu pointer-events-none z-10"
-        >
-          <div className="w-10 h-10 rounded-xl bg-teal-50 border border-teal-200/60 flex items-center justify-center text-teal-600 shadow-inner">
-            <ShieldCheck className="w-5 h-5" />
-          </div>
-          <div className="text-left">
-            <span className="text-[11px] font-black uppercase tracking-wider text-teal-800 block">INC & RGUHS</span>
-            <span className="text-xs font-bold text-slate-600">100% Verified Quota</span>
-          </div>
-        </motion.div>
-
-        {/* Right Floating 3D Badge Card (Desktop) */}
-        <motion.div
-          animate={{ y: [0, 12, 0], rotate: [1, -1, 1] }}
-          transition={{ duration: 7, repeat: Infinity, ease: "easeInOut", delay: 0.5 }}
-          className="hidden xl:flex items-center gap-3 px-4 py-3 rounded-2xl bg-white/95 backdrop-blur-xl border border-slate-200/90 shadow-[0_20px_40px_rgba(15,23,42,0.08)] absolute right-8 top-1/4 transform-gpu pointer-events-none z-10"
-        >
-          <div className="w-10 h-10 rounded-xl bg-amber-50 border border-amber-200/60 flex items-center justify-center text-amber-600 shadow-inner">
-            <GraduationCap className="w-5 h-5" />
-          </div>
-          <div className="text-left">
-            <span className="text-[11px] font-black uppercase tracking-wider text-amber-800 block">Merit Grant</span>
-            <span className="text-xs font-bold text-slate-600">Up to 80% Tuition Waiver</span>
-          </div>
-        </motion.div>
-        
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-          
-          <div className="max-w-4xl mx-auto space-y-4 sm:space-y-6 md:space-y-7 text-center">
-            
-            {/* Main H1 - Authority Navy + Emerald Serif Accent */}
-            <h1 className="text-2xl sm:text-4xl md:text-5xl lg:text-[62px] font-black text-[#0A1D37] tracking-tight leading-[1.14]">
-              Study Nursing in India with{" "}
-              <span className="block mt-1 sm:mt-1 font-serif italic text-teal-600 font-normal">
-                Scholarship Opportunities
-              </span>
-              <span className="block mt-2 sm:mt-3">
-                <span className="inline-flex items-center gap-1.5 sm:gap-2.5 bg-gradient-to-r from-amber-400 via-yellow-300 to-amber-400 text-slate-950 font-black px-4 py-1.5 sm:px-7 sm:py-2.5 rounded-xl sm:rounded-2xl shadow-[0_12px_30px_rgba(245,158,11,0.35)] border-2 border-amber-300 tracking-tight transform -rotate-1 hover:rotate-0 hover:scale-105 transition-all duration-300 text-lg sm:text-3xl md:text-5xl">
-                  <Sparkles className="w-4 h-4 sm:w-7 sm:h-7 text-slate-950 fill-slate-950 shrink-0" />
-                  UP TO 80% SCHOLARSHIP*
+          <div className="grid lg:grid-cols-12 gap-8 lg:gap-10 items-center">
+
+            {/* Left 7 Columns: Authoritative Medical Narrative */}
+            <div className="lg:col-span-7 space-y-4 sm:space-y-5 text-left">
+              
+              {/* Medical Live Pulse Pill */}
+              <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-teal-50 border border-teal-200/90 text-teal-900 text-[11px] sm:text-xs font-black shadow-sm">
+                <span className="relative flex h-2.5 w-2.5">
+                  <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+                  <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-emerald-600"></span>
                 </span>
-              </span>
-            </h1>
-
-            {/* Supporting Headline */}
-            <p className="text-sm sm:text-base md:text-xl font-bold text-slate-700 leading-snug max-w-2xl mx-auto">
-              Direct tuition fee grants for eligible Nepalese 10+2 Science students at top INC & RGUHS affiliated colleges in Bangalore, India.
-            </p>
-
-            {/* Supporting Descriptive Text */}
-            <p className="text-xs sm:text-sm md:text-base text-slate-500 leading-relaxed max-w-2xl mx-auto hidden sm:block font-medium">
-              Discover verified nursing and allied healthcare courses, compare colleges, understand eligibility, and receive personalized admission guidance from experienced educational counselors.
-            </p>
-
-            {/* Key Highlights Sleek Compact Chips for Mobile & Desktop */}
-            <div className="flex flex-wrap items-center justify-center gap-2 sm:gap-3 pt-1 text-[11px] sm:text-xs text-slate-700 font-bold max-w-2xl mx-auto">
-              <div className="flex items-center gap-1.5 px-3.5 py-1.5 sm:px-4 sm:py-2 rounded-full bg-white border border-slate-200/90 shadow-sm hover:shadow-md hover:border-teal-400/50 hover:-translate-y-0.5 transition-all duration-200">
-                <ShieldCheck className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-teal-600 shrink-0" />
-                <span>INC & RGUHS Approved</span>
+                <HeartPulse className="w-3.5 h-3.5 text-rose-500 animate-pulse" />
+                <span>Clinical Nursing Admissions • Nepal Quota 2025–26</span>
               </div>
-              <div className="flex items-center gap-1.5 px-3.5 py-1.5 sm:px-4 sm:py-2 rounded-full bg-white border border-slate-200/90 shadow-sm hover:shadow-md hover:border-teal-400/50 hover:-translate-y-0.5 transition-all duration-200">
-                <Building2 className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-blue-600 shrink-0" />
-                <span>1,000+ Bed Hospital Exposure</span>
+
+              {/* Main Headline */}
+              <h1 className="text-2xl sm:text-4xl md:text-5xl font-black text-[#0A1D37] tracking-tight leading-[1.14]">
+                Study Nursing in Bangalore with{" "}
+                <span className="font-serif italic text-teal-600 font-normal block sm:inline">
+                  Clinical Hospital Training
+                </span>
+              </h1>
+
+              {/* High Impact Scholarship Tag */}
+              <div>
+                <div className="inline-flex items-center gap-2 bg-gradient-to-r from-amber-400 via-yellow-300 to-amber-400 text-slate-950 font-black px-4 py-1.5 sm:px-5 sm:py-2 rounded-xl sm:rounded-2xl shadow-[0_10px_25px_rgba(245,158,11,0.25)] border-2 border-amber-300 tracking-tight transform -rotate-1 hover:rotate-0 transition-transform text-sm sm:text-xl">
+                  <Sparkles className="w-4 h-4 sm:w-5 sm:h-5 text-slate-950 fill-slate-950 shrink-0" />
+                  <span>UP TO 80% MERIT SCHOLARSHIP*</span>
+                </div>
               </div>
-              <div className="flex items-center gap-1.5 px-3.5 py-1.5 sm:px-4 sm:py-2 rounded-full bg-white border border-slate-200/90 shadow-sm hover:shadow-md hover:border-teal-400/50 hover:-translate-y-0.5 transition-all duration-200">
-                <Globe2 className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-amber-600 shrink-0" />
-                <span>Direct Nepal Student Desk</span>
+
+              {/* Clean, Grounded Clinical Description */}
+              <p className="text-xs sm:text-sm md:text-base text-slate-600 leading-relaxed font-medium max-w-xl">
+                Direct admissions to INC & RGUHS accredited colleges in Bangalore with attached 1,000+ bed teaching hospitals. Gain clinical ICU, OT, and patient care rotations with verified seat quotas for Nepalese students.
+              </p>
+
+              {/* 3 Clinical Value Badges */}
+              <div className="flex flex-wrap gap-2 pt-1 text-[11px] sm:text-xs text-slate-700 font-bold">
+                <div className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-white border border-slate-200/90 shadow-sm hover:border-teal-400/50 transition-colors">
+                  <Stethoscope className="w-3.5 h-3.5 text-teal-600 shrink-0" />
+                  <span>1,000+ Bed Hospital Exposure</span>
+                </div>
+                <div className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-white border border-slate-200/90 shadow-sm hover:border-teal-400/50 transition-colors">
+                  <ShieldCheck className="w-3.5 h-3.5 text-emerald-600 shrink-0" />
+                  <span>INC & RGUHS Approved</span>
+                </div>
+                <div className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-white border border-slate-200/90 shadow-sm hover:border-teal-400/50 transition-colors">
+                  <Globe2 className="w-3.5 h-3.5 text-amber-600 shrink-0" />
+                  <span>Dedicated Nepal Desk</span>
+                </div>
               </div>
+
+              {/* CTA Buttons */}
+              <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3 pt-2">
+                <button
+                  type="button"
+                  onClick={() => scrollToForm()}
+                  className="px-6 py-3.5 sm:px-7 sm:py-3.5 rounded-xl sm:rounded-2xl bg-gradient-to-r from-teal-600 via-teal-500 to-emerald-600 hover:from-teal-500 hover:to-emerald-500 active:scale-95 text-white font-black text-xs sm:text-sm shadow-[0_10px_25px_rgba(13,148,136,0.3)] hover:shadow-[0_15px_35px_rgba(13,148,136,0.45)] hover:-translate-y-0.5 transition-all duration-300 text-center flex items-center justify-center gap-2 cursor-pointer"
+                >
+                  <span>Check Scholarship Eligibility</span>
+                  <ArrowRight className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-teal-100" />
+                </button>
+
+                <a
+                  href="#courses-section"
+                  className="px-5 py-3 sm:px-6 sm:py-3.5 rounded-xl sm:rounded-2xl bg-slate-100 hover:bg-slate-200/80 border border-slate-200/90 text-slate-800 font-bold text-xs sm:text-sm hover:-translate-y-0.5 transition-all duration-300 text-center flex items-center justify-center shadow-sm"
+                >
+                  Explore Nursing Courses
+                </a>
+              </div>
+
+              {/* Footnote */}
+              <p className="text-[10px] sm:text-[11px] text-slate-400 italic pt-1">
+                *Scholarships are merit-based on 10+2 PCB scores and limited college seat allocations.
+              </p>
+
             </div>
 
-            {/* Hero 3D CTA Buttons */}
-            <div className="flex flex-col sm:flex-row items-stretch sm:items-center justify-center gap-2.5 sm:gap-4 pt-2 w-full max-w-md mx-auto">
-              <button
-                type="button"
-                onClick={() => scrollToForm()}
-                className="w-full sm:w-auto px-6 py-3.5 sm:px-8 sm:py-4 rounded-xl sm:rounded-2xl bg-gradient-to-r from-teal-600 via-teal-500 to-emerald-600 hover:from-teal-500 hover:to-emerald-500 active:scale-95 text-white font-black text-xs sm:text-base shadow-[0_10px_30px_rgba(13,148,136,0.3)] hover:shadow-[0_15px_40px_rgba(13,148,136,0.45)] hover:-translate-y-0.5 transition-all duration-300 text-center flex items-center justify-center gap-2 group cursor-pointer"
-              >
-                <span>Check Scholarship Eligibility</span>
-                <ArrowRight className="w-3.5 h-3.5 sm:w-4 sm:h-4 group-hover:translate-x-1.5 transition-transform text-teal-100" />
-              </button>
+            {/* Right 5 Columns: 3D Visual Medical & Nursing Showcase */}
+            <div className="lg:col-span-5 relative mt-4 lg:mt-0">
+              
+              {/* Main Card with Real Clinical Nursing Image */}
+              <div className="relative mx-auto max-w-md lg:max-w-none rounded-3xl overflow-hidden border-2 border-slate-200/90 bg-white shadow-[0_20px_50px_rgba(15,23,42,0.12)] group transform-gpu">
+                
+                {/* Image Container */}
+                <div className="relative h-72 sm:h-96 w-full overflow-hidden bg-slate-100">
+                  <img
+                    src="https://images.unsplash.com/photo-1576091160399-112ba8d25d1d?auto=format&fit=crop&w=1000&q=80"
+                    alt="Nursing student in clinical hospital scrubs"
+                    className="w-full h-full object-cover object-center group-hover:scale-105 transition-transform duration-700"
+                    onError={(e) => {
+                      const target = e.target as HTMLImageElement;
+                      target.src = "/images/colleges/sparsh-hospital.jpg";
+                    }}
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-[#0A1D37]/90 via-[#0A1D37]/20 to-transparent" />
+                </div>
 
-              <a
-                href="#courses-section"
-                className="w-full sm:w-auto px-5 py-3 sm:px-7 sm:py-4 rounded-xl sm:rounded-2xl bg-slate-100 hover:bg-slate-200/80 border border-slate-200/90 text-slate-800 font-bold text-xs sm:text-base hover:-translate-y-0.5 transition-all duration-300 text-center flex items-center justify-center shadow-sm"
+                {/* Top Floating Badge on Image */}
+                <div className="absolute top-3.5 left-3.5 right-3.5 flex items-center justify-between">
+                  <span className="px-3 py-1 rounded-full text-[10px] font-black uppercase tracking-wider bg-white/95 text-teal-900 border border-teal-200 shadow-md backdrop-blur-md flex items-center gap-1.5">
+                    <Activity className="w-3.5 h-3.5 text-rose-500 animate-pulse" />
+                    <span>Live Hospital Rounds</span>
+                  </span>
+
+                  <span className="px-3 py-1 rounded-full text-[10px] font-black uppercase tracking-wider bg-gradient-to-r from-amber-400 to-yellow-300 text-slate-950 shadow-md">
+                    Nepal Quota
+                  </span>
+                </div>
+
+                {/* Bottom Overlay Card Details */}
+                <div className="absolute bottom-3.5 left-3.5 right-3.5 p-3.5 rounded-2xl bg-white/95 backdrop-blur-md border border-slate-200/90 shadow-lg text-left">
+                  <div className="flex items-center justify-between mb-1.5">
+                    <div className="flex items-center gap-1.5 text-xs font-black text-[#0A1D37]">
+                      <Stethoscope className="w-4 h-4 text-teal-600" />
+                      <span>B.Sc. Nursing & Paramedical</span>
+                    </div>
+                    <span className="text-[10px] font-bold text-teal-700 bg-teal-50 px-2 py-0.5 rounded-md border border-teal-200">
+                      INC Verified
+                    </span>
+                  </div>
+                  <p className="text-[11px] text-slate-500 leading-tight font-medium">
+                    Hands-on clinical rotations across ICU, Emergency, Cardiac & Surgical OT wards in Bangalore teaching hospitals.
+                  </p>
+                </div>
+
+              </div>
+
+              {/* 3D Decorative Floating Badges around the Image */}
+              <motion.div
+                animate={{ y: [0, -8, 0] }}
+                transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
+                className="hidden sm:flex items-center gap-2 px-3.5 py-2 rounded-2xl bg-white border border-slate-200 shadow-lg absolute -top-4 -left-4 z-20"
               >
-                Explore Courses
-              </a>
+                <div className="w-8 h-8 rounded-xl bg-teal-50 border border-teal-200 flex items-center justify-center text-teal-600">
+                  <Building2 className="w-4 h-4" />
+                </div>
+                <div className="text-left">
+                  <span className="text-[10px] font-black text-slate-800 block">1,000+ Bed Hospital</span>
+                  <span className="text-[9px] font-semibold text-teal-700">Bangalore Medical Hub</span>
+                </div>
+              </motion.div>
+
+              <motion.div
+                animate={{ y: [0, 8, 0] }}
+                transition={{ duration: 5, repeat: Infinity, ease: "easeInOut", delay: 0.5 }}
+                className="hidden sm:flex items-center gap-2 px-3.5 py-2 rounded-2xl bg-white border border-slate-200 shadow-lg absolute -bottom-4 -right-4 z-20"
+              >
+                <div className="w-8 h-8 rounded-xl bg-amber-50 border border-amber-200 flex items-center justify-center text-amber-600">
+                  <GraduationCap className="w-4 h-4" />
+                </div>
+                <div className="text-left">
+                  <span className="text-[10px] font-black text-slate-800 block">Up to 80% Grant</span>
+                  <span className="text-[9px] font-semibold text-amber-700">10+2 Science PCB</span>
+                </div>
+              </motion.div>
+
             </div>
-
-            {/* Disclaimer Footnote */}
-            <p className="text-[10px] sm:text-[11px] text-slate-400 italic max-w-xl mx-auto px-2 leading-relaxed">
-              *Scholarships are subject to academic eligibility (10+2 PCB marks/GPA), verified college seat approval, and applicable institutional terms.
-            </p>
 
           </div>
-
         </div>
       </section>
 
