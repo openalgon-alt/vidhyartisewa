@@ -9,7 +9,7 @@ import {
   MapPin, CheckCircle2, ArrowRight, Phone, Clock, IndianRupee, 
   Search, ChevronDown, Percent, Sparkles, Building2, AlertCircle, 
   Loader2, FileText, Send, Check, HelpCircle, Activity, Globe2, BookOpen,
-  Star, Users, CheckCheck, Flame
+  Star, Users, CheckCheck, Flame, X
 } from "lucide-react";
 import { createClient } from "@/lib/supabase-client";
 import { formatPhoneNumber } from "@/lib/utils";
@@ -154,6 +154,44 @@ export function NepalNursingScholarshipsView({
   // Hero Interactive Quick Calculator state
   const [heroCourse, setHeroCourse] = useState("B.Sc. Nursing");
   const [heroPcb, setHeroPcb] = useState("75%+ PCB");
+
+  // 4-Second Delayed Scholarship Estimator Popup
+  const [showDelayedPopup, setShowDelayedPopup] = useState(false);
+
+  useEffect(() => {
+    // Check if dismissed previously in this session
+    const isDismissed = typeof window !== "undefined" && sessionStorage.getItem("nursing_popup_closed");
+    if (isDismissed || isSubmitted) return;
+
+    const timer = setTimeout(() => {
+      setShowDelayedPopup(true);
+    }, 4000);
+
+    return () => clearTimeout(timer);
+  }, [isSubmitted]);
+
+  const closePopup = () => {
+    setShowDelayedPopup(false);
+    if (typeof window !== "undefined") {
+      sessionStorage.setItem("nursing_popup_closed", "true");
+    }
+  };
+
+  const handleClaimFromPopup = () => {
+    closePopup();
+    scrollToForm(heroCourse, undefined, heroPcb);
+  };
+
+  // Close popup on Escape key
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === "Escape" && showDelayedPopup) {
+        closePopup();
+      }
+    };
+    window.addEventListener("keydown", handleKeyDown);
+    return () => window.removeEventListener("keydown", handleKeyDown);
+  }, [showDelayedPopup]);
 
   // Smooth scroll to lead form
   const scrollToForm = (courseName?: string, collegeName?: string, pcbVal?: string) => {
@@ -1470,6 +1508,178 @@ export function NepalNursingScholarshipsView({
           </a>
         </div>
       </div>
+
+      {/* ========================================================================= */}
+      {/* 11. 4-SECOND DELAYED SCHOLARSHIP ESTIMATOR POPUP                          */}
+      {/* ========================================================================= */}
+      <AnimatePresence>
+        {showDelayedPopup && (
+          <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-4 overflow-y-auto">
+            {/* Dark Backdrop with blur */}
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 0.25 }}
+              onClick={closePopup}
+              className="fixed inset-0 bg-slate-950/80 backdrop-blur-md"
+            />
+
+            {/* Popup Dialog Container */}
+            <motion.div
+              initial={{ opacity: 0, scale: 0.9, y: 24 }}
+              animate={{ opacity: 1, scale: 1, y: 0 }}
+              exit={{ opacity: 0, scale: 0.9, y: 24 }}
+              transition={{ type: "spring", duration: 0.45, bounce: 0.2 }}
+              className="relative z-10 w-full max-w-md my-auto rounded-3xl overflow-hidden bg-[#0A182E] border-2 border-amber-400/40 shadow-2xl shadow-black/80 text-white"
+            >
+              {/* Close Button */}
+              <button
+                type="button"
+                onClick={closePopup}
+                aria-label="Close scholarship popup"
+                className="absolute top-3 right-3 z-30 w-8 h-8 rounded-full bg-slate-950/80 hover:bg-slate-900 text-slate-300 hover:text-white flex items-center justify-center border border-white/20 transition-all shadow-md active:scale-95"
+              >
+                <X className="w-4 h-4" />
+              </button>
+
+              {/* Real Hospital / Nursing Photography Header */}
+              <div className="relative h-36 sm:h-40 w-full overflow-hidden">
+                <Image
+                  src="/images/blog/nursing-career-india.jpg"
+                  alt="Nepalese Nursing Students Clinical Training in Bangalore Hospital"
+                  fill
+                  className="object-cover object-center"
+                  priority
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-[#0A182E] via-[#0A182E]/50 to-transparent" />
+                
+                {/* Floating Trust Pills on Image */}
+                <div className="absolute top-3 left-3 flex flex-wrap gap-2">
+                  <span className="px-2.5 py-1 rounded-full bg-slate-950/80 border border-white/20 text-[11px] font-bold text-white backdrop-blur-md flex items-center gap-1.5 shadow-md">
+                    <Building2 className="w-3.5 h-3.5 text-teal-400" />
+                    1,000+ Bed Hospital
+                  </span>
+                  <span className="px-2.5 py-1 rounded-full bg-slate-950/80 border border-white/20 text-[11px] font-bold text-amber-300 backdrop-blur-md flex items-center gap-1.5 shadow-md">
+                    🇳🇵 Nepal Desk
+                  </span>
+                </div>
+
+                <div className="absolute bottom-2.5 left-4 right-4 flex items-center justify-between text-xs text-white font-bold">
+                  <span className="text-slate-200">Bangalore Nursing Hub</span>
+                  <span className="text-teal-300 flex items-center gap-1">
+                    <CheckCircle2 className="w-3.5 h-3.5 text-teal-400" /> INC Verified
+                  </span>
+                </div>
+              </div>
+
+              {/* Interactive Estimator Body */}
+              <div className="p-5 sm:p-6 space-y-4 text-left">
+                <div className="flex items-center justify-between pb-2 border-b border-white/10">
+                  <div>
+                    <h3 className="text-base font-extrabold text-white flex items-center gap-2">
+                      <Sparkles className="w-4 h-4 text-amber-400" />
+                      Instant Scholarship Estimator
+                    </h3>
+                    <p className="text-xs text-slate-400 mt-0.5">
+                      Select course and 10+2 PCB score to see your grant:
+                    </p>
+                  </div>
+                </div>
+
+                {/* Course Selector Buttons */}
+                <div>
+                  <label className="text-[11px] font-bold uppercase tracking-wider text-slate-400 block mb-2">
+                    1. Select Preferred Course
+                  </label>
+                  <div className="grid grid-cols-2 gap-2">
+                    {[
+                      { name: "B.Sc. Nursing", tag: "Up to 80%*" },
+                      { name: "GNM", tag: "Low Fees" },
+                      { name: "B.Sc. AT & OT", tag: "Up to 70%*" },
+                      { name: "Cardiac Care", tag: "Merit Grant" }
+                    ].map((item) => (
+                      <button
+                        key={item.name}
+                        type="button"
+                        onClick={() => setHeroCourse(item.name)}
+                        className={`p-2 rounded-xl text-left transition-all border ${
+                          heroCourse === item.name
+                            ? "bg-teal-500/20 border-teal-400 text-white shadow-sm"
+                            : "bg-white/5 border-white/10 text-slate-300 hover:bg-white/10"
+                        }`}
+                      >
+                        <div className="text-xs font-bold truncate">{item.name}</div>
+                        <div className="text-[10px] text-teal-300 font-semibold">{item.tag}</div>
+                      </button>
+                    ))}
+                  </div>
+                </div>
+
+                {/* PCB Range Selector Buttons */}
+                <div>
+                  <label className="text-[11px] font-bold uppercase tracking-wider text-slate-400 block mb-2">
+                    2. Your Expected PCB Score
+                  </label>
+                  <div className="grid grid-cols-3 gap-2">
+                    {[
+                      { range: "75%+ PCB", label: "Top Merit" },
+                      { range: "60%–75% PCB", label: "Standard" },
+                      { range: "50%–60% PCB", label: "Eligible" }
+                    ].map((score) => (
+                      <button
+                        key={score.range}
+                        type="button"
+                        onClick={() => setHeroPcb(score.range)}
+                        className={`p-2 rounded-xl text-center transition-all border ${
+                          heroPcb === score.range
+                            ? "bg-amber-500/25 border-amber-400 text-amber-200 shadow-sm"
+                            : "bg-white/5 border-white/10 text-slate-300 hover:bg-white/10"
+                        }`}
+                      >
+                        <div className="text-xs font-black">{score.range.replace(" PCB", "")}</div>
+                        <div className="text-[10px] text-slate-400">{score.label}</div>
+                      </button>
+                    ))}
+                  </div>
+                </div>
+
+                {/* Dynamic Grant Output Box */}
+                <div className="p-3.5 rounded-2xl bg-gradient-to-r from-amber-500/15 via-teal-500/10 to-amber-500/15 border border-amber-400/30 flex items-center justify-between">
+                  <div>
+                    <span className="text-[11px] text-slate-300 block">
+                      Estimated Grant for <strong className="text-white">{heroCourse}</strong>:
+                    </span>
+                    <span className="text-sm sm:text-base font-black text-amber-300">
+                      {heroPcb.includes("75%") ? "UP TO 80% TUITION SCHOLARSHIP*" : heroPcb.includes("60%") ? "UP TO 50% MERIT CONCESSION*" : "MERIT COLLEGE GRANT*"}
+                    </span>
+                  </div>
+                  <div className="text-right">
+                    <span className="text-[10px] font-bold text-teal-300 bg-teal-950/70 px-2 py-0.5 rounded border border-teal-500/30 block">
+                      Direct Seat
+                    </span>
+                  </div>
+                </div>
+
+                {/* Action Button */}
+                <button
+                  type="button"
+                  onClick={handleClaimFromPopup}
+                  className="w-full py-3.5 rounded-xl bg-gradient-to-r from-teal-400 to-emerald-400 hover:from-teal-300 hover:to-emerald-300 text-slate-950 font-black text-xs sm:text-sm tracking-wide shadow-lg shadow-teal-500/20 active:scale-95 transition-all flex items-center justify-center gap-2"
+                >
+                  <span>Claim This Scholarship Bracket</span>
+                  <ArrowRight className="w-4 h-4" />
+                </button>
+
+                <p className="text-[10px] text-slate-400 text-center">
+                  Instant 1-on-1 WhatsApp guidance from Bangalore admission counselors.
+                </p>
+              </div>
+
+            </motion.div>
+          </div>
+        )}
+      </AnimatePresence>
 
     </div>
   );
