@@ -1525,160 +1525,108 @@ export function NepalNursingScholarshipsView({
               className="fixed inset-0 bg-slate-950/80 backdrop-blur-md"
             />
 
-            {/* Popup Dialog Container - Clean White & Light Healthcare Theme */}
+            {/* Popup Dialog Container - Clean Focused White Card */}
             <motion.div
               initial={{ opacity: 0, scale: 0.9, y: 24 }}
               animate={{ opacity: 1, scale: 1, y: 0 }}
               exit={{ opacity: 0, scale: 0.9, y: 24 }}
               transition={{ type: "spring", duration: 0.45, bounce: 0.2 }}
-              className="relative z-10 w-full max-w-md my-auto rounded-3xl overflow-hidden bg-white border border-slate-200/90 shadow-2xl shadow-slate-950/40 text-slate-800"
+              className="relative z-10 w-full max-w-md my-auto rounded-3xl overflow-hidden bg-white border border-slate-200/90 shadow-2xl shadow-slate-950/40 text-slate-800 p-6 sm:p-7 space-y-4 text-left"
             >
               {/* Close Button */}
               <button
                 type="button"
                 onClick={closePopup}
                 aria-label="Close scholarship popup"
-                className="absolute top-3 right-3 z-30 w-8 h-8 rounded-full bg-white/90 hover:bg-white text-slate-600 hover:text-slate-950 flex items-center justify-center border border-slate-200/80 transition-all shadow-md active:scale-95"
+                className="absolute top-4 right-4 z-30 w-8 h-8 rounded-full bg-slate-100 hover:bg-slate-200 text-slate-500 hover:text-slate-800 flex items-center justify-center transition-all shadow-sm active:scale-95"
               >
                 <X className="w-4 h-4" />
               </button>
 
-              {/* Real Hospital / Nursing Photography Header */}
-              <div className="relative h-36 sm:h-40 w-full overflow-hidden">
-                <Image
-                  src="/images/blog/nursing-career-india.jpg"
-                  alt="Nepalese Nursing Students Clinical Training in Bangalore Hospital"
-                  fill
-                  className="object-cover object-center"
-                  priority
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/20 to-transparent" />
-                
-                {/* Floating Trust Pills on Image */}
-                <div className="absolute top-3 left-3 flex flex-wrap gap-2">
-                  <span className="px-2.5 py-1 rounded-full bg-slate-950/80 border border-white/20 text-[11px] font-bold text-white backdrop-blur-md flex items-center gap-1.5 shadow-md">
-                    <Building2 className="w-3.5 h-3.5 text-teal-400" />
-                    1,000+ Bed Hospital
-                  </span>
-                  <span className="px-2.5 py-1 rounded-full bg-amber-500 text-slate-950 text-[11px] font-black backdrop-blur-md flex items-center gap-1.5 shadow-md">
-                    🇳🇵 Nepal Desk
-                  </span>
-                </div>
-
-                <div className="absolute bottom-2.5 left-4 right-4 flex items-center justify-between text-xs text-white font-bold">
-                  <span className="text-white drop-shadow-sm font-extrabold">Bangalore Nursing Hub</span>
-                  <span className="text-teal-300 drop-shadow-sm flex items-center gap-1 font-extrabold">
-                    <CheckCircle2 className="w-3.5 h-3.5 text-teal-300" /> INC Verified
-                  </span>
-                </div>
-              </div>
-
-              {/* Interactive Estimator Body */}
-              <div className="p-5 sm:p-6 space-y-4 text-left bg-white">
-                <div className="flex items-center justify-between pb-2 border-b border-slate-100">
-                  <div>
-                    <h3 className="text-base sm:text-lg font-black text-[#0B192C] flex items-center gap-2">
-                      <Sparkles className="w-4 h-4 text-amber-500" />
-                      Instant Scholarship Estimator
-                    </h3>
-                    <p className="text-xs text-slate-500 mt-0.5">
-                      Select your course and 10+2 PCB score to see your grant:
-                    </p>
-                  </div>
-                </div>
-
-                {/* Course Selector Buttons */}
-                <div>
-                  <label className="text-[11px] font-bold uppercase tracking-wider text-slate-500 block mb-2">
-                    1. Select Preferred Course
-                  </label>
-                  <div className="grid grid-cols-2 gap-2">
-                    {[
-                      { name: "B.Sc. Nursing", tag: "Up to 80%*" },
-                      { name: "GNM", tag: "Low Fees" },
-                      { name: "B.Sc. AT & OT", tag: "Up to 70%*" },
-                      { name: "Cardiac Care", tag: "Merit Grant" }
-                    ].map((item) => (
-                      <button
-                        key={item.name}
-                        type="button"
-                        onClick={() => setHeroCourse(item.name)}
-                        className={`p-2.5 rounded-xl text-left transition-all border ${
-                          heroCourse === item.name
-                            ? "bg-teal-50 border-2 border-teal-600 text-teal-950 shadow-sm"
-                            : "bg-slate-50/80 border-slate-200 text-slate-700 hover:bg-slate-100 hover:border-slate-300"
-                        }`}
-                      >
-                        <div className="text-xs font-bold truncate text-[#0B192C]">{item.name}</div>
-                        <div className={`text-[10px] font-bold ${heroCourse === item.name ? "text-teal-700 font-extrabold" : "text-teal-600"}`}>
-                          {item.tag}
-                        </div>
-                      </button>
-                    ))}
-                  </div>
-                </div>
-
-                {/* PCB Range Selector Buttons */}
-                <div>
-                  <label className="text-[11px] font-bold uppercase tracking-wider text-slate-500 block mb-2">
-                    2. Your Expected PCB Score
-                  </label>
-                  <div className="grid grid-cols-3 gap-2">
-                    {[
-                      { range: "75%+ PCB", label: "Top Merit" },
-                      { range: "60%–75% PCB", label: "Standard" },
-                      { range: "50%–60% PCB", label: "Eligible" }
-                    ].map((score) => (
-                      <button
-                        key={score.range}
-                        type="button"
-                        onClick={() => setHeroPcb(score.range)}
-                        className={`p-2.5 rounded-xl text-center transition-all border ${
-                          heroPcb === score.range
-                            ? "bg-amber-50 border-2 border-amber-500 text-amber-950 shadow-sm"
-                            : "bg-slate-50/80 border-slate-200 text-slate-700 hover:bg-slate-100 hover:border-slate-300"
-                        }`}
-                      >
-                        <div className="text-xs font-black text-slate-900">{score.range.replace(" PCB", "")}</div>
-                        <div className={`text-[10px] font-bold ${heroPcb === score.range ? "text-amber-700" : "text-slate-500"}`}>
-                          {score.label}
-                        </div>
-                      </button>
-                    ))}
-                  </div>
-                </div>
-
-                {/* Dynamic Grant Output Box */}
-                <div className="p-3.5 rounded-2xl bg-gradient-to-r from-amber-50 via-amber-100/40 to-teal-50 border-2 border-amber-300 flex items-center justify-between shadow-sm">
-                  <div>
-                    <span className="text-[11px] text-slate-600 block">
-                      Estimated Grant for <strong className="text-[#0B192C]">{heroCourse}</strong>:
-                    </span>
-                    <span className="text-sm sm:text-base font-black text-amber-950">
-                      {heroPcb.includes("75%") ? "UP TO 80% TUITION SCHOLARSHIP*" : heroPcb.includes("60%") ? "UP TO 50% MERIT CONCESSION*" : "MERIT COLLEGE GRANT*"}
-                    </span>
-                  </div>
-                  <div className="text-right">
-                    <span className="text-[10px] font-black text-teal-900 bg-teal-100/90 px-2 py-0.5 rounded border border-teal-300 block uppercase tracking-wider">
-                      Direct Seat
-                    </span>
-                  </div>
-                </div>
-
-                {/* Action Button */}
-                <button
-                  type="button"
-                  onClick={handleClaimFromPopup}
-                  className="w-full py-3.5 rounded-xl bg-gradient-to-r from-teal-500 to-emerald-500 hover:from-teal-400 hover:to-emerald-400 text-slate-950 font-black text-xs sm:text-sm tracking-wide shadow-lg shadow-teal-500/25 active:scale-95 transition-all flex items-center justify-center gap-2"
-                >
-                  <span>Claim This Scholarship Bracket</span>
-                  <ArrowRight className="w-4 h-4" />
-                </button>
-
-                <p className="text-[10px] text-slate-500 text-center">
-                  Instant 1-on-1 WhatsApp guidance from Bangalore admission counselors.
+              {/* Header */}
+              <div className="pr-8">
+                <span className="inline-block px-2.5 py-0.5 rounded-full text-[10px] font-extrabold uppercase tracking-wider text-teal-800 bg-teal-50 border border-teal-200 mb-1.5">
+                  Nepal Quota 2025–26
+                </span>
+                <h3 className="text-lg sm:text-xl font-black text-[#0B192C] flex items-center gap-2">
+                  <Sparkles className="w-5 h-5 text-amber-500 shrink-0" />
+                  Instant Scholarship Estimator
+                </h3>
+                <p className="text-xs text-slate-500 mt-1 leading-relaxed">
+                  Select your course and 10+2 PCB score to check your scholarship eligibility:
                 </p>
               </div>
+
+              {/* Course Selector Buttons */}
+              <div>
+                <label className="text-[11px] font-bold uppercase tracking-wider text-slate-500 block mb-2">
+                  1. Select Preferred Course
+                </label>
+                <div className="grid grid-cols-2 gap-2">
+                  {[
+                    { name: "B.Sc. Nursing", tag: "Up to 80%*" },
+                    { name: "GNM", tag: "Low Fees" },
+                    { name: "B.Sc. AT & OT", tag: "Up to 70%*" },
+                    { name: "Cardiac Care", tag: "Merit Grant" }
+                  ].map((item) => (
+                    <button
+                      key={item.name}
+                      type="button"
+                      onClick={() => setHeroCourse(item.name)}
+                      className={`p-2.5 rounded-xl text-left transition-all border ${
+                        heroCourse === item.name
+                          ? "bg-teal-50 border-2 border-teal-600 text-teal-950 shadow-sm"
+                          : "bg-slate-50/80 border-slate-200 text-slate-700 hover:bg-slate-100 hover:border-slate-300"
+                      }`}
+                    >
+                      <div className="text-xs font-bold truncate text-[#0B192C]">{item.name}</div>
+                      <div className={`text-[10px] font-bold ${heroCourse === item.name ? "text-teal-700 font-extrabold" : "text-teal-600"}`}>
+                        {item.tag}
+                      </div>
+                    </button>
+                  ))}
+                </div>
+              </div>
+
+              {/* PCB Range Selector Buttons */}
+              <div>
+                <label className="text-[11px] font-bold uppercase tracking-wider text-slate-500 block mb-2">
+                  2. Your Expected PCB Score
+                </label>
+                <div className="grid grid-cols-3 gap-2">
+                  {[
+                    { range: "75%+ PCB", label: "Top Merit" },
+                    { range: "60%–75% PCB", label: "Standard" },
+                    { range: "50%–60% PCB", label: "Eligible" }
+                  ].map((score) => (
+                    <button
+                      key={score.range}
+                      type="button"
+                      onClick={() => setHeroPcb(score.range)}
+                      className={`p-2.5 rounded-xl text-center transition-all border ${
+                        heroPcb === score.range
+                          ? "bg-amber-50 border-2 border-amber-500 text-amber-950 shadow-sm"
+                          : "bg-slate-50/80 border-slate-200 text-slate-700 hover:bg-slate-100 hover:border-slate-300"
+                      }`}
+                    >
+                      <div className="text-xs font-black text-slate-900">{score.range.replace(" PCB", "")}</div>
+                      <div className={`text-[10px] font-bold ${heroPcb === score.range ? "text-amber-700" : "text-slate-500"}`}>
+                        {score.label}
+                      </div>
+                    </button>
+                  ))}
+                </div>
+              </div>
+
+              {/* Action Button */}
+              <button
+                type="button"
+                onClick={handleClaimFromPopup}
+                className="w-full py-3.5 rounded-xl bg-gradient-to-r from-teal-500 to-emerald-500 hover:from-teal-400 hover:to-emerald-400 text-slate-950 font-black text-xs sm:text-sm tracking-wide shadow-lg shadow-teal-500/25 active:scale-95 transition-all flex items-center justify-center gap-2 pt-3"
+              >
+                <span>Claim This Scholarship Bracket</span>
+                <ArrowRight className="w-4 h-4" />
+              </button>
 
             </motion.div>
           </div>
