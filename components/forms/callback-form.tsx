@@ -40,8 +40,8 @@ export function CallbackRequest() {
     resolver: zodResolver(callbackSchema),
   });
 
-  // Hide floating callback button on college pages
-  if (pathname.startsWith("/colleges")) {
+  // Hide on scholarships page
+  if (pathname === "/scholarships" || pathname === "/scholarships/") {
     return null;
   }
 

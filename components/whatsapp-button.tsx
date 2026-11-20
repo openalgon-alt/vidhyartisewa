@@ -20,8 +20,8 @@ export function WhatsAppButton() {
   const phone = "919620012369";
   const message = "Hello, I would like guidance regarding college admissions.";
 
-  // Hide WhatsApp floating button on college pages
-  if (pathname.startsWith("/colleges")) {
+  // Hide on scholarships page
+  if (pathname === "/scholarships" || pathname === "/scholarships/") {
     return null;
   }
 

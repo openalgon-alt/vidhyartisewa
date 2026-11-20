@@ -207,7 +207,7 @@ export function CollegeProfileView({ college, courses, faqs }: CollegeProfilePro
   const displayedCourses = courses;
 
   return (
-    <div className="bg-white min-h-screen text-slate-800 font-sans selection:bg-[#C5A46D]/30 selection:text-[#173B5E]">
+    <div className="bg-white min-h-screen text-slate-800 font-sans selection:bg-[#C5A46D]/30 selection:text-[#173B5E] pt-16 lg:pt-20">
       
       {/* ========================================================================= */}
       {/* 1. HERO SECTION (Unified Clean Layout - No Nested Card)                  */}

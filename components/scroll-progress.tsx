@@ -12,8 +12,8 @@ export function ScrollProgress() {
     restDelta: 0.001,
   });
 
-  // Hide the yellow scroll line on college pages
-  if (pathname.startsWith("/colleges")) {
+  // Hide on scholarships page
+  if (pathname === "/scholarships" || pathname === "/scholarships/") {
     return null;
   }
 
