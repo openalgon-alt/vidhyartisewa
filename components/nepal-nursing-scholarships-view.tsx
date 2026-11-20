@@ -306,94 +306,105 @@ export function NepalNursingScholarshipsView({
     <div className="bg-[#FFFFFF] text-slate-800 font-sans selection:bg-teal-500/20 selection:text-teal-900 min-h-screen pb-16 sm:pb-0">
       
       {/* ========================================================================= */}
-      {/* 1. HERO SECTION - PROFESSIONAL INSTITUTIONAL PORTAL                       */}
+      {/* 1. HERO SECTION (MINIMALISTIC WHITE WITH 3D ELEMENTS & ANIMATION)         */}
       {/* ========================================================================= */}
-      <section className="relative pt-10 pb-12 sm:pt-16 sm:pb-20 md:pt-20 md:pb-24 bg-gradient-to-b from-[#061426] via-[#0A1D37] to-[#08182D] text-white overflow-hidden border-b border-slate-800">
+      <section className="relative pt-10 pb-12 sm:pt-16 sm:pb-20 md:pt-24 md:pb-24 bg-gradient-to-b from-white via-[#F8FAFC] to-white text-slate-800 overflow-hidden border-b border-slate-200/80">
         
-        {/* Subtle Institutional Grid Texture & Ambient Depth */}
-        <div className="absolute inset-0 bg-[radial-gradient(#ffffff08_1px,transparent_1px)] [background-size:28px_28px] pointer-events-none opacity-50" />
-        <div className="absolute top-0 right-1/4 w-[500px] h-[500px] bg-teal-600/10 rounded-full blur-[140px] pointer-events-none" />
-        <div className="absolute bottom-0 left-1/4 w-[450px] h-[450px] bg-blue-600/10 rounded-full blur-[140px] pointer-events-none" />
+        {/* Aesthetic 3D Ambient Background Glows & Subtle Grid */}
+        <div className="absolute top-0 right-1/4 w-[500px] h-[500px] bg-teal-400/10 rounded-full blur-[140px] pointer-events-none" />
+        <div className="absolute bottom-0 left-1/4 w-[500px] h-[500px] bg-amber-400/10 rounded-full blur-[130px] pointer-events-none" />
+        <div className="absolute inset-0 bg-[radial-gradient(#0f172a08_1px,transparent_1px)] [background-size:24px_24px] pointer-events-none opacity-80" />
+
+        {/* Left Floating 3D Badge Card (Desktop) */}
+        <motion.div
+          animate={{ y: [0, -12, 0], rotate: [-1, 1, -1] }}
+          transition={{ duration: 6, repeat: Infinity, ease: "easeInOut" }}
+          className="hidden xl:flex items-center gap-3 px-4 py-3 rounded-2xl bg-white/95 backdrop-blur-xl border border-slate-200/90 shadow-[0_20px_40px_rgba(15,23,42,0.08)] absolute left-8 top-1/3 transform-gpu pointer-events-none z-10"
+        >
+          <div className="w-10 h-10 rounded-xl bg-teal-50 border border-teal-200/60 flex items-center justify-center text-teal-600 shadow-inner">
+            <ShieldCheck className="w-5 h-5" />
+          </div>
+          <div className="text-left">
+            <span className="text-[11px] font-black uppercase tracking-wider text-teal-800 block">INC & RGUHS</span>
+            <span className="text-xs font-bold text-slate-600">100% Verified Quota</span>
+          </div>
+        </motion.div>
+
+        {/* Right Floating 3D Badge Card (Desktop) */}
+        <motion.div
+          animate={{ y: [0, 12, 0], rotate: [1, -1, 1] }}
+          transition={{ duration: 7, repeat: Infinity, ease: "easeInOut", delay: 0.5 }}
+          className="hidden xl:flex items-center gap-3 px-4 py-3 rounded-2xl bg-white/95 backdrop-blur-xl border border-slate-200/90 shadow-[0_20px_40px_rgba(15,23,42,0.08)] absolute right-8 top-1/4 transform-gpu pointer-events-none z-10"
+        >
+          <div className="w-10 h-10 rounded-xl bg-amber-50 border border-amber-200/60 flex items-center justify-center text-amber-600 shadow-inner">
+            <GraduationCap className="w-5 h-5" />
+          </div>
+          <div className="text-left">
+            <span className="text-[11px] font-black uppercase tracking-wider text-amber-800 block">Merit Grant</span>
+            <span className="text-xs font-bold text-slate-600">Up to 80% Tuition Waiver</span>
+          </div>
+        </motion.div>
         
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
           
-          <div className="max-w-4xl mx-auto space-y-4 sm:space-y-6 text-center">
+          <div className="max-w-4xl mx-auto space-y-4 sm:space-y-6 md:space-y-7 text-center">
             
-            {/* Official Institutional Badge Banner */}
-            <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-white/[0.07] border border-white/15 text-slate-200 text-[11px] sm:text-xs font-semibold tracking-wider uppercase backdrop-blur-md shadow-sm">
-              <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
-              <span>Official Nepal Admission Desk • Academic Session 2025–26</span>
-            </div>
-
-            {/* Main H1 - Prestigious & Dignified Institutional Typography */}
-            <h1 className="text-2xl sm:text-4xl md:text-5xl lg:text-[54px] font-extrabold text-white tracking-tight leading-[1.18] max-w-4xl mx-auto">
-              B.Sc. Nursing & Healthcare Admissions in Bangalore, India
+            {/* Main H1 - Authority Navy + Emerald Serif Accent */}
+            <h1 className="text-2xl sm:text-4xl md:text-5xl lg:text-[62px] font-black text-[#0A1D37] tracking-tight leading-[1.14]">
+              Study Nursing in India with{" "}
+              <span className="block mt-1 sm:mt-1 font-serif italic text-teal-600 font-normal">
+                Scholarship Opportunities
+              </span>
+              <span className="block mt-2 sm:mt-3">
+                <span className="inline-flex items-center gap-1.5 sm:gap-2.5 bg-gradient-to-r from-amber-400 via-yellow-300 to-amber-400 text-slate-950 font-black px-4 py-1.5 sm:px-7 sm:py-2.5 rounded-xl sm:rounded-2xl shadow-[0_12px_30px_rgba(245,158,11,0.35)] border-2 border-amber-300 tracking-tight transform -rotate-1 hover:rotate-0 hover:scale-105 transition-all duration-300 text-lg sm:text-3xl md:text-5xl">
+                  <Sparkles className="w-4 h-4 sm:w-7 sm:h-7 text-slate-950 fill-slate-950 shrink-0" />
+                  UP TO 80% SCHOLARSHIP*
+                </span>
+              </span>
             </h1>
 
-            {/* Institutional Merit Grant Callout Banner */}
-            <div className="max-w-2xl mx-auto">
-              <div className="inline-flex flex-wrap items-center justify-center gap-2 sm:gap-2.5 px-4 py-2 sm:px-6 sm:py-2.5 rounded-xl bg-gradient-to-r from-amber-500/15 via-amber-500/25 to-amber-500/15 border border-amber-400/40 text-amber-200 font-bold text-xs sm:text-base tracking-wide shadow-sm">
-                <Award className="w-4 h-4 sm:w-5 sm:h-5 text-amber-400 shrink-0" />
-                <span>Nepal Special Quota: Up to 80% Tuition Fee Concession*</span>
-              </div>
-            </div>
-
-            {/* Supporting Institutional Description */}
-            <p className="text-xs sm:text-sm md:text-base text-slate-200 leading-relaxed max-w-3xl mx-auto font-normal">
-              Official admission facilitation for Nepalese 10+2 Science (PCB) students at premier INC & RGUHS accredited healthcare institutions in Bangalore. Direct seat allocation with 100% transparent fee structures and zero capitation.
+            {/* Supporting Headline */}
+            <p className="text-sm sm:text-base md:text-xl font-bold text-slate-700 leading-snug max-w-2xl mx-auto">
+              Direct tuition fee grants for eligible Nepalese 10+2 Science students at top INC & RGUHS affiliated colleges in Bangalore, India.
             </p>
 
-            {/* Accredited Verification Pillars (4 Trust Cards) */}
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-2.5 sm:gap-3.5 pt-2 max-w-4xl mx-auto text-left">
-              <div className="p-3 sm:p-4 rounded-xl sm:rounded-2xl bg-white/[0.06] border border-white/10 backdrop-blur-md hover:bg-white/[0.09] transition-colors">
-                <div className="flex items-center gap-1.5 sm:gap-2 text-emerald-400 font-bold text-xs sm:text-sm">
-                  <ShieldCheck className="w-4 h-4 shrink-0" />
-                  <span>INC Accredited</span>
-                </div>
-                <p className="text-[10px] sm:text-[11px] text-slate-300 mt-1 leading-snug">Indian Nursing Council recognized curriculum</p>
-              </div>
+            {/* Supporting Descriptive Text */}
+            <p className="text-xs sm:text-sm md:text-base text-slate-500 leading-relaxed max-w-2xl mx-auto hidden sm:block font-medium">
+              Discover verified nursing and allied healthcare courses, compare colleges, understand eligibility, and receive personalized admission guidance from experienced educational counselors.
+            </p>
 
-              <div className="p-3 sm:p-4 rounded-xl sm:rounded-2xl bg-white/[0.06] border border-white/10 backdrop-blur-md hover:bg-white/[0.09] transition-colors">
-                <div className="flex items-center gap-1.5 sm:gap-2 text-teal-300 font-bold text-xs sm:text-sm">
-                  <Building2 className="w-4 h-4 shrink-0" />
-                  <span>RGUHS Affiliated</span>
-                </div>
-                <p className="text-[10px] sm:text-[11px] text-slate-300 mt-1 leading-snug">Premier state medical university standards</p>
+            {/* Key Highlights Sleek Compact Chips for Mobile & Desktop */}
+            <div className="flex flex-wrap items-center justify-center gap-2 sm:gap-3 pt-1 text-[11px] sm:text-xs text-slate-700 font-bold max-w-2xl mx-auto">
+              <div className="flex items-center gap-1.5 px-3.5 py-1.5 sm:px-4 sm:py-2 rounded-full bg-white border border-slate-200/90 shadow-sm hover:shadow-md hover:border-teal-400/50 hover:-translate-y-0.5 transition-all duration-200">
+                <ShieldCheck className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-teal-600 shrink-0" />
+                <span>INC & RGUHS Approved</span>
               </div>
-
-              <div className="p-3 sm:p-4 rounded-xl sm:rounded-2xl bg-white/[0.06] border border-white/10 backdrop-blur-md hover:bg-white/[0.09] transition-colors">
-                <div className="flex items-center gap-1.5 sm:gap-2 text-blue-300 font-bold text-xs sm:text-sm">
-                  <Activity className="w-4 h-4 shrink-0" />
-                  <span>1,000+ Beds</span>
-                </div>
-                <p className="text-[10px] sm:text-[11px] text-slate-300 mt-1 leading-snug">Multispecialty teaching hospital rotations</p>
+              <div className="flex items-center gap-1.5 px-3.5 py-1.5 sm:px-4 sm:py-2 rounded-full bg-white border border-slate-200/90 shadow-sm hover:shadow-md hover:border-teal-400/50 hover:-translate-y-0.5 transition-all duration-200">
+                <Building2 className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-blue-600 shrink-0" />
+                <span>1,000+ Bed Hospital Exposure</span>
               </div>
-
-              <div className="p-3 sm:p-4 rounded-xl sm:rounded-2xl bg-white/[0.06] border border-white/10 backdrop-blur-md hover:bg-white/[0.09] transition-colors">
-                <div className="flex items-center gap-1.5 sm:gap-2 text-amber-300 font-bold text-xs sm:text-sm">
-                  <CheckCircle2 className="w-4 h-4 shrink-0" />
-                  <span>Direct Payment</span>
-                </div>
-                <p className="text-[10px] sm:text-[11px] text-slate-300 mt-1 leading-snug">Transparent fees to college bank accounts</p>
+              <div className="flex items-center gap-1.5 px-3.5 py-1.5 sm:px-4 sm:py-2 rounded-full bg-white border border-slate-200/90 shadow-sm hover:shadow-md hover:border-teal-400/50 hover:-translate-y-0.5 transition-all duration-200">
+                <Globe2 className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-amber-600 shrink-0" />
+                <span>Direct Nepal Student Desk</span>
               </div>
             </div>
 
-            {/* Professional Action Buttons */}
-            <div className="flex flex-col sm:flex-row items-center justify-center gap-2.5 sm:gap-4 pt-3 w-full max-w-md mx-auto">
+            {/* Hero 3D CTA Buttons */}
+            <div className="flex flex-col sm:flex-row items-stretch sm:items-center justify-center gap-2.5 sm:gap-4 pt-2 w-full max-w-md mx-auto">
               <button
                 type="button"
                 onClick={() => scrollToForm()}
-                className="w-full sm:w-auto px-7 py-3.5 rounded-xl bg-teal-600 hover:bg-teal-500 active:bg-teal-700 text-white font-bold text-xs sm:text-sm shadow-lg shadow-teal-950/40 hover:-translate-y-0.5 active:translate-y-0 transition-all duration-200 text-center flex items-center justify-center gap-2 group cursor-pointer"
+                className="w-full sm:w-auto px-6 py-3.5 sm:px-8 sm:py-4 rounded-xl sm:rounded-2xl bg-gradient-to-r from-teal-600 via-teal-500 to-emerald-600 hover:from-teal-500 hover:to-emerald-500 active:scale-95 text-white font-black text-xs sm:text-base shadow-[0_10px_30px_rgba(13,148,136,0.3)] hover:shadow-[0_15px_40px_rgba(13,148,136,0.45)] hover:-translate-y-0.5 transition-all duration-300 text-center flex items-center justify-center gap-2 group cursor-pointer"
               >
-                <span>Verify Scholarship Eligibility</span>
-                <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+                <span>Check Scholarship Eligibility</span>
+                <ArrowRight className="w-3.5 h-3.5 sm:w-4 sm:h-4 group-hover:translate-x-1.5 transition-transform text-teal-100" />
               </button>
 
               <a
                 href="#courses-section"
-                className="w-full sm:w-auto px-6 py-3.5 rounded-xl bg-white/10 hover:bg-white/15 border border-white/20 text-white font-semibold text-xs sm:text-sm backdrop-blur-md hover:-translate-y-0.5 transition-all duration-200 text-center flex items-center justify-center"
+                className="w-full sm:w-auto px-5 py-3 sm:px-7 sm:py-4 rounded-xl sm:rounded-2xl bg-slate-100 hover:bg-slate-200/80 border border-slate-200/90 text-slate-800 font-bold text-xs sm:text-base hover:-translate-y-0.5 transition-all duration-300 text-center flex items-center justify-center shadow-sm"
               >
-                Explore Accredited Courses
+                Explore Courses
               </a>
             </div>
 
@@ -414,23 +425,19 @@ export function NepalNursingScholarshipsView({
         
         {/* Subtle decorative background circles */}
         <div className="absolute top-1/2 left-0 w-72 h-72 bg-teal-100/40 rounded-full blur-3xl -ml-28 pointer-events-none" />
-        <div className="absolute bottom-0 right-0 w-80 h-80 bg-blue-100/30 rounded-full blur-3xl -mr-32 pointer-events-none" />
+        <div className="absolute bottom-0 right-0 w-80 h-80 bg-amber-100/30 rounded-full blur-3xl -mr-32 pointer-events-none" />
 
         <div className="max-w-4xl mx-auto px-3.5 sm:px-6 lg:px-8 relative z-10">
           
-          <div className="bg-white rounded-2xl sm:rounded-3xl p-5 sm:p-8 md:p-12 border border-slate-200 shadow-xl relative overflow-hidden">
-            <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-teal-600 via-emerald-600 to-teal-700" />
+          <div className="bg-white/95 backdrop-blur-xl rounded-2xl sm:rounded-3xl p-4 sm:p-8 md:p-12 border border-slate-200/90 shadow-[0_20px_60px_-15px_rgba(15,23,42,0.08)] hover:shadow-[0_25px_70px_-15px_rgba(15,23,42,0.12)] transition-shadow duration-300 relative overflow-hidden">
             
             {/* Header */}
-            <div className="text-center max-w-2xl mx-auto mb-6 sm:mb-8">
-              <span className="inline-block px-3.5 py-1 rounded-full text-xs font-bold uppercase tracking-wider text-teal-800 bg-teal-50 border border-teal-200/80 mb-2.5">
-                Official Assessment Desk
-              </span>
-              <h2 className="text-xl sm:text-2xl md:text-3xl font-extrabold text-[#0A1D37] tracking-tight">
-                Check Your Scholarship Eligibility
+            <div className="text-center max-w-2xl mx-auto mb-5 sm:mb-8 md:mb-10">
+              <h2 className="text-xl sm:text-2xl md:text-4xl font-black text-[#0A1D37] tracking-tight">
+                Check Your <span className="font-serif italic font-normal text-teal-600">Scholarship Eligibility</span>
               </h2>
-              <p className="mt-1.5 text-slate-600 text-xs sm:text-sm font-medium">
-                Submit your 10+2 / NEB details to receive an official institutional fee grant estimate and college admission roadmap.
+              <p className="mt-1 sm:mt-2 text-slate-600 text-xs sm:text-sm md:text-base font-medium">
+                Fill in your details and our admission team will contact you with available scholarship opportunities.
               </p>
             </div>
 
@@ -480,9 +487,9 @@ export function NepalNursingScholarshipsView({
               </div>
             ) : (
               /* Active Form */
-              <form onSubmit={handleFormSubmit} className="space-y-3.5 sm:space-y-4">
+              <form onSubmit={handleFormSubmit} className="space-y-3.5 sm:space-y-5">
                 
-                <div className="grid sm:grid-cols-2 gap-3.5 sm:gap-4">
+                <div className="grid sm:grid-cols-2 gap-3.5 sm:gap-5">
                   
                   {/* Full Name */}
                   <div className="space-y-1 text-left">
@@ -495,7 +502,7 @@ export function NepalNursingScholarshipsView({
                       placeholder="e.g. Aarav Sharma"
                       value={fullName}
                       onChange={(e) => setFullName(e.target.value)}
-                      className="w-full h-10 sm:h-11 px-3 sm:px-3.5 rounded-xl border border-slate-300 text-xs sm:text-sm text-slate-800 bg-white focus:outline-none focus:ring-2 focus:ring-teal-600/20 focus:border-teal-600 transition-all shadow-sm"
+                      className="w-full h-10 sm:h-12 px-3 sm:px-3.5 rounded-xl border border-slate-200 text-xs sm:text-sm text-slate-800 bg-white focus:outline-none focus:ring-2 focus:ring-teal-500/20 focus:border-teal-500 transition-all shadow-sm"
                     />
                   </div>
 
@@ -508,10 +515,10 @@ export function NepalNursingScholarshipsView({
                       <select
                         value={countryCode}
                         onChange={(e) => setCountryCode(e.target.value)}
-                        className="h-10 sm:h-11 px-2.5 rounded-xl border border-slate-300 text-xs font-bold text-slate-700 bg-slate-50 focus:outline-none focus:ring-2 focus:ring-teal-600/20 focus:border-teal-600 shadow-sm"
+                        className="h-10 sm:h-12 px-2 sm:px-2.5 rounded-xl border border-slate-200 text-xs font-bold text-slate-700 bg-slate-50 focus:outline-none focus:ring-2 focus:ring-teal-500 shadow-sm"
                       >
-                        <option value="+977">🇳🇵 +977 (Nepal)</option>
-                        <option value="+91">🇮🇳 +91 (India)</option>
+                        <option value="+977">🇳🇵 +977</option>
+                        <option value="+91">🇮🇳 +91</option>
                       </select>
                       <input
                         type="tel"
@@ -519,14 +526,14 @@ export function NepalNursingScholarshipsView({
                         placeholder="98XXXXXXXX"
                         value={mobileNumber}
                         onChange={(e) => setMobileNumber(e.target.value)}
-                        className="flex-1 h-10 sm:h-11 px-3 sm:px-3.5 rounded-xl border border-slate-300 text-xs sm:text-sm text-slate-800 bg-white focus:outline-none focus:ring-2 focus:ring-teal-600/20 focus:border-teal-600 transition-all shadow-sm"
+                        className="flex-1 h-10 sm:h-12 px-3 sm:px-3.5 rounded-xl border border-slate-200 text-xs sm:text-sm text-slate-800 bg-white focus:outline-none focus:ring-2 focus:ring-teal-500/20 focus:border-teal-500 transition-all shadow-sm"
                       />
                     </div>
                   </div>
 
                 </div>
 
-                <div className="grid sm:grid-cols-2 gap-3.5 sm:gap-4">
+                <div className="grid sm:grid-cols-2 gap-3.5 sm:gap-5">
                   
                   {/* Interested Course Dropdown */}
                   <div className="space-y-1 text-left">
@@ -536,7 +543,7 @@ export function NepalNursingScholarshipsView({
                     <select
                       value={interestedCourse}
                       onChange={(e) => setInterestedCourse(e.target.value)}
-                      className="w-full h-10 sm:h-11 px-3 sm:px-3.5 rounded-xl border border-slate-300 text-xs sm:text-sm font-semibold text-slate-800 bg-white focus:outline-none focus:ring-2 focus:ring-teal-600/20 focus:border-teal-600 transition-all shadow-sm"
+                      className="w-full h-10 sm:h-12 px-3 sm:px-3.5 rounded-xl border border-slate-200 text-xs sm:text-sm font-semibold text-slate-800 bg-white focus:outline-none focus:ring-2 focus:ring-teal-500/20 focus:border-teal-500 transition-all shadow-sm"
                     >
                       <option value="B.Sc. Nursing">B.Sc. Nursing (4 Years)</option>
                       <option value="GNM">GNM (General Nursing and Midwifery - 3 Years)</option>
@@ -559,7 +566,7 @@ export function NepalNursingScholarshipsView({
                       placeholder="e.g. 68% or GPA 2.8 / 185 marks"
                       value={pcbScore}
                       onChange={(e) => setPcbScore(e.target.value)}
-                      className="w-full h-10 sm:h-11 px-3 sm:px-3.5 rounded-xl border border-slate-300 text-xs sm:text-sm font-semibold text-slate-800 bg-white focus:outline-none focus:ring-2 focus:ring-teal-600/20 focus:border-teal-600 transition-all shadow-sm"
+                      className="w-full h-10 sm:h-12 px-3 sm:px-3.5 rounded-xl border border-slate-200 text-xs sm:text-sm font-semibold text-slate-800 bg-white focus:outline-none focus:ring-2 focus:ring-teal-500/20 focus:border-teal-500 transition-all shadow-sm"
                     />
                     <span className="text-[10px] text-slate-400 block">
                       Enter percentage, GPA, or marks in Physics, Chemistry, Biology.
@@ -578,7 +585,7 @@ export function NepalNursingScholarshipsView({
                     placeholder="e.g. SPARSH College of Nursing / Any Top Bangalore College"
                     value={preferredCollege}
                     onChange={(e) => setPreferredCollege(e.target.value)}
-                    className="w-full h-10 sm:h-11 px-3 sm:px-3.5 rounded-xl border border-slate-300 text-xs sm:text-sm font-semibold text-slate-800 bg-white focus:outline-none focus:ring-2 focus:ring-teal-600/20 focus:border-teal-600 transition-all shadow-sm"
+                    className="w-full h-10 sm:h-12 px-3 sm:px-3.5 rounded-xl border border-slate-200 text-xs sm:text-sm font-semibold text-slate-800 bg-white focus:outline-none focus:ring-2 focus:ring-teal-500/20 focus:border-teal-500 transition-all shadow-sm"
                   />
                 </div>
 
@@ -589,45 +596,32 @@ export function NepalNursingScholarshipsView({
                     id="scholarshipConsent"
                     checked={consent}
                     onChange={(e) => setConsent(e.target.checked)}
-                    className="mt-0.5 h-3.5 w-3.5 sm:h-4 sm:w-4 rounded border-slate-300 text-teal-600 focus:ring-teal-500 shrink-0 cursor-pointer"
+                    className="mt-0.5 h-3.5 w-3.5 sm:h-4 sm:w-4 rounded border-slate-300 text-teal-600 focus:ring-teal-500 shrink-0"
                   />
                   <label htmlFor="scholarshipConsent" className="text-[11px] sm:text-xs text-slate-600 leading-snug cursor-pointer">
-                    By submitting this form, I agree to be contacted regarding verified admission and scholarship opportunities by Vidhyarthi Sewa counselors.
+                    By submitting this form, I agree to be contacted regarding admission and scholarship opportunities by Vidhyarthi Sewa counselors.
                   </label>
                 </div>
 
                 {/* Submit Button */}
-                <div className="pt-2">
+                <div className="pt-1.5 sm:pt-2">
                   <button
                     type="submit"
                     disabled={isSubmitting}
-                    className="w-full h-11 sm:h-12 rounded-xl bg-teal-600 hover:bg-teal-500 active:bg-teal-700 text-white font-bold text-xs sm:text-sm tracking-wide shadow-md hover:shadow-lg transition-all duration-200 flex items-center justify-center gap-2 cursor-pointer disabled:opacity-70"
+                    className="w-full h-11 sm:h-13 rounded-xl sm:rounded-2xl bg-gradient-to-r from-teal-600 via-teal-500 to-emerald-600 hover:from-teal-500 hover:to-emerald-500 active:scale-[0.99] text-white font-black text-xs sm:text-base tracking-wide shadow-lg shadow-teal-600/25 hover:shadow-xl hover:shadow-teal-600/35 transition-all duration-300 flex items-center justify-center gap-2 cursor-pointer disabled:opacity-70"
                   >
                     {isSubmitting ? (
                       <>
                         <Loader2 className="w-3.5 h-3.5 sm:w-4 sm:h-4 animate-spin text-white" />
-                        <span>Verifying Eligibility with Quota Database...</span>
+                        <span>Verifying Eligibility with Database...</span>
                       </>
                     ) : (
                       <>
-                        <Send className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-white" />
+                        <Send className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-teal-200" />
                         <span>Check My Scholarship Eligibility</span>
                       </>
                     )}
                   </button>
-                </div>
-
-                {/* Micro Trust Indicators */}
-                <div className="pt-2 border-t border-slate-100 flex flex-wrap items-center justify-center gap-x-6 gap-y-1.5 text-[11px] text-slate-500">
-                  <span className="flex items-center gap-1">
-                    <ShieldCheck className="w-3.5 h-3.5 text-teal-600" /> Official College Letter
-                  </span>
-                  <span className="flex items-center gap-1">
-                    <CheckCircle2 className="w-3.5 h-3.5 text-teal-600" /> Direct Bank Payments
-                  </span>
-                  <span className="flex items-center gap-1">
-                    <Globe2 className="w-3.5 h-3.5 text-teal-600" /> Dedicated Nepal Desk
-                  </span>
                 </div>
 
               </form>
@@ -1454,12 +1448,9 @@ export function NepalNursingScholarshipsView({
 
               {/* Header */}
               <div className="pr-6 pt-0.5">
-                <span className="text-[10px] font-bold uppercase tracking-wider text-teal-800 bg-teal-50 px-2 py-0.5 rounded border border-teal-200 mb-1.5 inline-block">
-                  Official Nepal Merit Assessment
-                </span>
-                <h3 className="text-sm sm:text-base font-bold text-[#0B192C] leading-snug tracking-tight">
-                  Select your course and expected 10+2 PCB score to check your{" "}
-                  <span className="text-teal-700 font-bold underline decoration-teal-400 underline-offset-2">
+                <h3 className="text-sm sm:text-base md:text-lg font-black text-[#0B192C] leading-snug tracking-tight">
+                  Select your course and 10+2 PCB score to check your{" "}
+                  <span className="text-teal-700 bg-teal-50 px-1.5 py-0.5 rounded-md border border-teal-200/80 font-black">
                     scholarship eligibility
                   </span>
                 </h3>
@@ -1530,10 +1521,10 @@ export function NepalNursingScholarshipsView({
               <button
                 type="button"
                 onClick={handleClaimFromPopup}
-                className="w-full py-3 rounded-xl bg-teal-600 hover:bg-teal-500 active:bg-teal-700 text-white font-bold text-xs sm:text-sm tracking-wide shadow-md hover:shadow-lg transition-all flex items-center justify-center gap-2 cursor-pointer"
+                className="w-full py-3 sm:py-3.5 rounded-xl bg-gradient-to-r from-teal-500 to-emerald-500 hover:from-teal-400 hover:to-emerald-400 text-slate-950 font-black text-xs sm:text-sm tracking-wide shadow-lg shadow-teal-500/25 active:scale-95 transition-all flex items-center justify-center gap-2"
               >
-                <span>Check My Scholarship Bracket</span>
-                <ArrowRight className="w-4 h-4" />
+                <span>Claim This Scholarship Bracket</span>
+                <ArrowRight className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
               </button>
 
             </motion.div>
