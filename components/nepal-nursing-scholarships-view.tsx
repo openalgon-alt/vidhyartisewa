@@ -509,10 +509,6 @@ export function NepalNursingScholarshipsView({
             
             {/* Header */}
             <div className="text-center max-w-xl mx-auto mb-6 sm:mb-8">
-              <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-teal-50 border border-teal-200/70 text-teal-800 text-[11px] font-bold mb-3 shadow-xs">
-                <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
-                <span>Nepal Special Admission Quota 2025–26</span>
-              </div>
               <h2 className="text-2xl sm:text-3xl md:text-4xl font-black text-[#0A1D37] tracking-tight">
                 Check Your <span className="font-serif italic font-normal text-teal-600">Scholarship Eligibility</span>
               </h2>
@@ -591,12 +587,8 @@ export function NepalNursingScholarshipsView({
 
                   {/* Mobile Number with Country Code */}
                   <div className="space-y-1.5 text-left">
-                    <label className="text-xs font-bold text-slate-700 flex items-center justify-between">
-                      <span>Mobile Number (WhatsApp) <span className="text-red-500">*</span></span>
-                      <span className="text-[10px] text-emerald-600 font-semibold flex items-center gap-1">
-                        <span className="w-1.5 h-1.5 rounded-full bg-emerald-500" />
-                        WhatsApp report
-                      </span>
+                    <label className="text-xs font-bold text-slate-700 block">
+                      Mobile Number (WhatsApp) <span className="text-red-500">*</span>
                     </label>
                     <div className="flex gap-2">
                       <select
@@ -649,7 +641,7 @@ export function NepalNursingScholarshipsView({
                     </div>
                   </div>
 
-                  {/* PCB Score / Percentage with Quick Select Chips */}
+                  {/* PCB Score / Percentage */}
                   <div className="space-y-1.5 text-left">
                     <label className="text-xs font-bold text-slate-700 flex items-center justify-between">
                       <span>Your PCB Score (Physics, Chemistry & Biology) <span className="text-red-500">*</span></span>
@@ -664,24 +656,6 @@ export function NepalNursingScholarshipsView({
                         onChange={(e) => setPcbScore(e.target.value)}
                         className="w-full h-11 sm:h-12 pl-10 pr-3.5 rounded-xl border border-slate-200/90 text-xs sm:text-sm font-semibold text-slate-800 bg-slate-50/60 hover:bg-slate-50 focus:bg-white focus:outline-none focus:border-teal-500 focus:ring-4 focus:ring-teal-500/10 transition-all placeholder:text-slate-400 placeholder:font-normal"
                       />
-                    </div>
-                    {/* One-tap quick selection to remove typing friction */}
-                    <div className="flex items-center gap-1.5 pt-0.5">
-                      <span className="text-[10px] text-slate-400 font-medium">Quick select:</span>
-                      {["75%+ Top Merit", "60%–75%", "50%–60%"].map((tier) => (
-                        <button
-                          key={tier}
-                          type="button"
-                          onClick={() => setPcbScore(tier)}
-                          className={`px-2 py-0.5 rounded-md text-[10px] font-bold transition-all cursor-pointer border ${
-                            pcbScore === tier
-                              ? "bg-teal-600 text-white border-teal-600 shadow-xs"
-                              : "bg-slate-100 hover:bg-teal-50 text-slate-600 hover:text-teal-700 border-slate-200/80"
-                          }`}
-                        >
-                          {tier}
-                        </button>
-                      ))}
                     </div>
                   </div>
 
@@ -718,8 +692,8 @@ export function NepalNursingScholarshipsView({
                   </label>
                 </div>
 
-                {/* Submit Button & Trust Proof */}
-                <div className="pt-2 sm:pt-3 space-y-2.5">
+                {/* Submit Button */}
+                <div className="pt-2 sm:pt-3">
                   <button
                     type="submit"
                     disabled={isSubmitting}
@@ -737,16 +711,6 @@ export function NepalNursingScholarshipsView({
                       </>
                     )}
                   </button>
-
-                  <div className="flex flex-wrap items-center justify-center gap-2 sm:gap-3 text-[10px] sm:text-[11px] text-slate-400 pt-0.5">
-                    <span className="flex items-center gap-1 font-medium">
-                      <Lock className="w-3 h-3 text-teal-600" /> 100% Confidential
-                    </span>
-                    <span>•</span>
-                    <span className="font-medium">No Hidden Charges</span>
-                    <span>•</span>
-                    <span className="font-medium">INC & RGUHS Verified</span>
-                  </div>
                 </div>
 
               </form>
