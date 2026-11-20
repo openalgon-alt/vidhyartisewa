@@ -436,27 +436,8 @@ export function NepalNursingScholarshipsView({
               </div>
             </div>
 
-            {/* Hero 3D CTA Buttons */}
-            <div className="flex flex-col sm:flex-row items-stretch sm:items-center justify-center gap-2.5 sm:gap-4 pt-2 w-full max-w-md mx-auto">
-              <button
-                type="button"
-                onClick={() => scrollToForm()}
-                className="w-full sm:w-auto px-6 py-3.5 sm:px-8 sm:py-4 rounded-xl sm:rounded-2xl bg-gradient-to-r from-teal-600 via-teal-500 to-emerald-600 hover:from-teal-500 hover:to-emerald-500 active:scale-95 text-white font-black text-xs sm:text-base shadow-[0_12px_32px_rgba(13,148,136,0.32)] hover:shadow-[0_18px_45px_rgba(13,148,136,0.45)] hover:-translate-y-0.5 transition-all duration-300 text-center flex items-center justify-center gap-2 group cursor-pointer"
-              >
-                <span>Check Scholarship Eligibility</span>
-                <ArrowRight className="w-3.5 h-3.5 sm:w-4 sm:h-4 group-hover:translate-x-1.5 transition-transform text-teal-100" />
-              </button>
-
-              <a
-                href="#courses-section"
-                className="w-full sm:w-auto px-5 py-3 sm:px-7 sm:py-4 rounded-xl sm:rounded-2xl bg-white hover:bg-slate-50 border-2 border-slate-200 text-slate-800 font-bold text-xs sm:text-base hover:-translate-y-0.5 transition-all duration-300 text-center flex items-center justify-center shadow-sm"
-              >
-                Explore Courses
-              </a>
-            </div>
-
             {/* Value & Key Stats 3D Micro-Grid for Mobile & Desktop (Fills screen with clean trust & visual depth) */}
-            <div className="grid grid-cols-3 gap-2 sm:gap-3.5 pt-3 sm:pt-4 max-w-lg sm:max-w-xl mx-auto w-full">
+            <div className="grid grid-cols-3 gap-2 sm:gap-3.5 pt-2 sm:pt-3 max-w-lg sm:max-w-xl mx-auto w-full">
               <div className="p-2.5 sm:p-3 rounded-2xl bg-white/90 backdrop-blur-md border border-slate-200/80 shadow-sm hover:shadow-md transition-all text-center">
                 <div className="w-7 h-7 sm:w-8 sm:h-8 mx-auto rounded-xl bg-teal-50 border border-teal-200/60 flex items-center justify-center text-teal-600 mb-1.5 shadow-inner">
                   <GraduationCap className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
@@ -480,6 +461,25 @@ export function NepalNursingScholarshipsView({
                 <div className="text-xs sm:text-sm font-black text-slate-800">100% Free</div>
                 <div className="text-[10px] sm:text-xs text-slate-500 font-medium">Desk Guidance</div>
               </div>
+            </div>
+
+            {/* Hero 3D CTA Buttons - Placed Below 3 Cards with Aesthetic, Refined Sizing */}
+            <div className="flex flex-col sm:flex-row items-center justify-center gap-2 sm:gap-3 pt-2 max-w-[340px] sm:max-w-md mx-auto w-full">
+              <button
+                type="button"
+                onClick={() => scrollToForm()}
+                className="w-full sm:w-auto px-5 py-2.5 sm:px-6 sm:py-3 rounded-xl sm:rounded-2xl bg-gradient-to-r from-teal-600 via-teal-500 to-emerald-600 hover:from-teal-500 hover:to-emerald-500 active:scale-95 text-white font-black text-xs sm:text-sm shadow-[0_8px_22px_rgba(13,148,136,0.28)] hover:shadow-[0_12px_28px_rgba(13,148,136,0.38)] hover:-translate-y-0.5 transition-all duration-200 text-center flex items-center justify-center gap-1.5 group cursor-pointer"
+              >
+                <span>Check Scholarship Eligibility</span>
+                <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-1 transition-transform text-teal-100" />
+              </button>
+
+              <a
+                href="#courses-section"
+                className="w-full sm:w-auto px-4 py-2 sm:px-5 sm:py-2.5 rounded-xl sm:rounded-2xl bg-white/95 hover:bg-slate-50 border border-slate-200 hover:border-slate-300 text-slate-700 font-bold text-xs sm:text-sm hover:-translate-y-0.5 active:scale-95 transition-all duration-200 text-center flex items-center justify-center shadow-xs"
+              >
+                Explore Courses
+              </a>
             </div>
 
             {/* Disclaimer Footnote */}
