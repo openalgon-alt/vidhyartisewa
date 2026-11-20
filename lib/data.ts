@@ -6,6 +6,7 @@ export const NAV_LINKS = [
   { href: '/career-guidance/', label: 'Career Guidance' },
   { href: '/colleges/', label: 'Colleges' },
   { href: '/courses/', label: 'Courses' },
+  { href: '/nepal/nursing-scholarships-india', label: 'Nursing Scholarships' },
   { href: '/scholarships/', label: 'Scholarships' },
   { href: '/contact/', label: 'Contact' },
 ];

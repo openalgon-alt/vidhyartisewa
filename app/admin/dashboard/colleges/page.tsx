@@ -43,7 +43,11 @@ export default function AdminCollegesPage() {
     name: "", slug: "", location: "", type: "", rating: "", established: "", accreditation: "", website: "",
     ownership: "Private", affiliation: "",
     course_slugs: "", facilities: "", description: "", image_url: "",
-    place_avg: "", place_high: "", place_rate: "", place_companies: ""
+    place_avg: "", place_high: "", place_rate: "", place_companies: "",
+    scholarship_available: true,
+    scholarship_max: "80",
+    scholarship_terms: "10+2 Science (PCB) merit, early application seat confirmation",
+    scholarship_verified: true,
   });
   
   const supabase = createClient();
@@ -168,7 +172,15 @@ export default function AdminCollegesPage() {
         average_package: data.place_avg || "",
         highest_package: data.place_high || "",
         placement_rate: data.place_rate || "",
-        companies: data.place_companies ? data.place_companies.split(',').map((s: string) => s.trim()).filter(Boolean) : []
+        companies: data.place_companies ? data.place_companies.split(',').map((s: string) => s.trim()).filter(Boolean) : [],
+        scholarship: {
+          available: Boolean(data.scholarship_available),
+          max_percentage: data.scholarship_max ? parseInt(data.scholarship_max) || 80 : 80,
+          eligibility_conditions: data.scholarship_terms?.trim() || "10+2 Science (PCB) merit, early application seat confirmation",
+          fee_component: "Tuition Fee",
+          is_verified: Boolean(data.scholarship_verified),
+          is_published: Boolean(data.scholarship_available)
+        }
       }
     };
   };
@@ -223,6 +235,7 @@ export default function AdminCollegesPage() {
     }
 
     const currentAffiliation = pStats.affiliation || college.accreditation || "";
+    const sInfo = pStats.scholarship || {};
     
     setFormData({
       name: college.name || "",
@@ -243,7 +256,11 @@ export default function AdminCollegesPage() {
       place_avg: pStats.average_package || "",
       place_high: pStats.highest_package || "",
       place_rate: pStats.placement_rate || "",
-      place_companies: Array.isArray(pStats.companies) ? pStats.companies.join(", ") : ""
+      place_companies: Array.isArray(pStats.companies) ? pStats.companies.join(", ") : "",
+      scholarship_available: sInfo.available !== false,
+      scholarship_max: sInfo.max_percentage?.toString() || "80",
+      scholarship_terms: sInfo.eligibility_conditions || "10+2 Science (PCB) merit, early application seat confirmation",
+      scholarship_verified: sInfo.is_verified !== false,
     });
     
     setEditingId(college.id);
@@ -303,7 +320,11 @@ export default function AdminCollegesPage() {
             name: "", slug: "", location: "", type: "Higher Education", rating: "4.5", established: "", accreditation: "", website: "",
             ownership: "Private", affiliation: "",
             course_slugs: "", facilities: "Labs, Library, Hostel, Wi-Fi, Cafeteria, Sports Ground", description: "", image_url: "",
-            place_avg: "5.5 LPA", place_high: "18 LPA", place_rate: "88%", place_companies: "TCS, Infosys, Wipro, Capgemini"
+            place_avg: "5.5 LPA", place_high: "18 LPA", place_rate: "88%", place_companies: "TCS, Infosys, Wipro, Capgemini",
+            scholarship_available: true,
+            scholarship_max: "80",
+            scholarship_terms: "10+2 Science (PCB) merit, early application seat confirmation",
+            scholarship_verified: true,
           });
           setTimeout(() => {
             topRef.current?.scrollIntoView({ behavior: "smooth" });
@@ -397,6 +418,59 @@ export default function AdminCollegesPage() {
               <label className="text-xs font-bold text-slate-600 uppercase">Est. Year</label>
               <input className="border border-slate-200 p-3 rounded-xl w-full bg-slate-50 text-slate-900 text-sm focus:bg-white focus:ring-2 focus:ring-[#173B5E] focus:outline-none" placeholder="e.g. 2005" type="number" value={formData.established} onChange={e => setFormData({...formData, established: e.target.value})} />
             </div>
+          </div>
+
+          {/* SCHOLARSHIP MANAGEMENT CARD (NEPAL & INTERNATIONAL STUDENTS) */}
+          <div className="md:col-span-2 p-5 bg-gradient-to-r from-teal-50 to-emerald-50 border border-teal-200 rounded-2xl space-y-4">
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-teal-200/80 pb-2">
+              <h3 className="text-sm font-bold text-teal-900 uppercase flex items-center gap-2">
+                <Sparkles className="w-4 h-4 text-teal-600" />
+                Nursing & Healthcare Scholarships (Nepal & International Quota)
+              </h3>
+              <label className="flex items-center gap-2 cursor-pointer">
+                <input 
+                  type="checkbox" 
+                  checked={formData.scholarship_available} 
+                  onChange={e => setFormData({ ...formData, scholarship_available: e.target.checked })}
+                  className="rounded text-teal-600 focus:ring-teal-500 w-4 h-4 cursor-pointer"
+                />
+                <span className="text-xs font-bold text-teal-900">Scholarship Available</span>
+              </label>
+            </div>
+
+            {formData.scholarship_available && (
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-4 pt-1">
+                <div>
+                  <label className="text-[11px] font-bold text-teal-800 block mb-1">Max Scholarship % (e.g. 80)</label>
+                  <input 
+                    className="border border-teal-200 p-2.5 rounded-xl w-full bg-white text-xs text-slate-800 focus:ring-1 focus:ring-teal-500" 
+                    placeholder="e.g. 80" 
+                    value={formData.scholarship_max} 
+                    onChange={e => setFormData({ ...formData, scholarship_max: e.target.value })} 
+                  />
+                </div>
+                <div>
+                  <label className="text-[11px] font-bold text-teal-800 block mb-1">Eligibility Conditions / Terms</label>
+                  <input 
+                    className="border border-teal-200 p-2.5 rounded-xl w-full bg-white text-xs text-slate-800 focus:ring-1 focus:ring-teal-500" 
+                    placeholder="e.g. 65%+ in PCB, early admission seat booking" 
+                    value={formData.scholarship_terms} 
+                    onChange={e => setFormData({ ...formData, scholarship_terms: e.target.value })} 
+                  />
+                </div>
+                <div className="flex items-center sm:pt-5">
+                  <label className="flex items-center gap-2 cursor-pointer">
+                    <input 
+                      type="checkbox" 
+                      checked={formData.scholarship_verified} 
+                      onChange={e => setFormData({ ...formData, scholarship_verified: e.target.checked })}
+                      className="rounded text-teal-600 focus:ring-teal-500 w-4 h-4 cursor-pointer"
+                    />
+                    <span className="text-xs font-bold text-teal-900">Mark as Verified by College</span>
+                  </label>
+                </div>
+              </div>
+            )}
           </div>
 
           <div className="space-y-1 md:col-span-2">
