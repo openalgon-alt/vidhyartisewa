@@ -318,14 +318,6 @@ export function NepalNursingScholarshipsView({
           
           <div className="max-w-4xl mx-auto space-y-6 text-center">
             
-            {/* Prominent Nepal Admission Quota Pill */}
-            <div className="inline-flex flex-wrap items-center justify-center gap-2 px-3.5 py-1.5 rounded-full bg-gradient-to-r from-amber-500/20 via-teal-500/15 to-amber-500/20 border border-amber-400/40 text-xs sm:text-sm font-bold tracking-wide shadow-lg shadow-amber-500/10 backdrop-blur-md">
-              <span className="flex h-2.5 w-2.5 rounded-full bg-amber-400 animate-ping shrink-0" />
-              <span className="text-white font-extrabold">🇳🇵 NEPAL SPECIAL ADMISSION QUOTA 2025–26</span>
-              <span className="text-amber-400 hidden sm:inline">•</span>
-              <span className="text-amber-300 font-bold hidden sm:inline">MERIT SCHOLARSHIP SCHEME</span>
-            </div>
-
             {/* Main H1 - Exact Target SEO Keyword with Bold Highlight for 80% Scholarship */}
             <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-[52px] font-black text-white tracking-tight leading-[1.15]">
               Study Nursing in India with{" "}
@@ -360,28 +352,6 @@ export function NepalNursingScholarshipsView({
               <div className="flex items-center justify-center gap-2 p-3 rounded-xl bg-white/5 border border-white/10 backdrop-blur-sm">
                 <Globe2 className="w-4 h-4 text-amber-400 shrink-0" />
                 <span>Direct Nepal Student Desk</span>
-              </div>
-            </div>
-
-            {/* Social Proof Row */}
-            <div className="flex flex-wrap items-center justify-center gap-3 pt-1">
-              <div className="flex -space-x-2 overflow-hidden">
-                <div className="inline-block h-8 w-8 rounded-full ring-2 ring-[#061426] bg-teal-500 text-slate-950 font-bold text-xs flex items-center justify-center">
-                  🇳🇵
-                </div>
-                <div className="inline-block h-8 w-8 rounded-full ring-2 ring-[#061426] bg-blue-600 text-white font-bold text-xs flex items-center justify-center">
-                  AS
-                </div>
-                <div className="inline-block h-8 w-8 rounded-full ring-2 ring-[#061426] bg-amber-500 text-slate-950 font-bold text-xs flex items-center justify-center">
-                  PK
-                </div>
-                <div className="inline-block h-8 w-8 rounded-full ring-2 ring-[#061426] bg-emerald-600 text-white font-bold text-xs flex items-center justify-center">
-                  RS
-                </div>
-              </div>
-              <div className="text-xs text-slate-300">
-                <span className="font-bold text-white">650+ Nepalese Students</span> Guided to Bangalore Colleges •{" "}
-                <span className="text-amber-400 font-bold">★ 4.9/5 Rating</span>
               </div>
             </div>
 
