@@ -15,9 +15,10 @@ export function CoursesHero({ searchQuery, setSearchQuery }: CoursesHeroProps) {
   const [isFocused, setIsFocused] = useState(false);
 
   // Generate top 4 suggestions based on input
+  const query = (searchQuery || "").toLowerCase();
   const suggestions = COURSES.filter(c => 
-    c.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-    c.category.toLowerCase().includes(searchQuery.toLowerCase())
+    (c.name || "").toLowerCase().includes(query) ||
+    (c.category || "").toLowerCase().includes(query)
   ).slice(0, 4);
 
   const selectSuggestion = (courseName: string) => {

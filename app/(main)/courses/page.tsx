@@ -16,27 +16,28 @@ export default function CoursesPage() {
   const [searchQuery, setSearchQuery] = useState("");
   const [courses, setCourses] = useState<any[]>([]); // New state for DB data
   const [categories, setCategories] = useState<string[]>(["All"]); // Dynamic categories
-  
-  const supabase = createClient();
 
   useEffect(() => {
+    const supabase = createClient();
     async function fetchData() {
       const { data } = await supabase.from("courses").select("*");
       if (data) {
         setCourses(data);
         // Create unique list of categories from the fetched data
-        const uniqueCats = ["All", ...Array.from(new Set(data.map(c => c.category)))];
+        const uniqueCats = ["All", ...Array.from(new Set(data.map(c => c.category).filter(Boolean)))];
         setCategories(uniqueCats);
       }
     }
     fetchData();
-  }, [supabase]);
+  }, []);
 
   // Filters posts by category and active search query
   const filteredCourses = courses.filter(course => {
     const matchesCategory = activeCategory === "All" || course.category === activeCategory;
-    const matchesSearch = course.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      course.category.toLowerCase().includes(searchQuery.toLowerCase());
+    const courseName = (course.name || "").toLowerCase();
+    const courseCategory = (course.category || "").toLowerCase();
+    const query = (searchQuery || "").toLowerCase();
+    const matchesSearch = courseName.includes(query) || courseCategory.includes(query);
     return matchesCategory && matchesSearch;
   });
 

@@ -36,14 +36,14 @@ export function CallbackRequest() {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSubmitted, setIsSubmitted] = useState(false);
 
+  const { register, handleSubmit, formState: { errors }, reset } = useForm<CallbackFormData>({
+    resolver: zodResolver(callbackSchema),
+  });
+
   // Hide floating callback button on college pages
   if (pathname.startsWith("/colleges")) {
     return null;
   }
-
-  const { register, handleSubmit, formState: { errors }, reset } = useForm<CallbackFormData>({
-    resolver: zodResolver(callbackSchema),
-  });
 
   const onSubmit = async (data: CallbackFormData) => {
     setIsSubmitting(true);
