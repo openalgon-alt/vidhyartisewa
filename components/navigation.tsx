@@ -34,10 +34,11 @@ export function Navigation() {
   // Determine if nav should be solid (always solid white background)
   const isSolid = true;
 
-  // Hide the navigation header on scholarships page
+  // Hide the navigation header on scholarships and nursing scholarships pages
   if (
     pathname === "/scholarships" || 
-    pathname === "/scholarships/"
+    pathname === "/scholarships/" ||
+    pathname?.startsWith("/nepal/nursing-scholarships-india")
   ) {
     return null;
   }

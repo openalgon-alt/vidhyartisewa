@@ -308,7 +308,7 @@ export function NepalNursingScholarshipsView({
       {/* ========================================================================= */}
       {/* 1. HERO SECTION                                                          */}
       {/* ========================================================================= */}
-      <section className="relative pt-24 pb-16 md:pt-32 md:pb-20 bg-gradient-to-b from-[#061426] via-[#091F3C] to-[#0A1B32] text-white overflow-hidden border-b border-slate-800">
+      <section className="relative pt-12 pb-14 sm:pt-16 sm:pb-16 md:pt-20 md:pb-20 bg-gradient-to-b from-[#061426] via-[#091F3C] to-[#0A1B32] text-white overflow-hidden border-b border-slate-800">
         
         {/* Subtle Ambient Background Gradients */}
         <div className="absolute top-0 right-0 w-[550px] h-[550px] bg-teal-500/10 rounded-full blur-[130px] -mr-48 -mt-48 pointer-events-none" />
