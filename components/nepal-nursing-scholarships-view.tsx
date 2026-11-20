@@ -1419,7 +1419,10 @@ export function NepalNursingScholarshipsView({
               {/* Header */}
               <div className="pr-6 pt-0.5">
                 <h3 className="text-sm sm:text-base md:text-lg font-black text-[#0B192C] leading-snug tracking-tight">
-                  Select your course and 10+2 PCB score to check your scholarship eligibility
+                  Select your course and 10+2 PCB score to check your{" "}
+                  <span className="text-teal-700 bg-teal-50 px-1.5 py-0.5 rounded-md border border-teal-200/80 font-black">
+                    scholarship eligibility
+                  </span>
                 </h3>
               </div>
 
