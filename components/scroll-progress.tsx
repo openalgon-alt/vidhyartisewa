@@ -1,15 +1,21 @@
 "use client";
 
-import { useEffect, useState } from "react";
-import { motion, useScroll, useSpring } from "framer-motion";
+import { useScroll, useSpring, motion } from "framer-motion";
+import { usePathname } from "next/navigation";
 
 export function ScrollProgress() {
+  const pathname = usePathname();
   const { scrollYProgress } = useScroll();
   const scaleX = useSpring(scrollYProgress, {
     stiffness: 100,
     damping: 30,
     restDelta: 0.001,
   });
+
+  // Hide the yellow scroll line on college pages
+  if (pathname.startsWith("/colleges")) {
+    return null;
+  }
 
   return (
     <motion.div

@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { usePathname } from "next/navigation";
 import { motion } from "framer-motion";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -30,9 +31,15 @@ const callbackSchema = z.object({
 type CallbackFormData = z.infer<typeof callbackSchema>;
 
 export function CallbackRequest() {
+  const pathname = usePathname();
   const [isOpen, setIsOpen] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSubmitted, setIsSubmitted] = useState(false);
+
+  // Hide floating callback button on college pages
+  if (pathname.startsWith("/colleges")) {
+    return null;
+  }
 
   const { register, handleSubmit, formState: { errors }, reset } = useForm<CallbackFormData>({
     resolver: zodResolver(callbackSchema),

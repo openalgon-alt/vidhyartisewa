@@ -1,5 +1,6 @@
 "use client";
 
+import { usePathname } from "next/navigation";
 import { generateWhatsAppLink } from "@/lib/utils";
 
 // Custom WhatsApp SVG Icon
@@ -15,8 +16,14 @@ const WhatsAppIcon = ({ className }: { className?: string }) => (
 );
 
 export function WhatsAppButton() {
+  const pathname = usePathname();
   const phone = "919620012369";
   const message = "Hello, I would like guidance regarding college admissions.";
+
+  // Hide WhatsApp floating button on college pages
+  if (pathname.startsWith("/colleges")) {
+    return null;
+  }
 
   return (
     <a
