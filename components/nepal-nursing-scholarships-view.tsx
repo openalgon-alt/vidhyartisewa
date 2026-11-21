@@ -13,6 +13,7 @@ import {
 } from "lucide-react";
 import { createClient } from "@/lib/supabase-client";
 import { formatPhoneNumber } from "@/lib/utils";
+import { submitNepalNursingLead } from "@/app/actions/leads";
 
 // Course Model for the landing page
 export interface TargetCourse {
@@ -235,13 +236,12 @@ export function NepalNursingScholarshipsView({
 
     setIsSubmitting(true);
     try {
-      const supabase = createClient();
       const currentUrl = typeof window !== "undefined" ? window.location.href : "https://vidhyarthisewa.org/nepal/nursing-scholarships-india";
 
       const submissionPayload = {
         name: fullName.trim(),
         phone: `${countryCode} ${cleanPhone}`,
-        email: undefined,
+        email: null,
         city: "Nepal",
         academic_info: {
           tenth: "N/A (10+2 Direct)",
@@ -276,13 +276,27 @@ export function NepalNursingScholarshipsView({
         created_at: new Date().toISOString(),
       };
 
-      const { error } = await supabase.from("leads").insert([submissionPayload]);
-      if (error) throw error;
+      // 1. Try Next.js Server Action with Service Role Key (bypasses RLS)
+      let res = await submitNepalNursingLead(submissionPayload);
+
+      // 2. Resilient Fallback to API route if Server Action is blocked or fails
+      if (!res?.success) {
+        console.warn("Server action failed, trying /api/leads fallback:", res?.error);
+        const apiRes = await fetch("/api/leads", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(submissionPayload),
+        });
+        const apiData = await apiRes.json();
+        if (!apiData?.success) {
+          throw new Error(apiData?.error || res?.error || "Submission failed");
+        }
+      }
 
       setIsSubmitted(true);
     } catch (err: any) {
       console.error("Scholarship lead submission error:", err);
-      setFormError("Could not submit enquiry. Please check your connection or contact our mentor directly on WhatsApp.");
+      setFormError(err?.message || "Could not submit enquiry. Please check your connection or contact our mentor directly on WhatsApp.");
     } finally {
       setIsSubmitting(false);
     }
