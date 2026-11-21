@@ -218,6 +218,7 @@ export function NepalNursingScholarshipsView({
   const [isVerifyingOtp, setIsVerifyingOtp] = useState(false);
   const [otpError, setOtpError] = useState("");
   const [otpSuccess, setOtpSuccess] = useState("");
+  const [smsProvider, setSmsProvider] = useState("");
   const [devOtpHint, setDevOtpHint] = useState("");
   const [resendTimer, setResendTimer] = useState(0);
 
@@ -259,6 +260,9 @@ export function NepalNursingScholarshipsView({
       setOtpSent(true);
       setVerificationToken(data.verificationToken);
       setResendTimer(30);
+      if (data.provider) {
+        setSmsProvider(data.provider);
+      }
       if (data.devOtp) {
         setDevOtpHint(data.devOtp);
       }
@@ -816,6 +820,13 @@ export function NepalNursingScholarshipsView({
                       </div>
                     </div>
 
+                    {countryCode === "+977" && !otpSent && !isPhoneVerified && (
+                      <p className="mt-1 text-[11px] text-teal-700 font-medium flex items-center gap-1">
+                        <Sparkles className="w-3 h-3 text-teal-600 shrink-0" />
+                        <span>Instant Nepal SMS verification via Sparrow SMS</span>
+                      </p>
+                    )}
+
                     {/* Inline OTP Verification Panel */}
                     <AnimatePresence>
                       {otpSent && !isPhoneVerified && (
@@ -833,6 +844,11 @@ export function NepalNursingScholarshipsView({
                             </div>
                             <span className="text-[11px] text-slate-500">
                               Sent to <strong className="font-semibold text-slate-700">{countryCode} {mobileNumber}</strong>
+                              {smsProvider && smsProvider !== "test_mode" && (
+                                <span className="ml-1 text-[10px] text-teal-700 font-semibold bg-teal-100/70 px-1.5 py-0.5 rounded">
+                                  via {smsProvider}
+                                </span>
+                              )}
                             </span>
                           </div>
 

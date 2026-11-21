@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { createClient } from "@supabase/supabase-js";
+import { sendLeadConfirmationSMS } from "@/lib/sms";
 
 const supabaseUrl = process.env.SUPABASE_URL || process.env.NEXT_PUBLIC_SUPABASE_URL || "https://tauhscbkagspofmfbqlx.supabase.co";
 const supabaseServiceKey = process.env.SUPABASE_SERVICE_ROLE_KEY || process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!;
@@ -37,6 +38,17 @@ export async function POST(req: NextRequest) {
     if (error) {
       console.error("API /api/leads insert error:", error);
       return NextResponse.json({ success: false, error: error.message }, { status: 500 });
+    }
+
+    // Automated non-blocking confirmation SMS for Nepal applicants
+    try {
+      if (payload.phone) {
+        const studentName = payload.name.trim();
+        const course = payload.interests?.course_name || payload.interests?.primary || "Nursing";
+        await sendLeadConfirmationSMS(studentName, payload.phone, course);
+      }
+    } catch (smsErr) {
+      console.warn("Non-blocking confirmation SMS notice:", smsErr);
     }
 
     return NextResponse.json({ success: true, data }, { status: 201 });

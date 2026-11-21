@@ -1,6 +1,7 @@
 "use server";
 
 import { createClient } from "@supabase/supabase-js";
+import { sendLeadConfirmationSMS } from "@/lib/sms";
 
 // Initialize server-side Supabase client using Service Role Key (bypasses RLS for secure lead recording & admin view)
 const supabaseUrl = process.env.SUPABASE_URL || process.env.NEXT_PUBLIC_SUPABASE_URL || "https://tauhscbkagspofmfbqlx.supabase.co";
@@ -50,6 +51,17 @@ export async function submitNepalNursingLead(payload: LeadSubmissionPayload) {
     if (error) {
       console.error("Server Action Supabase lead insert error:", error);
       return { success: false, error: error.message };
+    }
+
+    // Automated non-blocking confirmation SMS for Nepal scholarship applicants
+    try {
+      if (payload.phone) {
+        const studentName = payload.name.trim();
+        const course = payload.interests?.course_name || payload.interests?.primary || "Nursing";
+        await sendLeadConfirmationSMS(studentName, payload.phone, course);
+      }
+    } catch (smsErr) {
+      console.warn("Non-blocking confirmation SMS notice:", smsErr);
     }
 
     return { success: true, data };
