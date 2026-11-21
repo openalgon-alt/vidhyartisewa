@@ -311,8 +311,10 @@ export default function AdminLeadsPage() {
                 ) : filteredLeads.map((lead) => {
                   const interests = typeof lead.interests === 'string' ? JSON.parse(lead.interests) : (lead.interests || {});
                   const acd = typeof lead.academic_info === 'string' ? JSON.parse(lead.academic_info) : (lead.academic_info || {});
+                  const prefs = typeof lead.preferences === 'string' ? JSON.parse(lead.preferences) : (lead.preferences || {});
                   const isContacted = lead.status === "contacted";
                   const isNepal = isNepalLead(lead);
+                  const isPhoneVerified = Boolean(prefs.phone_verified || lead.message?.includes("OTP VERIFIED"));
                   const cleanPhone = lead.phone ? lead.phone.replace(/\D/g, "") : "";
                   
                   return (
@@ -328,6 +330,12 @@ export default function AdminLeadsPage() {
                           {isNepal && (
                             <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[10px] font-black bg-teal-100 text-teal-800 border border-teal-200">
                               🇳🇵 Nepal Scholarship
+                            </span>
+                          )}
+                          {isPhoneVerified && (
+                            <span className="inline-flex items-center gap-0.5 px-2 py-0.5 rounded-full text-[10px] font-bold bg-emerald-100 text-emerald-800 border border-emerald-200">
+                              <CheckCircle2 className="w-3 h-3 text-emerald-600" />
+                              OTP Verified
                             </span>
                           )}
                         </div>
@@ -475,6 +483,11 @@ export default function AdminLeadsPage() {
                 </div>
                 <div className="text-sm text-slate-500 mt-1 flex flex-wrap items-center gap-4">
                   <span className="flex items-center gap-1"><Phone className="w-4 h-4"/> {selectedLead.phone}</span>
+                  {(selectedLead.preferences?.phone_verified || selectedLead.message?.includes("OTP VERIFIED")) && (
+                    <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[11px] font-bold bg-emerald-100 text-emerald-800 border border-emerald-200">
+                      <CheckCircle2 className="w-3 h-3 text-emerald-600" /> OTP Verified
+                    </span>
+                  )}
                   <span className="flex items-center gap-1"><MapPin className="w-4 h-4"/> {selectedLead.city || "Nepal"}</span>
                   {selectedLead.created_at && (
                     <span className="flex items-center gap-1 text-slate-400">

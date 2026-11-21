@@ -12,7 +12,7 @@ import {
   Star, Users, CheckCheck, Flame, X, User, Lock
 } from "lucide-react";
 import { createClient } from "@/lib/supabase-client";
-import { formatPhoneNumber } from "@/lib/utils";
+import { formatPhoneNumber, cn } from "@/lib/utils";
 import { submitNepalNursingLead } from "@/app/actions/leads";
 
 // Course Model for the landing page
@@ -208,6 +208,117 @@ export function NepalNursingScholarshipsView({
     formRef.current?.scrollIntoView({ behavior: "smooth", block: "start" });
   };
 
+  // OTP Verification States
+  const [isPhoneVerified, setIsPhoneVerified] = useState(false);
+  const [isSendingOtp, setIsSendingOtp] = useState(false);
+  const [otpSent, setOtpSent] = useState(false);
+  const [otpCode, setOtpCode] = useState("");
+  const [verificationToken, setVerificationToken] = useState("");
+  const [verifiedSignature, setVerifiedSignature] = useState("");
+  const [isVerifyingOtp, setIsVerifyingOtp] = useState(false);
+  const [otpError, setOtpError] = useState("");
+  const [otpSuccess, setOtpSuccess] = useState("");
+  const [devOtpHint, setDevOtpHint] = useState("");
+  const [resendTimer, setResendTimer] = useState(0);
+
+  // Timer countdown for resending OTP
+  useEffect(() => {
+    if (resendTimer <= 0) return;
+    const interval = setInterval(() => {
+      setResendTimer((prev) => {
+        if (prev <= 1) {
+          clearInterval(interval);
+          return 0;
+        }
+        return prev - 1;
+      });
+    }, 1000);
+    return () => clearInterval(interval);
+  }, [resendTimer]);
+
+  const handleSendOtp = async () => {
+    setOtpError("");
+    setOtpSuccess("");
+    const cleanPhone = mobileNumber.replace(/\D/g, "");
+    if (cleanPhone.length < 9 || cleanPhone.length > 12) {
+      setOtpError("Please enter a valid 9-10 digit mobile number first.");
+      return;
+    }
+
+    setIsSendingOtp(true);
+    try {
+      const res = await fetch("/api/otp/send", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ phone: `${countryCode} ${cleanPhone}` }),
+      });
+      const data = await res.json();
+      if (!res.ok || !data.success) {
+        throw new Error(data.error || "Failed to send OTP code.");
+      }
+      setOtpSent(true);
+      setVerificationToken(data.verificationToken);
+      setResendTimer(30);
+      if (data.devOtp) {
+        setDevOtpHint(data.devOtp);
+      }
+      setOtpSuccess(`Verification code sent to ${countryCode} ${cleanPhone}`);
+    } catch (err: any) {
+      setOtpError(err?.message || "Failed to send OTP. Please try again.");
+    } finally {
+      setIsSendingOtp(false);
+    }
+  };
+
+  const handleVerifyOtp = async () => {
+    setOtpError("");
+    const cleanPhone = mobileNumber.replace(/\D/g, "");
+    const cleanOtp = otpCode.trim();
+
+    if (!cleanOtp || cleanOtp.length < 4) {
+      setOtpError("Please enter the 4-digit verification code.");
+      return;
+    }
+
+    setIsVerifyingOtp(true);
+    try {
+      const res = await fetch("/api/otp/verify", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          phone: `${countryCode} ${cleanPhone}`,
+          otp: cleanOtp,
+          verificationToken,
+        }),
+      });
+      const data = await res.json();
+      if (!res.ok || !data.success) {
+        throw new Error(data.error || "Invalid OTP code.");
+      }
+      setIsPhoneVerified(true);
+      setVerifiedSignature(data.verifiedSignature);
+      setOtpSuccess("Mobile number verified successfully! ✓");
+      setOtpError("");
+      setFormError("");
+    } catch (err: any) {
+      setOtpError(err?.message || "Invalid OTP code. Please try again.");
+    } finally {
+      setIsVerifyingOtp(false);
+    }
+  };
+
+  const handleChangePhone = () => {
+    setIsPhoneVerified(false);
+    setOtpSent(false);
+    setOtpCode("");
+    setVerificationToken("");
+    setVerifiedSignature("");
+    setDevOtpHint("");
+    setOtpError("");
+    setOtpSuccess("");
+    setResendTimer(0);
+  };
+
   // Form Submission Handler
   const handleFormSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -221,6 +332,14 @@ export function NepalNursingScholarshipsView({
     const cleanPhone = mobileNumber.replace(/\D/g, "");
     if (cleanPhone.length < 9 || cleanPhone.length > 12) {
       setFormError("Please enter a valid mobile number (e.g. 98XXXXXXXX for Nepal).");
+      return;
+    }
+
+    if (!isPhoneVerified) {
+      setFormError("Please verify your mobile number with OTP before submitting.");
+      if (!otpSent) {
+        handleSendOtp();
+      }
       return;
     }
 
@@ -264,6 +383,8 @@ export function NepalNursingScholarshipsView({
           location: "Bangalore, India",
           hostel: true,
           nepal_quota: true,
+          phone_verified: true,
+          verified_signature: verifiedSignature,
           country_code: countryCode,
           page_url: currentUrl,
           utm_source: utmParams.utm_source,
@@ -271,7 +392,7 @@ export function NepalNursingScholarshipsView({
           utm_campaign: utmParams.utm_campaign,
           gclid: utmParams.gclid,
         },
-        message: `[NEPAL NURSING SCHOLARSHIP ENQUIRY] Student: ${fullName.trim()} from Nepal. Course: ${interestedCourse}. PCB Score: ${pcbScore.trim()}. Preferred College: ${preferredCollege || "Any Top Bangalore Nursing College"}. Contact: ${countryCode} ${cleanPhone}. Applied via /nepal/nursing-scholarships-india.`,
+        message: `[NEPAL NURSING SCHOLARSHIP ENQUIRY - OTP VERIFIED ✓] Student: ${fullName.trim()} from Nepal. Course: ${interestedCourse}. PCB Score: ${pcbScore.trim()}. Preferred College: ${preferredCollege || "Any Top Bangalore Nursing College"}. Contact: ${countryCode} ${cleanPhone}. Applied via /nepal/nursing-scholarships-india.`,
         status: "pending",
         created_at: new Date().toISOString(),
       };
@@ -577,6 +698,7 @@ export function NepalNursingScholarshipsView({
                       setFullName("");
                       setMobileNumber("");
                       setPcbScore("");
+                      handleChangePhone();
                     }}
                     className="w-full sm:w-auto px-5 py-2.5 sm:py-3 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold text-xs sm:text-sm cursor-pointer"
                   >
@@ -608,32 +730,194 @@ export function NepalNursingScholarshipsView({
                     </div>
                   </div>
 
-                  {/* Mobile Number with Country Code */}
+                  {/* Mobile Number with Country Code & Inline OTP Verification */}
                   <div className="space-y-1.5 text-left">
-                    <label className="text-xs font-bold text-slate-700 block">
-                      Mobile Number (WhatsApp) <span className="text-red-500">*</span>
-                    </label>
+                    <div className="flex items-center justify-between">
+                      <label className="text-xs font-bold text-slate-700 block">
+                        Mobile Number (WhatsApp) <span className="text-red-500">*</span>
+                      </label>
+                      {isPhoneVerified && (
+                        <span className="inline-flex items-center gap-1 text-[11px] font-bold text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded-md border border-emerald-200">
+                          <CheckCircle2 className="w-3.5 h-3.5 text-emerald-600" />
+                          Verified
+                        </span>
+                      )}
+                    </div>
                     <div className="flex gap-2">
                       <select
                         value={countryCode}
-                        onChange={(e) => setCountryCode(e.target.value)}
-                        className="h-11 sm:h-12 px-2.5 rounded-xl border border-slate-200/90 text-xs font-bold text-slate-700 bg-slate-50 hover:bg-slate-100 focus:outline-none focus:border-teal-500 focus:ring-4 focus:ring-teal-500/10 transition-all shrink-0 cursor-pointer"
+                        disabled={isPhoneVerified}
+                        onChange={(e) => {
+                          setCountryCode(e.target.value);
+                          handleChangePhone();
+                        }}
+                        className="h-11 sm:h-12 px-2.5 rounded-xl border border-slate-200/90 text-xs font-bold text-slate-700 bg-slate-50 hover:bg-slate-100 focus:outline-none focus:border-teal-500 focus:ring-4 focus:ring-teal-500/10 transition-all shrink-0 cursor-pointer disabled:opacity-75 disabled:cursor-not-allowed"
                       >
-                        <option value="+977">🇳🇵 +977</option>
-                        <option value="+91">🇮🇳 +91</option>
+                        <option value="+977">NP +977</option>
+                        <option value="+91">IN +91</option>
                       </select>
                       <div className="relative flex-1 flex items-center">
                         <Phone className="w-4 h-4 text-slate-400 absolute left-3.5 pointer-events-none" />
                         <input
                           type="tel"
                           required
+                          readOnly={isPhoneVerified}
                           placeholder="98XXXXXXXX"
                           value={mobileNumber}
-                          onChange={(e) => setMobileNumber(e.target.value)}
-                          className="w-full h-11 sm:h-12 pl-10 pr-3.5 rounded-xl border border-slate-200/90 text-xs sm:text-sm text-slate-800 bg-slate-50/60 hover:bg-slate-50 focus:bg-white focus:outline-none focus:border-teal-500 focus:ring-4 focus:ring-teal-500/10 transition-all font-medium placeholder:text-slate-400"
+                          onChange={(e) => {
+                            setMobileNumber(e.target.value);
+                            if (isPhoneVerified || otpSent) {
+                              handleChangePhone();
+                            }
+                          }}
+                          className={cn(
+                            "w-full h-11 sm:h-12 pl-10 pr-24 rounded-xl border text-xs sm:text-sm font-medium transition-all placeholder:text-slate-400",
+                            isPhoneVerified
+                              ? "bg-emerald-50/40 border-emerald-300 text-slate-900"
+                              : "border-slate-200/90 text-slate-800 bg-slate-50/60 hover:bg-slate-50 focus:bg-white focus:outline-none focus:border-teal-500 focus:ring-4 focus:ring-teal-500/10"
+                          )}
                         />
+
+                        {/* Right Action: Verify / Resend / Change */}
+                        <div className="absolute right-1.5 flex items-center">
+                          {isPhoneVerified ? (
+                            <button
+                              type="button"
+                              onClick={handleChangePhone}
+                              className="text-[11px] font-semibold text-slate-500 hover:text-slate-800 px-2 py-1 rounded hover:bg-slate-200/60 transition-colors cursor-pointer"
+                            >
+                              Change
+                            </button>
+                          ) : (
+                            <button
+                              type="button"
+                              onClick={handleSendOtp}
+                              disabled={isSendingOtp || mobileNumber.replace(/\D/g, "").length < 9}
+                              className={cn(
+                                "h-8 sm:h-9 px-3 rounded-lg text-xs font-bold flex items-center gap-1 transition-all shadow-sm",
+                                mobileNumber.replace(/\D/g, "").length >= 9
+                                  ? "bg-teal-600 hover:bg-teal-700 text-white cursor-pointer active:scale-95"
+                                  : "bg-slate-200 text-slate-400 cursor-not-allowed"
+                              )}
+                            >
+                              {isSendingOtp ? (
+                                <>
+                                  <Loader2 className="w-3.5 h-3.5 animate-spin" />
+                                  <span>Sending...</span>
+                                </>
+                              ) : otpSent ? (
+                                <span>Resend</span>
+                              ) : (
+                                <span>Verify</span>
+                              )}
+                            </button>
+                          )}
+                        </div>
                       </div>
                     </div>
+
+                    {/* Inline OTP Verification Panel */}
+                    <AnimatePresence>
+                      {otpSent && !isPhoneVerified && (
+                        <motion.div
+                          initial={{ opacity: 0, y: -6, height: 0 }}
+                          animate={{ opacity: 1, y: 0, height: "auto" }}
+                          exit={{ opacity: 0, y: -6, height: 0 }}
+                          transition={{ duration: 0.2 }}
+                          className="mt-2.5 p-3 sm:p-3.5 rounded-xl bg-gradient-to-br from-teal-50/80 to-emerald-50/70 border border-teal-200/90 shadow-sm"
+                        >
+                          <div className="flex items-center justify-between gap-2 mb-2">
+                            <div className="flex items-center gap-1.5 text-xs font-bold text-teal-900">
+                              <Lock className="w-3.5 h-3.5 text-teal-600" />
+                              <span>Enter 4-Digit OTP Code</span>
+                            </div>
+                            <span className="text-[11px] text-slate-500">
+                              Sent to <strong className="font-semibold text-slate-700">{countryCode} {mobileNumber}</strong>
+                            </span>
+                          </div>
+
+                          <div className="flex items-center gap-2 flex-wrap sm:flex-nowrap">
+                            <input
+                              type="text"
+                              inputMode="numeric"
+                              maxLength={6}
+                              autoFocus
+                              placeholder="• • • •"
+                              value={otpCode}
+                              onChange={(e) => {
+                                setOtpCode(e.target.value.replace(/\D/g, ""));
+                                setOtpError("");
+                              }}
+                              className="w-32 h-10 px-3 text-center tracking-[0.35em] font-mono font-bold text-base bg-white rounded-lg border border-teal-300 focus:outline-none focus:ring-2 focus:ring-teal-500/20 focus:border-teal-600 text-slate-800 shadow-sm"
+                            />
+
+                            <button
+                              type="button"
+                              onClick={handleVerifyOtp}
+                              disabled={isVerifyingOtp || otpCode.trim().length < 4}
+                              className={cn(
+                                "h-10 px-4 rounded-lg text-xs font-bold flex items-center justify-center gap-1.5 transition-all shadow-sm",
+                                otpCode.trim().length >= 4
+                                  ? "bg-emerald-600 hover:bg-emerald-700 text-white cursor-pointer active:scale-95"
+                                  : "bg-slate-200 text-slate-400 cursor-not-allowed"
+                              )}
+                            >
+                              {isVerifyingOtp ? (
+                                <>
+                                  <Loader2 className="w-3.5 h-3.5 animate-spin" />
+                                  <span>Verifying...</span>
+                                </>
+                              ) : (
+                                <>
+                                  <Check className="w-3.5 h-3.5" />
+                                  <span>Confirm OTP</span>
+                                </>
+                              )}
+                            </button>
+
+                            {resendTimer > 0 ? (
+                              <span className="text-[11px] font-medium text-slate-500 pl-1">
+                                Resend in {resendTimer}s
+                              </span>
+                            ) : (
+                              <button
+                                type="button"
+                                onClick={handleSendOtp}
+                                disabled={isSendingOtp}
+                                className="text-[11px] font-bold text-teal-700 hover:text-teal-900 underline pl-1 cursor-pointer"
+                              >
+                                Resend Code
+                              </button>
+                            )}
+                          </div>
+
+                          {/* Dev/Test Mode Code Helper */}
+                          {devOtpHint && (
+                            <div className="mt-2 pt-2 border-t border-teal-200/60 flex items-center justify-between gap-2 text-[11px] text-teal-900 bg-white/80 px-2.5 py-1.5 rounded-md">
+                              <span>Test OTP Code: <strong className="font-mono text-teal-950 font-bold tracking-widest">{devOtpHint}</strong></span>
+                              <button
+                                type="button"
+                                onClick={() => {
+                                  setOtpCode(devOtpHint);
+                                  setOtpError("");
+                                }}
+                                className="text-[10px] font-bold text-teal-800 hover:text-teal-950 bg-teal-100 hover:bg-teal-200 px-2.5 py-1 rounded cursor-pointer transition-colors"
+                              >
+                                Auto Fill
+                              </button>
+                            </div>
+                          )}
+
+                          {/* OTP Error display */}
+                          {otpError && (
+                            <p className="mt-1.5 text-xs text-red-600 flex items-center gap-1 font-medium">
+                              <AlertCircle className="w-3.5 h-3.5 shrink-0 text-red-500" />
+                              <span>{otpError}</span>
+                            </p>
+                          )}
+                        </motion.div>
+                      )}
+                    </AnimatePresence>
                   </div>
 
                 </div>
