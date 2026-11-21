@@ -8,6 +8,11 @@ import {
   Phone, GraduationCap, Calendar, Trash2, Eye, 
   X, MapPin, BookOpen, Building2, MessageSquare, Loader2, Download, CheckCircle2, Circle, Search, Award
 } from "lucide-react";
+import { 
+  getAdminLeadsAndCallbacks, 
+  toggleAdminStatus, 
+  deleteAdminRecord 
+} from "@/app/actions/leads";
 
 export default function AdminLeadsPage() {
   const [activeTab, setActiveTab] = useState<"leads" | "callbacks">("leads");
@@ -34,12 +39,37 @@ export default function AdminLeadsPage() {
 
   async function fetchData() {
     setIsLoading(true);
-    const { data: leadsData } = await supabase.from("leads").select("*").order("created_at", { ascending: false });
-    setLeads(leadsData || []);
-
-    const { data: callbacksData } = await supabase.from("callbacks").select("*").order("created_at", { ascending: false });
-    setCallbacks(callbacksData || []);
-    setIsLoading(false);
+    try {
+      // 1. Try Next.js Server Action with Service Role Key (bypasses RLS)
+      const res = await getAdminLeadsAndCallbacks();
+      if (res.success && res.leads) {
+        setLeads(res.leads);
+        setCallbacks(res.callbacks || []);
+      } else {
+        // 2. Fallback to API endpoint /api/admin/leads
+        const apiRes = await fetch("/api/admin/leads");
+        const apiData = await apiRes.json();
+        if (apiData?.success) {
+          setLeads(apiData.leads || []);
+          setCallbacks(apiData.callbacks || []);
+        } else {
+          // 3. Fallback to client Supabase
+          const { data: leadsData } = await supabase.from("leads").select("*").order("created_at", { ascending: false });
+          setLeads(leadsData || []);
+          const { data: callbacksData } = await supabase.from("callbacks").select("*").order("created_at", { ascending: false });
+          setCallbacks(callbacksData || []);
+        }
+      }
+    } catch (err) {
+      console.error("Error fetching admin leads/callbacks:", err);
+      // Fallback
+      const { data: leadsData } = await supabase.from("leads").select("*").order("created_at", { ascending: false });
+      setLeads(leadsData || []);
+      const { data: callbacksData } = await supabase.from("callbacks").select("*").order("created_at", { ascending: false });
+      setCallbacks(callbacksData || []);
+    } finally {
+      setIsLoading(false);
+    }
   }
 
   // Detect if a lead is a Nepal Scholarship Application
@@ -78,23 +108,34 @@ export default function AdminLeadsPage() {
     });
   }, [leads, leadCategoryFilter, searchQuery]);
 
-  // --- NEW: Status Update Logic ---
+  // --- Status Update Logic (Using Service Role Server Action) ---
   async function toggleStatus(id: string, currentStatus: string, table: "leads" | "callbacks") {
     setIsUpdating(id);
     const newStatus = currentStatus === "contacted" ? "pending" : "contacted";
     
+    // Optimistic UI update
+    if (table === "leads") {
+      setLeads(leads.map(l => l.id === id ? { ...l, status: newStatus } : l));
+    } else {
+      setCallbacks(callbacks.map(c => c.id === id ? { ...c, status: newStatus } : c));
+    }
+
     try {
-      const { error } = await supabase.from(table).update({ status: newStatus }).eq("id", id);
-      if (error) throw error;
-      
-      // Optimistic UI update
-      if (table === "leads") {
-        setLeads(leads.map(l => l.id === id ? { ...l, status: newStatus } : l));
-      } else {
-        setCallbacks(callbacks.map(c => c.id === id ? { ...c, status: newStatus } : c));
+      const res = await toggleAdminStatus(id, currentStatus, table);
+      if (!res.success) {
+        // Fallback to API route
+        await fetch("/api/admin/leads", {
+          method: "PATCH",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ id, status: newStatus, table }),
+        });
       }
     } catch (err: any) {
-      alert("Failed to update status.");
+      console.error("Failed to update status:", err);
+      // Fallback
+      try {
+        await supabase.from(table).update({ status: newStatus }).eq("id", id);
+      } catch {}
     } finally {
       setIsUpdating(null);
     }
@@ -103,10 +144,23 @@ export default function AdminLeadsPage() {
   async function handleDelete(id: string, table: "leads" | "callbacks") {
     if (!confirm(`Are you sure you want to delete this?`)) return;
     try {
-      await supabase.from(table).delete().eq("id", id);
+      const res = await deleteAdminRecord(id, table);
+      if (!res.success) {
+        await fetch("/api/admin/leads", {
+          method: "DELETE",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ id, table }),
+        });
+      }
       fetchData(); 
     } catch (err: any) {
-      alert("Failed to delete: " + err.message);
+      console.error("Failed to delete record:", err);
+      try {
+        await supabase.from(table).delete().eq("id", id);
+        fetchData();
+      } catch (clientErr: any) {
+        alert("Failed to delete: " + clientErr.message);
+      }
     }
   }
 
