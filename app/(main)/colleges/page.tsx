@@ -10,6 +10,7 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { CollegesHero } from "@/components/sections/colleges-hero";
 import { createClient } from "@/lib/supabase-client"; 
+import { formatCourseDisplayName } from "@/lib/courses"; 
 
 const SUPABASE_IMAGE_URL = "https://tauhscbkagspofmfbqlx.supabase.co/storage/v1/object/public/website-images";
 
@@ -18,18 +19,33 @@ export default function CollegesPage() {
   const [searchQuery, setSearchQuery] = useState("");
   
   const [colleges, setColleges] = useState<any[]>([]);
+  const [courseMap, setCourseMap] = useState<Record<string, string>>({});
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     async function fetchLiveColleges() {
       const supabase = createClient();
-      const { data, error } = await supabase.from("colleges").select("*").order("name");
       
-      if (error) {
-        console.error("Error fetching colleges:", error);
-      } else if (data) {
+      const [collegesRes, coursesRes] = await Promise.all([
+        supabase.from("colleges").select("*").order("name"),
+        supabase.from("courses").select("id, name, slug"),
+      ]);
+
+      if (coursesRes.data) {
+        const map: Record<string, string> = {};
+        coursesRes.data.forEach((c: any) => {
+          if (c.slug) map[c.slug.toLowerCase()] = c.name;
+          if (c.id) map[c.id.toLowerCase()] = c.name;
+          if (c.name) map[c.name.toLowerCase()] = c.name;
+        });
+        setCourseMap(map);
+      }
+
+      if (collegesRes.error) {
+        console.error("Error fetching colleges:", collegesRes.error);
+      } else if (collegesRes.data) {
         // CRITICAL FIX: Parse the JSON fields safely before putting them in state!
-        const parsedData = data.map((college: any) => ({
+        const parsedData = collegesRes.data.map((college: any) => ({
           ...college,
           courses: typeof college.courses === 'string' ? JSON.parse(college.courses) : (college.courses || []),
           placement_stats: typeof college.placement_stats === 'string' ? JSON.parse(college.placement_stats) : (college.placement_stats || {})
@@ -48,14 +64,17 @@ export default function CollegesPage() {
 
   // Filter the live 'colleges' state
   const filteredColleges = colleges.filter(college => {
+    const rawCourses = college.courses || [];
+    const courseNames = rawCourses.map((c: string) => `${c} ${formatCourseDisplayName(c, courseMap)}`.toLowerCase());
+
     const matchesCategory = activeCategory === "All" || 
       (college.type && college.type.toLowerCase().includes(activeCategory.toLowerCase())) ||
-      (college.courses && college.courses.some((c: string) => c.toLowerCase().includes(activeCategory.toLowerCase())));
+      courseNames.some((c: string) => c.includes(activeCategory.toLowerCase()));
     
     const matchesSearch = 
       (college.name && college.name.toLowerCase().includes(searchQuery.toLowerCase())) ||
       (college.location && college.location.toLowerCase().includes(searchQuery.toLowerCase())) ||
-      (college.courses && college.courses.some((c: string) => c.toLowerCase().includes(searchQuery.toLowerCase())));
+      courseNames.some((c: string) => c.includes(searchQuery.toLowerCase()));
       
     return matchesCategory && matchesSearch;
   });
@@ -159,11 +178,14 @@ export default function CollegesPage() {
                         </p>
 
                         <div className="flex flex-wrap gap-2 mb-6 mt-auto">
-                          {(college.courses || []).slice(0, 3).map((course: string) => (
-                            <span key={course} className="text-xs font-bold bg-slate-50 text-slate-600 px-3 py-1.5 rounded-lg border border-slate-100">
-                              {course}
-                            </span>
-                          ))}
+                          {(college.courses || []).slice(0, 3).map((course: string) => {
+                            const displayName = formatCourseDisplayName(course, courseMap);
+                            return (
+                              <span key={course} className="text-xs font-bold bg-slate-50 text-slate-700 px-3 py-1.5 rounded-lg border border-slate-100">
+                                {displayName}
+                              </span>
+                            );
+                          })}
                           {(college.courses || []).length > 3 && (
                             <span className="text-xs font-bold text-slate-400 self-center px-2">+{(college.courses || []).length - 3} more</span>
                           )}

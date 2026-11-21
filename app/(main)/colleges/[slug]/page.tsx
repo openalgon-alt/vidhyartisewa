@@ -2,6 +2,7 @@ import { notFound } from "next/navigation";
 import type { Metadata } from "next";
 import { createClient } from "@/lib/supabase-client";
 import { CollegeProfileView, EnrichedCourse } from "@/components/college-profile-view";
+import { formatCourseDisplayName } from "@/lib/courses";
 
 const SUPABASE_IMAGE_URL = "https://tauhscbkagspofmfbqlx.supabase.co/storage/v1/object/public/website-images";
 
@@ -305,20 +306,21 @@ export default async function CollegeDetailPage({ params }: { params: { slug: st
         });
       }
     } else {
-      // Create course item from raw string
-      if (!processedNames.has(lower)) {
-        processedNames.add(lower);
+      // Create course item from raw string using clean display name
+      const cleanName = formatCourseDisplayName(trimmed);
+      if (!processedNames.has(cleanName.toLowerCase())) {
+        processedNames.add(cleanName.toLowerCase());
         enrichedCourses.push({
           id: `raw-${idx}`,
-          name: trimmed,
+          name: cleanName,
           slug: undefined,
           category: "Degree Program",
-          degreeLevel: classifyDegree(trimmed),
+          degreeLevel: classifyDegree(cleanName),
           duration: "Contact for details",
           fees_range: "Contact for details",
           eligibility: "Contact for details",
-          entranceExam: getEntranceExam("General", trimmed),
-          description: `${trimmed} program offered at ${college.name}. Contact our admission mentors for detailed syllabus and seat matrices.`,
+          entranceExam: getEntranceExam("General", cleanName),
+          description: `${cleanName} program offered at ${college.name}. Contact our admission mentors for detailed syllabus and seat matrices.`,
         });
       }
     }
